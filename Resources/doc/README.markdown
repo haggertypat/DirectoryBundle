@@ -18,6 +18,10 @@ Install as a git submodule if you'll be making changes to the bundle:
 
     git submodule add git@github.com:CCETC/DirectoryBundle.git vendor/ccetc/directory-bundle/CCETC/DirectoryBundle
 
+### add to ``AppKernel.php->registerBundles``
+
+    new CCETC\DirectoryBundle\CCETCDirectoryBundle()
+
 ### routes
 You must add ``home`` and ``about`` routes to your bundle.
 
