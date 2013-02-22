@@ -4,6 +4,20 @@
 The CCETC/DirectoryBundle is a bundle for building a web-based directory.  It allows users to search/browse listings by category and location.
 
 ## Installation
+### option 1 - composer
+Add to your composer.json:
+
+    "require": {
+        "ccetc/directory-bundle": "dev-master"
+    }
+
+Run ``php composer.phar install ccetc/directory-bundle``
+
+### option 2 - submodule
+Install as a git submodule if you'll be making changes to the bundle:
+
+    git submodule add git@github.com:CCETC/DirectoryBundle.git vendor/ccetc/directory-bundle/CCETC/DirectoryBundle
+
 ### routes
 You must add ``home`` and ``about`` routes to your bundle.
 
@@ -20,6 +34,7 @@ You must add ``home`` and ``about`` routes to your bundle.
 * google_analytics_account - optional
 
 Full config options:
+
     ccetc_directory:
         title: My Directory
         logo: bundles/mybundle/images/mylogo.png
