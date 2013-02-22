@@ -30,6 +30,9 @@
         "doctrine/common": ">=2.2,<3.0",
         "mopa/bootstrap-bundle": "dev-master"
     },
+    "autoload": {
+        "psr-0": { "CCETC\\DirectoryBundle": "" }
+    },
     "target-dir": "CCETC/DirectoryBundle",
     "minimum-stability": "dev"
 }
