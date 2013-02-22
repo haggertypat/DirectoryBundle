@@ -1,0 +1,34 @@
+{
+    "name": "ccetc/directory-bundle",
+    "type": "symfony-bundle",
+    "description": "Symfony CCETCDirectoryBundle",
+    "keywords": ["Admin Generator", "admin", "sonata", "bootstrap"],
+    "homepage": "http://github.com/CCETC/DirectoryBundle",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Pat Haggerty",
+            "email": "haggertypat@gmail.com",
+            "homepage": "http://github.com/somewherethere"
+        }
+    ],
+    "require": {
+        "symfony/http-foundation": ">=2.1,<2.3-dev",
+        "symfony/form": ">=2.1,<2.3-dev",
+        "symfony/validator": ">=2.1,<2.3-dev",
+        "symfony/security-bundle": ">=2.1,<2.3-dev",
+        "symfony/routing": ">=2.1,<2.3-dev",
+        "symfony/config": ">=2.1,<2.3-dev",
+        "symfony/console": ">=2.1,<2.3-dev",
+        "symfony/twig-bridge": ">=2.1,<2.3-dev",
+        "twig/twig": ">=1.10,<2.0-dev",
+        "knplabs/knp-menu-bundle": ">=1.1.0,<2.0.x-dev",
+        "sonata-project/admin-bundle": "dev-master",
+	"sonata-project/jquery-bundle": "dev-master",
+        "sonata-project/exporter": "1.1.*",
+        "sonata-project/block-bundle": "dev-master",
+        "doctrine/common": ">=2.2,<3.0",
+    },
+    "target-dir": "CCETC/DirectoryBundle",
+    "minimum-stability": "dev"
+}
