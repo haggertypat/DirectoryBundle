@@ -1,0 +1,36 @@
+<div class="listing-block-container block-link">
+    <div>
+        <div class="listing-name">
+            <h3><a href="{{ path('profile', {'id' : listing.id }) }}">{{ listing.name }}</a></h3>                             
+        </div>
+        <div style="clear: both; line-height: 0;">&nbsp;</div>    
+    </div>
+
+    <div>
+        <span class="listing-location">
+            <i class="icon-map-marker"></i>
+            {{ listing.city }},
+            {{ listing.address }}
+        </span>
+    </div>
+        
+    {% if listing.descriptionPreview is defined and listing.descriptionPreview != ""%}    
+        <div>    
+            {{ listing.descriptionPreview }}
+        </div>
+        <br/>
+    {% endif %}
+        
+    {% include 'CCETCDirectoryBundle:Directory:_listing_product_labels.html.twig' %}
+    {% include 'CCETCDirectoryBundle:Directory:_listing_attribute_labels.html.twig' %}
+        
+    <br/>    
+        
+    <div>
+        {% if is_granted("ROLE_ADMIN") %}
+            <a class="btn pull-right edit-listing" target="_blank" href="{{ listingAdmin.generateObjectUrl('edit', listing) }}" ><i class="icon-pencil"></i> Edit</a> 
+        {% endif %}
+        <a class="btn pull-right" href="{{ path('profile', {'id' : listing.id }) }}" ><i class="icon-search"></i> View Profile</a>
+        <div style="clear: both; line-height: 0;">&nbsp;</div>    
+    </div>
+</div>

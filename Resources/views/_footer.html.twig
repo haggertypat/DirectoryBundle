@@ -1,0 +1,15 @@
+    <footer>
+        <div class="container">
+            <div class="pull-left">
+                <p>
+                    {% if directoryCopyright is defined and directoryCopyright !="" %}
+                        &copy; {{ directoryCopyright }}<br/>
+                    {% endif %}
+                    <a href="{{ path('about') }}">About</a> |
+                    <a href="mailto:{{ directoryContactEmail }}">Contact</a> |
+                    <a href="{{ path('sonata_admin_dashboard') }}">Admin</a>
+                </p>   
+            </div>
+            <div style="clear: both;">&nbsp;</div>                    
+        </div>
+    </footer>

@@ -1,0 +1,8 @@
+var listing={
+    lat:"{{ listing.lat }}",
+    lng:"{{ listing.lng }}",
+    name:"{{ listing.name }}",
+    id:"{{ listing.id }}",
+    profileLink:"{{ path('profile', {'id' : listing.id }) }}",
+    address: "{{ listing.city }}, {{ listing.address }}"
+}; 

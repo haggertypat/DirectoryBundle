@@ -1,0 +1,22 @@
+{% extends 'SonataAdminBundle::standard_layout.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('bundles/lbmiapp/css/admin.css') }}" type="text/css" media="all" />
+{% endblock %}
+    
+{% block javascripts %}
+    {{ parent() }}
+
+{% endblock %}
+
+{% block logo %}
+    {{ parent() }}
+    <ul class="nav">
+        <li>
+            <a href="{{ url('home') }}">
+                View Site
+            </a>
+        </li>
+    </ul>
+{% endblock %}

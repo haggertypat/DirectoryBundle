@@ -1,0 +1,7 @@
+    <div class="header">
+        {% if directoryLogo is defined and directoryLogo != "" %}
+            <img class="logo" src="{{ asset(directoryLogo) }}" />
+        {% endif %}
+        <h2>{{ directoryTitle }}</h2>
+        <div style="clear: both; line-height: 0px;">&nbsp;</div>
+    </div>

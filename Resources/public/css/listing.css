@@ -1,0 +1,71 @@
+.listing-block-container {
+    border: 1px solid #eee;
+    padding: 0px 15px 10px 15px;
+    margin: 0 0 18px 0;
+    border-radius: 7px;
+    -moz-border-radius: 7px;
+    -webkit-border-radius: 7px;
+}
+
+.listing-block-container .listing-name {
+    float: left;
+    width: 60%;    
+}
+
+.listing-block-container .listing-location {
+    margin-right:5px;
+    display: inline-block;    
+}
+
+.listing-block-container .edit-listing {
+    margin-left: 5px;
+}
+
+.find-a-listing {
+    line-height: 50px;
+    padding-right: 14px;
+    color: black;
+}
+
+.find-a-listing,
+.find-a-listing input,
+.find-a-listing select {
+    font-size: 22px;
+    color: #333;
+}
+
+.find-a-listing input,
+.find-a-listing h4,
+.find-a-listing select {
+    display: inline;
+}
+
+.find-a-listing select {
+    margin-top: 7px; /* offset for vertical alignment */
+    height: 39px; 
+}
+
+.find-a-listing input {
+    margin-top: -5px; /* offset for vertical alignment */
+    line-height: 25px; /* offset for vertical alignment */
+}
+
+.find-a-listing form {
+    margin: 0;
+}
+
+.find-a-listing .miles {
+    width: 75px;    
+}
+
+.find-a-listing .products {
+    width: 160px;
+}
+
+.find-a-listing .btn {
+    margin-top: -6px; /* offset for vertical alignment */
+}
+
+.find-a-listing .other-filters-container .control-group {
+    margin-top: 10px;
+}

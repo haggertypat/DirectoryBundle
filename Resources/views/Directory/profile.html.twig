@@ -1,0 +1,50 @@
+{% extends layoutTemplate %}
+
+{% block page_header %}
+    {{ listing.name }}
+    {% if is_granted("ROLE_ADMIN") %}
+        <a class="btn pull-right" target="_blank" href="{{ listingAdmin.generateObjectUrl('edit', listing) }}" ><i class="icon-pencil"></i> Edit</a>
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    {% if listing.lat is defined and listing.lat != "" and listing.lng is defined and listing.lng != "" %}
+        <script type="text/javascript">
+            {% include 'CCETCDirectoryBundle:Directory:_listing_object.js.twig' %}
+                
+            $(document).ready(function() {
+                profileMapInit();
+            });
+        </script>
+    {% endif %}
+
+    <div class="row">
+        <div class="span7">
+            {% if listing.webPath is defined and listing.webPath != "" %}
+                <p>
+                    <img src="{{ asset(listing.webPath) }}" />
+                </p>
+            {% endif %}
+            <p class="well">
+                {{ listing.description? listing.description|nl2br : 'No Description Available' }}
+            </p>
+            
+            {% include 'CCETCDirectoryBundle:Directory:_listing_product_labels.html.twig' %}
+            {% include 'CCETCDirectoryBundle:Directory:_listing_attribute_labels.html.twig' %}
+        </div>       
+        <div class="span5">
+            {% if listing.lat is defined and listing.lat != "" and listing.lng is defined and listing.lng != "" %}
+                <div id="map-canvas" class="profile-map"></div>
+            {% endif %}
+
+            <div class="well">
+                <h4><i class="icon-map-marker"></i> Location</h4>
+                {% include 'CCETCDirectoryBundle:Directory:_listing_address.html.twig' %}
+            </div>
+            <div class="well">
+                <h4><i class="icon-envelope"></i> Contact</h4>
+                {% include 'CCETCDirectoryBundle:Directory:_listing_contact.html.twig' %}    
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,15 @@
+{% if listing.addressLabel %}<b>{{ listing.addressLabel }}</b><br/>{% endif %}
+{% if listing.address %}{{ listing.address }}<br/>{% endif %}
+{% if listing.city %}{{ listing.city }}, {% endif %}
+{% if listing.state %}{{ listing.state }} {% endif %}
+{% if listing.zip %}{{ listing.zip }} {% endif %}
+{% if listing.county %}<br/>{{ listing.county }}{% endif %}
+
+{% if listing.address2 %}
+    <b>{{ listing.addressLabel2 is defined? listing.addressLabel2 : 'Secondary Address' }}</b><br/>
+    {% if listing.address2 %}{{ listing.address2 }}<br/>{% endif %}
+    {% if listing.city2 %}{{ listing.city2 }}, {% endif %}
+    {% if listing.state2 %}{{ listing.state2 }} {% endif %}
+    {% if listing.zip2 %}{{ listing.zip2 }} {% endif %}
+    {% if listing.county2 %}<br/>{{ listing.county2 }}{% endif %}
+{% endif %}

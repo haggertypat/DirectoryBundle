@@ -1,0 +1,6 @@
+{% extends 'SonataAdminBundle:CRUD:base_show_field.html.twig' %}
+
+{% block field%}
+    {{ object.name }}
+    <a class="btn btn-primary btn-large pull-right" target="_blank" href="{{ path('profile', {'id' : object.id } ) }}"><i class="icon-search icon-white"></i> View on Site</a>
+{% endblock %}

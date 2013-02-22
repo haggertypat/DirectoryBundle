@@ -1,0 +1,27 @@
+{#
+
+This file is part of the Sonata package.
+
+(c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+
+#}
+
+{% extends 'SonataBlockBundle:Block:block_base.html.twig' %}
+
+{% block block %}
+    {% if listings|length > 0 %}
+        <div class="alert alert-block alert-info">
+            <h3>{{ listings|length }} {{ listings|length == 1? 'Listing needs' : 'Listings need'}} approval</h3>
+            <ul>
+                {% for listing in listings %}
+                    <li>{{ listing }}</li>
+                {% endfor %}
+            </ul>
+            <br/>
+            <a href="{{ listingAdmin.generateUrl('list') ~ '?filter%5Bspam%5D%5Btype%5D=&filter%5Bspam%5D%5Bvalue%5D=2&filter%5Bapproved%5D%5Btype%5D=&filter%5Bapproved%5D%5Bvalue%5D=2' }}" class="btn btn-large"><i class="icon-search"></i> View and Approve</a>
+        </div>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,58 @@
+{% extends layoutTemplate %}
+
+{% block page_header %}
+    {{ 'Listings'|trans }}
+{% endblock %}
+
+{% block content %}
+    <script type="text/javascript">
+        var listingMapData = new Object;
+
+        {% for listing in listings if listing.lat is defined and listing.lat != "" and listing.lng is defined and listing.lng != "" %}
+            {% include 'CCETCDirectoryBundle:Directory:_listing_object.js.twig' %}
+            listingMapData["{{listing.id}}"] = listing;
+        {% endfor %}            
+
+        var map;
+
+        $(document).ready(function() {
+            listingsMapInit();
+        });    
+    </script>
+    
+    {% if searchTerms is  defined and searchTerms != "" %}
+        <div class="row">
+            <div class="span12">
+                <div class="alert alert-block alert-success">
+                    <h4>Search for <i>{{ searchTerms }}</i> returned {{ listings|length }} result{{ listings|length == 1? '' : 's' }}.</h4><br/>
+                    <a href="{{ path('listings') }}" class="btn"><i class="icon-remove"></i> Clear Search</a>
+                </div>
+            </div>
+        </div>        
+    {% else %}
+        <div class="row">
+            <div class="span12">
+                {% render 'CCETCDirectoryBundle:Directory:findAListing' with {'filters' : filters } %}    
+            </div>
+        </div>
+    {% endif %}
+    
+    <div class="row">
+        {% if listings|length > 0 %}
+            <div class="span7">
+                {% for listing in listings %}
+                    {% include listingBlockTemplate with {'listing' : listing } %}
+                {% endfor %}
+            </div>
+            <div class="span5">
+                <div id="map-canvas" class="listings-map"></div>
+            </div>
+        {% elseif searchTerms is not defined or searchTerms == "" %}
+            <div class="span12">
+                <div class="alert alert-block">
+                    <h4>We couldn't find any listings! Try expanding your Search</h4>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

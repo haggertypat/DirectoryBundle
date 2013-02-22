@@ -1,0 +1,11 @@
+.header {
+    padding: 10px 15px;
+}
+.header img.logo {
+    float: left;
+}
+.header h2 {
+    float: left;
+    line-height: 68px;
+    margin-left: 10px;
+}

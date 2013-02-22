@@ -1,0 +1,48 @@
+{% extends layoutTemplate %}
+{% form_theme form 'MopaBootstrapBundle:Form:fields.html.twig' %}
+
+{% block page_header %}
+    Sign Up
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="span12">
+            {% if form_errors(form) %}
+                <div class="alert alert-error">
+                    {{ form_errors(form) }}
+                </div>
+            {% endif %}
+                
+            <form novalidate class="form-horizontal" action="{{ path('signup') }}" method="post" {{ form_enctype(form) }}>
+                <fieldset>
+                    <legend>Basic Information</legend>
+                        {{ form_row(form.name) }}
+                        {{ form_row(form.contactName) }}
+                        {{ form_row(form.primaryPhone) }}
+                        {{ form_row(form.primaryEmail) }}
+                        {{ form_row(form.website) }}
+                        {{ form_row(form.description) }}
+                        {{ form_row(form.photoFile) }}
+                </fieldset><br/>
+                <fieldset>
+                    <legend>Address</legend>
+                        {{ form_row(form.address) }}
+                        {{ form_row(form.city) }}
+                        {{ form_row(form.state) }}
+                        {{ form_row(form.zip) }}
+                        {{ form_row(form.county) }}
+                </fieldset><br/>
+                <fieldset>
+                    <legend>Products</legend>
+                        {{ form_row(form.products) }}
+                        {{ form_row(form.attributes) }}
+                </fieldset>                
+
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-large btn-primary" id="signup-submit" data-loading-text="Submitting...">Sign Up</button>
+                </div>
+            </form>                
+        </div>
+    </div>
+{% endblock %}

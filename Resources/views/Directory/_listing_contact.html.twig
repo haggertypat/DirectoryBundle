@@ -1,0 +1,23 @@
+{% if listing.contactName %}{{ listing.contactName }}<br/>{% endif %}
+{% if listing.primaryEmail %}
+    <a href="mailto:{{ listing.primaryEmail }}">{{ listing.primaryEmail }}</a>
+    {% if listing.primaryEmailType %}&nbsp;({{ listing.primaryEmailType }}){% endif %}
+    <br/>
+{% endif %}
+{% if listing.secondaryEmail %}
+    <a href="mailto:{{ listing.secondaryEmail }}">{{ listing.secondaryEmail }}</a>
+    {% if listing.secondaryEmailType %}&nbsp;({{ listing.secondaryEmailType }}){% endif %}
+    <br/>
+{% endif %}
+{% if listing.primaryPhone %}
+    {{ listing.primaryPhone }}
+    {% if listing.primaryPhoneType %}&nbsp;({{ listing.primaryPhoneType }}){% endif %}
+    <br/>
+{% endif %}
+{% if listing.secondaryPhone %}
+    {{ listing.secondaryPhone }}
+    {% if listing.secondaryPhoneType %}&nbsp;({{ listing.secondaryPhoneType }}){% endif %}
+    <br/>
+{% endif %}
+{% if listing.website %}<a href="{{ listing.website }}" target="_blank">{{ listing.website }}</a>{% endif %}
+    

@@ -1,0 +1,93 @@
+# CCETC/DirectoryBundle
+*This bundle is a work in progress*.
+
+The CCETC/DirectoryBundle is a bundle for building a web-based directory.  It allows users to search/browse listings by category and location.
+
+## Installation
+### routes
+You must add ``home`` and ``about`` routes to your bundle.
+
+### Config
+* title - used for page title, heading, og tags - required
+* logo - used in header - optional
+* menu_builder - the main menu to use - optional
+* *_template - let you override which templates are used
+* copyright - used in footer - optional
+* contact_email - used in footer - required
+* admin_email - used for e-mail notifications - required
+* og_* - used for og meta tags
+* google_maps_key - optional
+* google_analytics_account - optional
+
+Full config options:
+    ccetc_directory:
+        title: My Directory
+        logo: bundles/mybundle/images/mylogo.png
+        menu_builder: MyBundle:Builder:mainMenu
+        layout_template: MyBundle::layout.html.twig
+        header_template: MyBundle::_header.html.twig
+        footer_template: MyBundle::_footer.html.twig
+        profile_template: MyBundle:Directory:profile.html.twig
+        listing_block_template: MyBundle:Directory:_listing_block.html.twig
+        copyright: Our Company 2013
+        contact_email: contact@email.com
+        admin_email: admin@email.com
+        og_description: your description
+        og_url: http://yoururl
+        google_maps_key: yourkey
+        google_analytics_account: UA-NNNNNNNNN-1
+
+    sonata_block:
+        ...
+        blocks:
+            ...
+            ccetc.directory.block.admin_listing_approval:
+                contexts: [admin]
+
+    sonata_admin:
+        templates:
+            layout:  CCETCDirectoryBundle::admin_layout.html.twig
+        dashboard:
+            blocks:
+                ...
+                - { position: left, type: ccetc.directory.block.admin_listing_approval }
+
+## Customization
+### Overriding Templates, and Menu
+You can override many templates and the main menu using the config options above.
+
+### Translations
+You can override translations by copying the ``Resources/translations`` to your bundle.
+
+
+### Entities
+Coming soon...
+
+## Custom Pages
+You can use a default controller for your pages using this code in your routes:
+
+    defaults: { _controller: CCETCDirectoryBundle:Pages:static, template: MyBundle:Pages:myPage.html.twig }
+
+The default checks for outdated browsers, including a boolean with the result as it renders your template.
+
+## available Twig Globals from config
+
+    directoryTitle
+    directoryLogo
+    directoryMenuBuilder
+    layoutTemplate - all page templates should extend this
+    headerTemplate
+    footerTemplate
+    listingBlockTemplate
+    directoryContactEmail
+    directoryCopyright
+    directoryOgDescription
+    directoryOgURL
+    googleMapsKey
+    googleAnalyticsAccount
+
+
+## Dependencies
+jQuery and Twitter Bootstrap are included in the bundle.
+
+The only other dependencies are ``sonata-project/sonata-admin-bundle`` and ``mopa/bootstrap-bundle``.

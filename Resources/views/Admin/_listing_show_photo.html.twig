@@ -1,0 +1,9 @@
+{% extends 'SonataAdminBundle:CRUD:base_show_field.html.twig' %}
+
+{% block field%}
+    <ul>
+        {% if object.photoFilename %}
+            <img style="width: 150px;" src="{{ asset(object.webPath) }}" />
+        {% endif %}
+    </ul>
+{% endblock %}

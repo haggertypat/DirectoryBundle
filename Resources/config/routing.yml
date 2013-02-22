@@ -1,0 +1,7 @@
+listings:
+    pattern:  /listings
+    defaults: { _controller: CCETCDirectoryBundle:Directory:listings }
+
+profile:
+    pattern:  /listings/{id}
+    defaults: { _controller: CCETCDirectoryBundle:Directory:profile, id: id }

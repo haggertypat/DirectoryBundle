@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+        <title>{% block title %}{{ directoryTitle }}{% endblock %}</title>
+
+        <meta property="og:title" content="{{ directoryTitle }}" />
+        <meta property="og:description" content="{{ directoryOgDescription }}" />
+        <meta property="og:url" content="{{ directoryOgURL }}" />
+        <meta property="og:site_name" content="{{ directoryTitle }}" />
+
+        {% block stylesheets %}
+            {% stylesheets filter='cssrewrite'
+                    'bundles/ccetcdirectory/lib/bootstrap/css/bootstrap.min.css'
+                    'bundles/ccetcdirectory/css/listing.css'
+                    'bundles/ccetcdirectory/css/general.css'
+                    'bundles/ccetcdirectory/css/layout.css'
+            %}
+                <link rel="stylesheet" href="{{ asset_url }}" />
+            {% endstylesheets %}            
+        {% endblock %}
+            
+        {% block javascripts %}            
+            {% javascripts
+                    '@CCETCDirectoryBundle/Resources/public/lib/jquery-1.7.1.js'
+                    '@CCETCDirectoryBundle/Resources/public/lib/bootstrap/js/bootstrap.min.js'
+                    '@CCETCDirectoryBundle/Resources/public/js/*'
+            %}
+                <script type="text/javascript" src="{{ asset_url }}"></script>
+            {% endjavascripts %}            
+        {% endblock %}
+        
+        {% if googleMapsKey is defined and googleMapsKey != "" %}
+            <script type="text/javascript"
+                    src="http://maps.googleapis.com/maps/api/js?key={{ googleMapsKey }}&sensor=true">
+            </script>
+        {% endif %}
+            
+        {% if googleAnalyticsAccount is defined and googleAnalyticsAccount != "" %}
+            <script type="text/javascript">
+              var _gaq = _gaq || [];
+              _gaq.push(['_setAccount', '{{ googleAnalyticsAccount }}']);
+              _gaq.push(['_trackPageview']);
+
+              (function() {
+                var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+                ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+                var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+              })();
+
+            </script>        
+        {% endif %}
+
+    </head>
+
+    <body>
+        <div class="container">
+            <div class="content">
+                {% for notice_level in ['success','error','info', 'warning'] %}
+                    {% set notice_var = 'alert-' ~ notice_level %}
+                    {% if app.session.hasFlash(notice_var) %}
+                        <div class="alert alert-{{ notice_level }}">
+                            {{ app.session.flash(notice_var)|raw }}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+                {% if app.session.hasFlash('template-flash') %}
+                    {% include app.session.getFlash('template-flash') %}
+                {% endif %}
+                    
+                {% if outdatedBrowser is defined and outdatedBrowser == true %}
+                    <div class="alert alert-error">
+                        You are using an outdated version of internet explorer.
+                        Because of security and performance issues, it is recommended that you upgrade to a modern browser.
+                        <br/>	
+                         <a href="http://www.mozilla.com"><img src="{{ asset('bundles/ccetcdirectory/images/browsers/firefox.gif') }}" /></a>
+                         <a href='http://www.google.com/chrome'><img src="{{ asset('bundles/ccetcdirectory/images/browsers/chrome.gif') }}" /></a>
+                         <a href="http://windows.microsoft.com/en-us/internet-explorer/products/ie/home"><img src="{{ asset('bundles/ccetcdirectory/images/browsers/ie.gif') }}" /></a>
+                         <a href='http://www.opera.com'><img src="{{ asset('bundles/ccetcdirectory/images/browsers/opera.gif') }}" /></a>
+                         <a href='http://www.apple.com/safari/'><img src="{{ asset('bundles/ccetcdirectory/images/browsers/safari.gif') }}" /></a> 
+                    </div>
+                {% endif %}
+
+                {% include headerTemplate %}    
+                    
+                <div class="navbar">
+                    <div class="navbar-inner">
+                        {{ knp_menu_render(directoryMenuBuilder, {'currentClass' : 'active' } ) }}
+
+                        <form method="get" action="{{ path('listings') }}" class="navbar-search pull-right" style="margin-bottom: 0;">
+                            <input type="text" name="searchTerms" class="input-medium search-query" placeholder="Search">
+                        </form>      
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="span12">
+                        <h1>{% block page_header %}{% endblock%}</h1>
+                    </div>
+                </div>
+                
+                {% block content %}{% endblock %}
+                
+                <div style="clear: both;">&nbsp;</div>
+                
+            </div>                
+            <hr>
+        </div>
+            
+        {% include footerTemplate %}    
+    </body>
+</html>
