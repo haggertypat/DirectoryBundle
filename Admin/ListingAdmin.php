@@ -191,6 +191,9 @@ class ListingAdmin extends Admin
             $this->saveFile($object);
         }
         
+        if(!$object->getSpam()) $object->setSpam(false);
+        if(!$object->getApproved()) $object->setApproved(true);
+        
         $this->geocodeAddress($object);
 
         parent::prePersist($object);
@@ -237,7 +240,8 @@ class ListingAdmin extends Admin
     
     public function findForDirectory($filters = null, $searchTerms = null)
     {
-        $listingRepository = $this->configurationPool->getContainer()->get('doctrine')->getRepository('CCETCDirectoryBundle:Listing');
+        $bundleName = $this->container->getParameter('ccetc_directory.bundle_name');
+        $listingRepository = $this->configurationPool->getContainer()->get('doctrine')->getRepository($bundleName.':Listing');
         $geocoder = $this->configurationPool->getContainer()->get('ccetc.directory.helper.geocoder');
 
         $query = $listingRepository->createQueryBuilder('l');

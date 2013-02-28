@@ -1,17 +1,14 @@
 <?php
 
-namespace LBMI\AppBundle\Entity;
+namespace CCETC\DirectoryBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Listing
- *
- * @ORM\Table()
- * @ORM\Entity()
+ * @Orm\MappedSuperclass
  */
-class Listing
+class BaseListing extends BaseEntity
 {
     /**
      * @var integer
@@ -245,17 +242,6 @@ class Listing
      */
     private $photoFilename;
     protected $photoFile;        
-    
-    /**
-     * @ORM\ManyToMany(targetEntity="Attribute", inversedBy="listings")
-     * @ORM\JoinTable(name="ListingsToAttributes")
-     */
-    private $attributes;
-    /**
-     * @ORM\ManyToMany(targetEntity="Product", inversedBy="listings")
-     * @ORM\JoinTable(name="ProductsToAttributes")
-     */
-    private $products;
     
     public function __toString()
     {
@@ -709,50 +695,6 @@ class Listing
     }
 
     /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->attributes = new \Doctrine\Common\Collections\ArrayCollection();
-        
-        if(!$this->getSpam()) $this->setSpam(false);
-        if(!$this->getApproved()) $this->setApproved(true);
-    }
-    
-    /**
-     * Add attributes
-     *
-     * @param \LBMI\AppBundle\Entity\Attribute $attributes
-     * @return Listing
-     */
-    public function addAttribute(\LBMI\AppBundle\Entity\Attribute $attributes)
-    {
-        $this->attributes[] = $attributes;
-    
-        return $this;
-    }
-
-    /**
-     * Remove attributes
-     *
-     * @param \LBMI\AppBundle\Entity\Attribute $attributes
-     */
-    public function removeAttribute(\LBMI\AppBundle\Entity\Attribute $attributes)
-    {
-        $this->attributes->removeElement($attributes);
-    }
-
-    /**
-     * Get attributes
-     *
-     * @return \Doctrine\Common\Collections\Collection 
-     */
-    public function getAttributes()
-    {
-        return $this->attributes;
-    }
-
-    /**
      * Set contactName
      *
      * @param string $contactName
@@ -1072,35 +1014,48 @@ class Listing
     }
 
     /**
-     * Add products
+     * Set addressLabel
      *
-     * @param \LBMI\AppBundle\Entity\Product $products
+     * @param string $addressLabel
      * @return Listing
      */
-    public function addProduct(\LBMI\AppBundle\Entity\Product $products)
+    public function setAddressLabel($addressLabel)
     {
-        $this->products[] = $products;
+        $this->addressLabel = $addressLabel;
     
         return $this;
     }
 
     /**
-     * Remove products
+     * Get addressLabel
      *
-     * @param \LBMI\AppBundle\Entity\Product $products
+     * @return string 
      */
-    public function removeProduct(\LBMI\AppBundle\Entity\Product $products)
+    public function getAddressLabel()
     {
-        $this->products->removeElement($products);
+        return $this->addressLabel;
     }
 
     /**
-     * Get products
+     * Set addressLabel2
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @param string $addressLabel2
+     * @return Listing
      */
-    public function getProducts()
+    public function setAddressLabel2($addressLabel2)
     {
-        return $this->products;
+        $this->addressLabel2 = $addressLabel2;
+    
+        return $this;
+    }
+
+    /**
+     * Get addressLabel2
+     *
+     * @return string 
+     */
+    public function getAddressLabel2()
+    {
+        return $this->addressLabel2;
     }
 }

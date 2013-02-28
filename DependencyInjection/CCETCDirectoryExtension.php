@@ -27,6 +27,7 @@ class CCETCDirectoryExtension extends Extension
         $loader->load('services.xml');        
         
         $keys = array(
+            'bundle_name',
             'title',
             'logo',
             'menu_builder',

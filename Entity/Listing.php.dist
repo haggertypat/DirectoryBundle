@@ -1,0 +1,31 @@
+<?php
+
+namespace My\Bundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+
+use CCETC\DirectoryBundle\Entity\BaseListing;
+
+/**
+ * Listing
+ *
+ * @ORM\Table()
+ * @ORM\Entity()
+ */
+class Listing extends BaseListing
+{
+    
+    /**
+     * @ORM\ManyToMany(targetEntity="Attribute", inversedBy="listings")
+     * @ORM\JoinTable(name="ListingsToAttributes")
+     */
+    private $attributes;
+    /**
+     * @ORM\ManyToMany(targetEntity="Product", inversedBy="listings")
+     * @ORM\JoinTable(name="ProductsToAttributes")
+     */
+    private $products;
+        
+   
+}

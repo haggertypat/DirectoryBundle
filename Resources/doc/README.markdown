@@ -26,6 +26,7 @@ Install as a git submodule if you'll be making changes to the bundle:
 You must add ``home`` and ``about`` routes to your bundle.
 
 ### Config
+* bundle_name - name of your bundle - required
 * title - used for page title, heading, og tags - required
 * logo - used in header - optional
 * menu_builder - the main menu to use - optional
@@ -40,6 +41,7 @@ You must add ``home`` and ``about`` routes to your bundle.
 Full config options:
 
     ccetc_directory:
+        bundle_name: MyBundle
         title: My Directory
         logo: bundles/mybundle/images/mylogo.png
         menu_builder: MyBundle:Builder:mainMenu
@@ -71,6 +73,33 @@ Full config options:
                 ...
                 - { position: left, type: ccetc.directory.block.admin_listing_approval }
 
+### Entities
+You need to create your entities by extending the base entities provided.  ``CCETCDirectoryBundle/Entity`` has ``dist`` classes that you can use.
+
+### Admin Classes
+You need to add services for the admin classes provided that tie them to your entities:
+
+        <service id="ccetc.directory.admin.listing" class="CCETC\DirectoryBundle\Admin\ListingAdmin">
+            <tag name="sonata.admin" manager_type="orm" group="Listings" label="Listings"/>
+            <argument />
+            <argument>Acme\DemoBundle\Entity\Listing</argument>
+            <argument>CCETCDirectoryBundle:ListingAdmin</argument>
+        </service>
+        <service id="ccetc.directory.admin.attribute" class="CCETC\DirectoryBundle\Admin\AttributeAdmin">
+            <tag name="sonata.admin" manager_type="orm" group="Data" label="Attributes"/>
+            <argument />
+            <argument>Acme\DemoBundle\Entity\Attribute</argument>
+            <argument>SonataAdminBundle:CRUD</argument>
+        </service>
+        <service id="ccetc.directory.admin.product" class="CCETC\DirectoryBundle\Admin\ProductAdmin">
+            <tag name="sonata.admin" manager_type="orm" group="Data" label="Products"/>
+            <argument />
+            <argument>Acme\DemoBundle\Entity\Product</argument>
+            <argument>SonataAdminBundle:CRUD</argument>
+        </service>
+
+*Note*: ``ListingAdmin`` should use the custom controller (``CCETCDirectoryBundle:ListingAdmin``) from the bundle.
+
 ## Customization
 ### Overriding Templates, and Menu
 You can override many templates and the main menu using the config options above.
@@ -80,7 +109,26 @@ You can override translations by copying the ``Resources/translations`` to your 
 
 
 ### Entities
-Coming soon...
+You can add custom fields or field overrides to the entities you create.  See http://docs.doctrine-project.org/projects/doctrine-orm/en/latest/reference/inheritance-mapping.html
+
+### Admin Classes
+You can extend the provided admin classes:
+
+    use CCETC\DirectoryBundle\Admin\ListingAdmin as BaseListingAdmin;
+
+    class ListingAdmin extends BaseListingAdmin
+    {
+        protected function configureFormFields(FormMapper $formMapper)
+        {
+            parent::configureFormFields($formMapper);
+
+            $formMapper
+                ->with('Products')
+                    ->add('myField')
+                ->end()
+            ;
+        }
+    }
 
 ## Custom Pages
 You can use a default controller for your pages using this code in your routes:

@@ -6,12 +6,9 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Listing
- *
- * @ORM\Table()
- * @ORM\Entity()
+ * @Orm\MappedSuperclass
  */
-class Listing
+class BaseListing extends BaseEntity
 {
     /**
      * @var integer
@@ -245,17 +242,6 @@ class Listing
      */
     private $photoFilename;
     protected $photoFile;        
-    
-    /**
-     * @ORM\ManyToMany(targetEntity="Attribute", inversedBy="listings")
-     * @ORM\JoinTable(name="ListingsToAttributes")
-     */
-    private $attributes;
-    /**
-     * @ORM\ManyToMany(targetEntity="Product", inversedBy="listings")
-     * @ORM\JoinTable(name="ProductsToAttributes")
-     */
-    private $products;
     
     public function __toString()
     {
@@ -709,50 +695,6 @@ class Listing
     }
 
     /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->attributes = new \Doctrine\Common\Collections\ArrayCollection();
-        
-        if(!$this->getSpam()) $this->setSpam(false);
-        if(!$this->getApproved()) $this->setApproved(true);
-    }
-    
-    /**
-     * Add attributes
-     *
-     * @param \CCETC\DirectoryBundle\Entity\Attribute $attributes
-     * @return Listing
-     */
-    public function addAttribute(\CCETC\DirectoryBundle\Entity\Attribute $attributes)
-    {
-        $this->attributes[] = $attributes;
-    
-        return $this;
-    }
-
-    /**
-     * Remove attributes
-     *
-     * @param \CCETC\DirectoryBundle\Entity\Attribute $attributes
-     */
-    public function removeAttribute(\CCETC\DirectoryBundle\Entity\Attribute $attributes)
-    {
-        $this->attributes->removeElement($attributes);
-    }
-
-    /**
-     * Get attributes
-     *
-     * @return \Doctrine\Common\Collections\Collection 
-     */
-    public function getAttributes()
-    {
-        return $this->attributes;
-    }
-
-    /**
      * Set contactName
      *
      * @param string $contactName
@@ -1069,39 +1011,6 @@ class Listing
     public function getCounty2()
     {
         return $this->county2;
-    }
-
-    /**
-     * Add products
-     *
-     * @param \CCETC\DirectoryBundle\Entity\Product $products
-     * @return Listing
-     */
-    public function addProduct(\CCETC\DirectoryBundle\Entity\Product $products)
-    {
-        $this->products[] = $products;
-    
-        return $this;
-    }
-
-    /**
-     * Remove products
-     *
-     * @param \CCETC\DirectoryBundle\Entity\Product $products
-     */
-    public function removeProduct(\CCETC\DirectoryBundle\Entity\Product $products)
-    {
-        $this->products->removeElement($products);
-    }
-
-    /**
-     * Get products
-     *
-     * @return \Doctrine\Common\Collections\Collection 
-     */
-    public function getProducts()
-    {
-        return $this->products;
     }
 
     /**

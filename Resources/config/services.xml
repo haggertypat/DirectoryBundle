@@ -2,24 +2,6 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://symfony.com/schema/dic/services/services-1.0.xsd">
     <services>
-        <service id="ccetc.directory.admin.listing" class="CCETC\DirectoryBundle\Admin\ListingAdmin">
-            <tag name="sonata.admin" manager_type="orm" group="Listings" label="Listings"/>
-            <argument />
-            <argument>CCETC\DirectoryBundle\Entity\Listing</argument>
-            <argument>CCETCDirectoryBundle:ListingAdmin</argument>
-        </service>
-        <service id="ccetc.directory.admin.attribute" class="CCETC\DirectoryBundle\Admin\AttributeAdmin">
-            <tag name="sonata.admin" manager_type="orm" group="Data" label="Attributes"/>
-            <argument />
-            <argument>CCETC\DirectoryBundle\Entity\Attribute</argument>
-            <argument>SonataAdminBundle:CRUD</argument>
-        </service>
-        <service id="ccetc.directory.admin.product" class="CCETC\DirectoryBundle\Admin\ProductAdmin">
-            <tag name="sonata.admin" manager_type="orm" group="Data" label="Products"/>
-            <argument />
-            <argument>CCETC\DirectoryBundle\Entity\Product</argument>
-            <argument>SonataAdminBundle:CRUD</argument>
-        </service>
         <service id="ccetc.directory.block.admin_listing_approval" class="CCETC\DirectoryBundle\Block\AdminListingApprovalBlockService">
             <tag name="sonata.block" />
             <argument>ccetc.directory.block.admin_listing_approval</argument>

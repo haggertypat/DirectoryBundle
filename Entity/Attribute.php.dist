@@ -1,0 +1,23 @@
+<?php
+
+namespace My\Bundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+
+use CCETC\DirectoryBundle\Entity\BaseAttribute;
+
+/**
+ * Attribute
+ *
+ * @ORM\Table()
+ * @ORM\Entity()
+ */
+class Attribute extends BaseAttribute
+{
+    /**
+     * @ORM\ManyToMany(targetEntity="Listing", mappedBy="attributes")
+     */    
+    private $listings;
+   
+}

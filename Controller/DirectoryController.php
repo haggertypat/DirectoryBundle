@@ -10,7 +10,7 @@ class DirectoryController extends Controller
     public function listingsAction()
     {
         $listingAdmin = $this->get('ccetc.directory.admin.listing');
-
+        
         $listings = $listingAdmin->findForDirectory($this->getRequest()->get('filters'), $this->getRequest()->get('searchTerms'));
 
         $templateParameters = array(
@@ -25,8 +25,9 @@ class DirectoryController extends Controller
     }
     public function profileAction($id)
     {
+        $bundleName = $this->container->getParameter('ccetc_directory.bundle_name');
         $listingAdmin = $this->get('ccetc.directory.admin.listing');
-        $listingRepository = $this->getDoctrine()->getRepository('CCETCDirectoryBundle:Listing');
+        $listingRepository = $this->getDoctrine()->getRepository($bundleName.':Listing');
         $listing = $listingRepository->findOneById($id);
 
         if($listing->getApproved() || $this->get('security.context')->isGranted('ROLE_ADMIN') ) {
@@ -42,8 +43,9 @@ class DirectoryController extends Controller
     }
     public function findAListingAction($filters = null)
     {
-        $productRepository = $this->getDoctrine()->getRepository('CCETCDirectoryBundle:Product');
-        $attributeRepository = $this->getDoctrine()->getRepository('CCETCDirectoryBundle:Attribute');
+        $bundleName = $this->container->getParameter('ccetc_directory.bundle_name');
+        $productRepository = $this->getDoctrine()->getRepository($bundleName.':Product');
+        $attributeRepository = $this->getDoctrine()->getRepository($bundleName.':Attribute');
         
         $templateParameters = array(
             'filters' => $filters,
@@ -111,8 +113,6 @@ class DirectoryController extends Controller
         $templateParameters = array(
             'form' => $form->createView(),
         );
-        
-        
         
         return $this->render('CCETCDirectoryBundle:Directory:signup.html.twig', $templateParameters);                
     }

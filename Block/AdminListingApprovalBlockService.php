@@ -45,8 +45,9 @@ class AdminListingApprovalBlockService extends BaseBlockService
     public function execute(BlockInterface $block, Response $response = null)
     {
         $settings = array_merge($this->getDefaultSettings(), $block->getSettings());
+        $bundleName = $this->container->getParameter('ccetc_directory.bundle_name');
 
-        $listingRepository = $this->container->get('doctrine')->getRepository('CCETCDirectoryBundle:Listing');
+        $listingRepository = $this->container->get('doctrine')->getRepository($bundleName.':Listing');
         
         return $this->renderResponse('CCETCDirectoryBundle:Block:_admin_listing_approval.html.twig', array(
             'block' => $block,
