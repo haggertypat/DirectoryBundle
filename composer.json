@@ -2,7 +2,7 @@
     "name": "ccetc/directory-bundle",
     "type": "symfony-bundle",
     "description": "Symfony CCETCDirectoryBundle",
-    "keywords": ["Admin Generator", "admin", "sonata", "bootstrap"],
+    "keywords": ["symfony", "commerce", "directory"],
     "homepage": "http://github.com/CCETC/DirectoryBundle",
     "license": "MIT",
     "authors": [
