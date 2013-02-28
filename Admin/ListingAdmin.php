@@ -239,7 +239,7 @@ class ListingAdmin extends Admin
     
     public function findForDirectory($filters = null, $searchTerms = null)
     {
-        $bundleName = $this->container->getParameter('ccetc_directory.bundle_name');
+        $bundleName = $this->configurationPool->getContainer()->getParameter('ccetc_directory.bundle_name');
         $listingRepository = $this->configurationPool->getContainer()->get('doctrine')->getRepository($bundleName.':Listing');
         $geocoder = $this->configurationPool->getContainer()->get('ccetc.directory.helper.geocoder');
 

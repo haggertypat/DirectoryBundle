@@ -20,6 +20,10 @@
 
     <div class="row">
         <div class="span7">
+            <div class="profile-meta">
+                {% include 'CCETCDirectoryBundle:Directory:_listing_product_labels.html.twig' %}
+                {% include 'CCETCDirectoryBundle:Directory:_listing_attribute_labels.html.twig' %}
+            </div>
             {% if listing.webPath is defined and listing.webPath != "" %}
                 <p>
                     <img src="{{ asset(listing.webPath) }}" />
@@ -29,8 +33,6 @@
                 {{ listing.description? listing.description|nl2br : 'No Description Available' }}
             </p>
             
-            {% include 'CCETCDirectoryBundle:Directory:_listing_product_labels.html.twig' %}
-            {% include 'CCETCDirectoryBundle:Directory:_listing_attribute_labels.html.twig' %}
         </div>       
         <div class="span5">
             {% if listing.lat is defined and listing.lat != "" and listing.lng is defined and listing.lng != "" %}
