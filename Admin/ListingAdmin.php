@@ -19,7 +19,6 @@ class ListingAdmin extends Admin
                 )
             ),
             $this->datagridValues
-
         );
 
         return parent::getFilterParameters();
