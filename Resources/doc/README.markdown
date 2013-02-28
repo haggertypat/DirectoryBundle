@@ -4,7 +4,6 @@
 The CCETC/DirectoryBundle is a bundle for building a web-based directory.  It allows users to search/browse listings by category and location.
 
 ## Installation
-### option 1 - composer
 Add to your composer.json:
 
     "require": {
@@ -12,11 +11,6 @@ Add to your composer.json:
     }
 
 Run ``php composer.phar install ccetc/directory-bundle``
-
-### option 2 - submodule
-Install as a git submodule if you'll be making changes to the bundle:
-
-    git submodule add git@github.com:CCETC/DirectoryBundle.git vendor/ccetc/directory-bundle/CCETC/DirectoryBundle
 
 ### add to ``AppKernel.php->registerBundles``
 
