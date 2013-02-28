@@ -10,7 +10,7 @@ Add to your composer.json:
         "ccetc/directory-bundle": "dev-master"
     }
 
-Run ``php composer.phar install ccetc/directory-bundle``
+Run ``php composer.phar install``
 
 ### add to ``AppKernel.php->registerBundles``
 
