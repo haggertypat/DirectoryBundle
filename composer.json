@@ -1,7 +1,7 @@
 {
     "name": "ccetc/directory-bundle",
     "type": "symfony-bundle",
-    "description": "Symfony CCETCDirectoryBundle",
+    "description": "Symfony bundle for building a web-based directory of producers.  It allows users to search/browse listings by category and location.",
     "keywords": ["symfony", "commerce", "directory"],
     "homepage": "http://github.com/CCETC/DirectoryBundle",
     "license": "MIT",

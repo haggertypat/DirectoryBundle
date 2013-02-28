@@ -1,7 +1,9 @@
 # CCETC/DirectoryBundle
 *This bundle is a work in progress*.
 
-The CCETC/DirectoryBundle is a bundle for building a web-based directory.  It allows users to search/browse listings by category and location.
+The CCETC/DirectoryBundle is a bundle for building a web-based directory of producers.  It allows users to search/browse listings by category and location.
+
+Development is tracked on the [trello board](https://trello.com/board/directorybundle/5127a6c2e117a0f56c004854).
 
 ## Installation
 Add to your composer.json:
