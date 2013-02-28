@@ -7,9 +7,8 @@
     -webkit-border-radius: 7px;
 }
 
-.listing-block-container .listing-name {
-    float: left;
-    width: 60%;    
+.listing-block-container .listing-name h3 {
+    margin: 10px 0 5px 0;
 }
 
 .listing-block-container .listing-location {
@@ -21,7 +20,8 @@
     margin-left: 5px;
 }
 
-.profile-meta {
+.profile-meta,
+.block-meta {
     margin-bottom: 10px;
 }
 

@@ -6,7 +6,7 @@
 {% if listing.county %}<br/>{{ listing.county }}{% endif %}
 
 {% if listing.address2 %}
-    <b>{{ listing.addressLabel2 is defined? listing.addressLabel2 : 'Secondary Address' }}</b><br/>
+    <br/><br/><b>{{ listing.addressLabel2 is defined? listing.addressLabel2 : 'Secondary Address' }}</b><br/>
     {% if listing.address2 %}{{ listing.address2 }}<br/>{% endif %}
     {% if listing.city2 %}{{ listing.city2 }}, {% endif %}
     {% if listing.state2 %}{{ listing.state2 }} {% endif %}
