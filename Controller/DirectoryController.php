@@ -58,56 +58,12 @@ class DirectoryController extends Controller
     
     public function signupAction()
     {
-        $request = $this->getRequest();
-        $session = $this->getRequest()->getSession();
-        $listingAdmin = $this->get('ccetc.directory.admin.listing');
-        $listing = new \CCETC\DirectoryBundle\Entity\Listing();
-        $listing->setApproved(false);
-        $formError = false;
-        
-        $countyChoices = array(
-            'Albany' => 'Albany', 'Allegany' => 'Allegany', 'Bronx' => 'Bronx', 'Broome' => 'Broome', 'Cattaraugus' => 'Cattaraugus', 'Cayuga' => 'Cayuga', 'Chautauqua' => 'Chautauqua', 'Chemung' => 'Chemung', 'Chenango' => 'Chenango', 'Clinton' => 'Clinton', 'Columbia' => 'Columbia', 'Cortland' => 'Cortland', 'Delaware' => 'Delaware', 'Dutchess' => 'Dutchess', 'Erie' => 'Erie', 'Essex' => 'Essex', 'Franklin' => 'Franklin', 'Fulton' => 'Fulton', 'Genesee' => 'Genesee', 'Greene' => 'Greene', 'Hamilton' => 'Hamilton', 'Herkimer' => 'Herkimer', 'Jefferson' => 'Jefferson', 'Kings' => 'Kings', 'Lewis' => 'Lewis', 'Livingston' => 'Livingston', 'Madison' => 'Madison', 'Monroe' => 'Monroe', 'Montgomery' => 'Montgomery', 'Nassau' => 'Nassau', 'New York' => 'New York', 'Niagara' => 'Niagara', 'Oneida' => 'Oneida', 'Onondaga' => 'Onondaga', 'Ontario' => 'Ontario', 'Orange' => 'Orange', 'Orleans' => 'Orleans', 'Oswego' => 'Oswego', 'Otsego' => 'Otsego', 'Putnam' => 'Putnam', 'Queens' => 'Queens', 'Rensselaer' => 'Rensselaer', 'Richmond' => 'Richmond', 'Rockland' => 'Rockland', 'Saint Lawrence' => 'Saint Lawrence', 'Saratoga' => 'Saratoga', 'Schenectady' => 'Schenectady', 'Schoharie' => 'Schoharie', 'Schuyler' => 'Schuyler', 'Seneca' => 'Seneca', 'Steuben' => 'Steuben', 'Suffolk' => 'Suffolk', 'Sullivan' => 'Sullivan', 'Tioga' => 'Tioga', 'Tompkins' => 'Tompkins', 'Ulster' => 'Ulster', 'Warren' => 'Warren', 'Washington' => 'Washington', 'Wayne' => 'Wayne', 'Westchester' => 'Westchester', 'Wyoming' => 'Wyoming', 'Yates' => 'Yates'
-        );
-        
-        $form = $this->createFormBuilder($listing)
-            ->add('name', 'text', array('label' => 'Listing Name'))
-            ->add('address', 'text')
-            ->add('city', 'text')
-            ->add('state', 'choice', array('choices' => array('NY' => 'New York')))
-            ->add('zip', 'text')
-            ->add('county', 'choice', array('required' => true, 'choices' => $countyChoices))
-            ->add('website', 'text', array('required' => false))
-            ->add('contactName', 'text', array('label' => 'Contact Name'))
-            ->add('primaryEmail', 'text', array('label' => 'E-mail', 'required' => false))
-            ->add('primaryPhone', 'text', array('label' => 'Phone', 'required' => false))
-            ->add('description', 'textarea', array('label' => 'listing Description', 'attr' => array('rows' => '5'), 'required' => false))
-            ->add('products', null, array('label' => 'Products', 'expanded' => true, 'required' => false))
-            ->add('attributes', null, array('label' => 'Attributes', 'expanded' => true, 'required' => false))
-        ;
-        
-        $form = $form->getForm();
-        
-        if ($request->isMethod('POST')) {
-            $form->bind($request);
-            
-            if ($form->isValid() && !$formError) {
-                if($form->get('photoFile')->getData()) {
-                    $listingAdmin->saveFile($listing);
-                }
-                
-                $listingAdmin->create($listing);
-                
-                $this->sendSignupNotificationEmail($listing, $this->container->getParameter('ccetc_directory.admin_email'), $this->getPageLink().$listingAdmin->generateObjectUrl('edit', $listing));
-                
-                $session->setFlash('template-flash', 'CCETCDirectoryBundle:Directory:_signup_thanks.html.twig');
-                return $this->redirect($this->generateUrl('home'));
-            } else {
-                $formError = true;
-            }
-        }
-        
-        if($formError) {
-            $form->addError(new FormError('Please correct the errors below and re-submit'));
+        $form = $this->container->get('ccetc.directory.form.type.signup');
+        $formHandler = $this->container->get('ccetc.directory.form.handler.signup');
+
+        if ($formHandler->process()) {
+            $session->setFlash('template-flash', 'CCETCDirectoryBundle:Directory:_signup_thanks.html.twig');
+            return $this->redirect($this->generateUrl('home'));
         }
         
         $templateParameters = array(
@@ -116,24 +72,4 @@ class DirectoryController extends Controller
         
         return $this->render('CCETCDirectoryBundle:Directory:signup.html.twig', $templateParameters);                
     }
-
-    protected function sendSignupNotificationEmail($listing, $to, $link)
-    {
-        $message = \Swift_Message::newInstance()
-                ->setSubject('Local Building Materials Directory - Sign Up')
-                ->setFrom('noreply@ccetompkins.org')
-                ->setTo($to)
-                ->setContentType('text/html')
-                ->setBody('<html>
-                       <a href="mailto:'.$listing->getPrimaryemail().'">'.$listing->getContactName().'</a> from '.$listing->getlistingName().' signed up for the Local Building Materials Directory.<br/><br/>
-                       Approve their listing here: <a href="'.$link.'">' . $link . '</a></html>')
-        ;
-        $this->get('mailer')->send($message);
-    }
-    
-    protected function getPageLink()
-    {
-        $httpHost = $this->container->get('request')->getHttpHost();
-        return 'http://' . $httpHost;
-    }    
 }

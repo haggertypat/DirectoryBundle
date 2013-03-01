@@ -149,14 +149,14 @@ class BaseListing extends BaseEntity
      *
      * @ORM\Column(name="spam", type="boolean", nullable=true)
      */
-    private $spam;
+    private $spam = false;
     
     /**
      * @var boolean $approved
      *
      * @ORM\Column(name="approved", type="boolean", nullable=true)
      */
-    private $approved;   
+    private $approved = true;   
     
     /**
      * @var string

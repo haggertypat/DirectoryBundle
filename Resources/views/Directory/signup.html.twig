@@ -2,7 +2,7 @@
 {% form_theme form 'MopaBootstrapBundle:Form:fields.html.twig' %}
 
 {% block page_header %}
-    Sign Up
+    Add your {{ 'Listing'|trans }}
 {% endblock %}
 
 {% block content %}
@@ -31,7 +31,6 @@
                         {{ form_row(form.city) }}
                         {{ form_row(form.state) }}
                         {{ form_row(form.zip) }}
-                        {{ form_row(form.county) }}
                 </fieldset><br/>
                 <fieldset>
                     <legend>Products</legend>
@@ -39,6 +38,8 @@
                         {{ form_row(form.attributes) }}
                 </fieldset>                
 
+                {{ form_rest(form) }}
+                
                 <div class="form-actions">
                     <button type="submit" class="btn btn-large btn-primary" id="signup-submit" data-loading-text="Submitting...">Sign Up</button>
                 </div>

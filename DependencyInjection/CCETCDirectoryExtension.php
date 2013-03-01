@@ -28,6 +28,7 @@ class CCETCDirectoryExtension extends Extension
         
         $keys = array(
             'bundle_name',
+            'bundle_path',
             'title',
             'logo',
             'menu_builder',

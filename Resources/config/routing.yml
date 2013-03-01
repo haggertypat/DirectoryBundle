@@ -5,3 +5,7 @@ listings:
 profile:
     pattern:  /listings/{id}
     defaults: { _controller: CCETCDirectoryBundle:Directory:profile, id: id }
+    
+signup:
+    pattern:  /signup
+    defaults: { _controller: CCETCDirectoryBundle:Directory:signup }

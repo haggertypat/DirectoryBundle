@@ -23,6 +23,7 @@ class Configuration implements ConfigurationInterface
         $rootNode
             ->children()
                 ->scalarNode('bundle_name')->cannotBeEmpty()->end()
+                ->scalarNode('bundle_path')->cannotBeEmpty()->end()
                 ->scalarNode('title')->cannotBeEmpty()->end()
                 ->scalarNode('logo')->defaultvalue(null)->end()
                 ->scalarNode('menu_builder')->defaultvalue('CCETCDirectoryBundle:Builder:mainMenu')->end()

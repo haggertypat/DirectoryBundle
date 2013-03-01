@@ -23,10 +23,6 @@ class Geocoder
         if($status == '200') {
             $numResults = count($xml->Response->Placemark);
         
-            if($numResults > 1) {
-                $this->mailPat($numResults.' results', print_r($xml->Response->Placemark, true));
-            }
-            
             foreach($xml->Response->Placemark as $node) {
                 $coordinates = explode(',', $node->Point->coordinates);
                 
@@ -37,8 +33,6 @@ class Geocoder
 
                 return $result; // return result as soon as we find one
             }
-        } else {
-            $this->mailPat('no response', 'from request for "'.$string.'"');
         }
         return null;
     }    
@@ -64,16 +58,4 @@ class Geocoder
     {
         return $x * pi()/180;
     }    
-    
-    protected function mailPat($subject, $body)
-    {
-        $message = \Swift_Message::newInstance()
-                ->setSubject('Geocode Debug - '.$subject)
-                ->setFrom('noreply@ccetompkins.org')
-                ->setTo('haggertypat@gmail.com')
-                ->setContentType('text/html')
-                ->setbody('<html>'.$body.'</html>')
-        ;
-        $this->container->get('mailer')->send($message);
-    }
 }

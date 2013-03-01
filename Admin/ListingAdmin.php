@@ -38,8 +38,6 @@ class ListingAdmin extends Admin
                 ->add('website')
                 ->add('description')
                 ->add('photoFile', 'file', array('required' => false, 'label' => $photoLabel))
-                ->add('spam', null, array('required' => false))
-                ->add('approved', null, array('required' => false))
             ->end()
             ->with('Primary Address')
                 ->add('address')
@@ -70,6 +68,10 @@ class ListingAdmin extends Admin
             ->with('Products')
                 ->add('products', null, array('expanded' => true, 'required' => false))
                 ->add('attributes', null, array('expanded' => true, 'required' => false))
+            ->end()
+            ->with('Status')
+                ->add('spam', null, array('required' => false))
+                ->add('approved', null, array('required' => false))
             ->end()
             ->setHelps(array(
                 'addressLabel' => 'Office, Mailing, etc.',
@@ -142,10 +144,6 @@ class ListingAdmin extends Admin
                 ->add('website')
                 ->add('description')
                 ->add('photoFilename', null, array('template' => 'CCETCDirectoryBundle:Admin:_listing_show_photo.html.twig'))
-                ->add('spam')
-                ->add('approved')
-                ->add('datetimeCreated')
-                ->add('datetimeLastUpdated')
             ->end()
                 ->with('Primary Address')
                 ->add('address')
@@ -177,7 +175,13 @@ class ListingAdmin extends Admin
             ->with('Products')
                 ->add('products')
                 ->add('attributes')
-            ->end()                
+            ->end()
+            ->with('Status')
+                ->add('spam')
+                ->add('approved')
+                ->add('datetimeCreated')
+                ->add('datetimeLastUpdated')
+            ->end()      
         ;
         
     }
@@ -189,9 +193,6 @@ class ListingAdmin extends Admin
         if($object->getPhotoFile()) {
             $this->saveFile($object);
         }
-        
-        if(!$object->getSpam()) $object->setSpam(false);
-        if(!$object->getApproved()) $object->setApproved(true);
         
         $this->geocodeAddress($object);
 

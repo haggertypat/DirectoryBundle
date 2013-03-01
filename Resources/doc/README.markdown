@@ -14,7 +14,7 @@ Add to your composer.json:
 
 Run ``php composer.phar install``
 
-### add to ``AppKernel.php->registerBundles``
+### add to ``AppKernel.php->registerBundles`` *before* your bundle
 
     new CCETC\DirectoryBundle\CCETCDirectoryBundle()
 
@@ -23,6 +23,7 @@ You must add ``home`` and ``about`` routes to your bundle.
 
 ### Config
 * bundle_name - name of your bundle - required
+* bundle_path - path of your bundle - required
 * title - used for page title, heading, og tags - required
 * logo - used in header - optional
 * menu_builder - the main menu to use - optional
@@ -38,6 +39,7 @@ Full config options:
 
     ccetc_directory:
         bundle_name: MyBundle
+        bundle_path: \My\Bundle
         title: My Directory
         logo: bundles/mybundle/images/mylogo.png
         menu_builder: MyBundle:Builder:mainMenu
