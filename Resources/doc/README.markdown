@@ -102,8 +102,11 @@ To override templates, make your app bundle a child of the DirectoryBundle:
     }
 
 
-### Layout
+#### Layout
 If you'd like to extend the base layout, you'll need to give it a unique name (``app_layout.html.twig``) and set this template path in your config.
+
+#### Config and Routing
+If you're using the bundle as a parent bundle, and don't want to override the services and routes provided, you should name your routing and config something other than ``routing.yml`` and ``services.xml``.  The alternative is to copy the contents of those files to your own.
 
 ### Menu
 You can override the main menu using the config options above.
