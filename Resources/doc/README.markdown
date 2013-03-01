@@ -138,6 +138,8 @@ You can extend the provided admin classes:
         }
     }
 
+**Note**: Make sure that any entities or fields not used by your front end do not appear on your signup form or admin classes
+
 ## Custom Pages
 You can use a default controller for your pages using this code in your routes:
 
