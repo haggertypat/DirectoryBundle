@@ -12,11 +12,11 @@
             <argument>%ccetc_directory.google_maps_key%</argument>
             <argument type="service" id="service_container" strict="false" />
         </service>
-<!--        <service id="ccetc.directory.extension.ccetcdirectory" class="CCETC\DirectoryBundle\Twig\Extension\CCETCDirectoryExtension" public="false">
+        <service id="ccetc.directory.extension.ccetcdirectory" class="CCETC\DirectoryBundle\Twig\Extension\CCETCDirectoryExtension" public="false">
             <tag name="twig.extension" />
             <argument type="service" id="service_container" />
         </service>
-        <service id="ccetc.directory.form.type.signup" class="CCETC\DirectoryBundle\Form\Type\SignupType">
+<!--        <service id="ccetc.directory.form.type.signup" class="CCETC\DirectoryBundle\Form\Type\SignupType">
             <argument>LBMI\AppBundle\Entity\Listing</argument>
             <tag name="form.type" alias="ccetc_directory_signup" />
         </service>
