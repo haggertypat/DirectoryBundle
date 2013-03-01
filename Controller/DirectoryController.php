@@ -31,7 +31,7 @@ class DirectoryController extends Controller
         $listing = $listingRepository->findOneById($id);
 
         if($listing->getApproved() || $this->get('security.context')->isGranted('ROLE_ADMIN') ) {
-              $template = $this->container->getParameter('ccetc_directory.profile_template');
+              $template = 'CCETCDirectoryBundle:Directory:profile.html.twig';
         } else {
               $template = 'CCETCDirectoryBundle:Directory:profile_unapproved.html.twig';
         }

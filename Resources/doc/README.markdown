@@ -26,7 +26,7 @@ You must add ``home`` and ``about`` routes to your bundle.
 * title - used for page title, heading, og tags - required
 * logo - used in header - optional
 * menu_builder - the main menu to use - optional
-* *_template - let you override which templates are used
+* layout_template - the base template used for all pages
 * copyright - used in footer - optional
 * contact_email - used in footer - required
 * admin_email - used for e-mail notifications - required
@@ -42,10 +42,6 @@ Full config options:
         logo: bundles/mybundle/images/mylogo.png
         menu_builder: MyBundle:Builder:mainMenu
         layout_template: MyBundle::layout.html.twig
-        header_template: MyBundle::_header.html.twig
-        footer_template: MyBundle::_footer.html.twig
-        profile_template: MyBundle:Directory:profile.html.twig
-        listing_block_template: MyBundle:Directory:_listing_block.html.twig
         copyright: Our Company 2013
         contact_email: contact@email.com
         admin_email: admin@email.com
@@ -97,12 +93,23 @@ You need to add services for the admin classes provided that tie them to your en
 *Note*: ``ListingAdmin`` should use the custom controller (``CCETCDirectoryBundle:ListingAdmin``) from the bundle.
 
 ## Customization
-### Overriding Templates, and Menu
-You can override many templates and the main menu using the config options above.
+### Child Bundle
+To override templates, make your app bundle a child of the DirectoryBundle:
+
+    public function getParent()
+    {
+        return 'CCETCDirectoryBundle';
+    }
+
+
+### Layout
+If you'd like to extend the base layout, you'll need to give it a unique name (``app_layout.html.twig``) and set this template path in your config.
+
+### Menu
+You can override the main menu using the config options above.
 
 ### Translations
 You can override translations by copying the ``Resources/translations`` to your bundle.
-
 
 ### Entities
 You can add custom fields or field overrides to the entities you create.  See http://docs.doctrine-project.org/projects/doctrine-orm/en/latest/reference/inheritance-mapping.html
@@ -139,9 +146,6 @@ The default checks for outdated browsers, including a boolean with the result as
     directoryLogo
     directoryMenuBuilder
     layoutTemplate - all page templates should extend this
-    headerTemplate
-    footerTemplate
-    listingBlockTemplate
     directoryContactEmail
     directoryCopyright
     directoryOgDescription

@@ -41,7 +41,7 @@
         {% if listings|length > 0 %}
             <div class="span7">
                 {% for listing in listings %}
-                    {% include listingBlockTemplate with {'listing' : listing } %}
+                    {% include 'CCETCDirectoryBundle:Directory:_listing_block.html.twig' with {'listing' : listing } %}
                 {% endfor %}
             </div>
             <div class="span5">
