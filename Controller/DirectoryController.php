@@ -5,6 +5,9 @@ namespace CCETC\DirectoryBundle\Controller;
 use Symfony\Component\Form\FormError;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
+use CCETC\DirectoryBundle\Form\Type\SignupFormType;
+use CCETC\DirectoryBundle\Form\Handler\SignupFormHandler;
+
 class DirectoryController extends Controller
 {
     public function listingsAction()
@@ -58,9 +61,11 @@ class DirectoryController extends Controller
     
     public function signupAction()
     {
-        $form = $this->container->get('ccetc.directory.form.type.signup');
-        $formHandler = $this->container->get('ccetc.directory.form.handler.signup');
-
+        $bundlePath = $this->container->getParameter('ccetc_directory.bundle_path');
+        $form = $this->createForm(new SignupFormType($bundlePath.'\Entity\Listing'));
+        $formHandler = new SignupFormHandler($form, $this->getRequest(), $this->container);
+        $session = $this->getRequest()->getSession();
+        
         if ($formHandler->process()) {
             $session->setFlash('template-flash', 'CCETCDirectoryBundle:Directory:_signup_thanks.html.twig');
             return $this->redirect($this->generateUrl('home'));

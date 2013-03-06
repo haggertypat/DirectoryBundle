@@ -12,7 +12,7 @@
 namespace CCETC\DirectoryBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormBuilder;
+use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class SignupFormType extends AbstractType
@@ -27,7 +27,7 @@ class SignupFormType extends AbstractType
         $this->classPath = $classPath;
     }
 
-    public function buildForm(FormBuilder $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
             ->add('name', 'text', array('label' => 'Listing Name'))
@@ -44,9 +44,6 @@ class SignupFormType extends AbstractType
             ->add('attributes', null, array('label' => 'Attributes', 'expanded' => true, 'required' => false))
             ->add('photoFile', 'file', array('required' => false, 'label' => 'Profile Photo', 'required' => false));
         ;
-        
-        $listing = new $this->classPath();
-        $builder->setData($listing);
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)

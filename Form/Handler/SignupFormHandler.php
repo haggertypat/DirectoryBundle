@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace CCETC\DirectoryBundle\Form\Type;
+namespace CCETC\DirectoryBundle\Form\Handler;
 
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,7 +20,7 @@ class SignupFormHandler
     protected $form;
     protected $container;
     
-    public function __construct(Form $form, Request $request, $container)
+    public function __construct($form, Request $request, $container)
     {
         $this->form = $form;
         $this->request = $request;
@@ -47,7 +47,7 @@ class SignupFormHandler
 
         $listing->setApproved(false);
         
-        if($this->form->get('photoFile')->getData()) {
+        if($listing->getPhotoFile() && $this->form->get('photoFile')->getData()) {
             $listingAdmin->saveFile($listing);
         }
 
@@ -67,9 +67,9 @@ class SignupFormHandler
                 ->setContentType('text/html')
                 ->setBody('<html>
                        <a href="mailto:'.$listing->getPrimaryemail().'">'.$listing->__toString().'</a> signed up for '.$directoryTitle.'.<br/><br/>
-                       Approve their '.$this->get('translator')->trans('listing').' here: <a href="'.$link.'">' . $link . '</a></html>')
+                       Approve their '.$this->container->get('translator')->trans('listing').' here: <a href="'.$link.'">' . $link . '</a></html>')
         ;
-        $this->get('mailer')->send($message);
+        $this->container->get('mailer')->send($message);
     }
     
     protected function getPageLink()
