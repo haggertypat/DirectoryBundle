@@ -19,3 +19,31 @@
 #map-canvas img {
     max-width: none; /* bootstrap's img max-width: 100% breaks some ui on google maps */
 }
+
+.home-info {
+    color: #555;
+    padding: 10px 15px;
+    height: 160px;
+    width: 250px;
+    margin-left: 20px;
+    float: left;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;    
+    position: relative;
+}
+
+.home-info-large {
+    width: 310px;
+}
+
+
+.home-info h4 {
+    margin-bottom: 10px;
+}
+
+.home-info .btn {
+    position: absolute;
+    bottom: 15px;
+    right: 10px;
+}

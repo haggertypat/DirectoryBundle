@@ -170,6 +170,13 @@ The default checks for outdated browsers, including a boolean with the result as
     googleAnalyticsAccount
 
 
+## Find a Listing Block
+You can include the find a listing block in your pages.  Just make sure to wrap it in a div with the class ``find-a-listing``:
+
+    <div class="find-a-listing alert alert-block alert-info">
+        {% render 'CCETCDirectoryBundle:Directory:findAListing' %}    
+    </div>
+
 ## Dependencies
 jQuery and Twitter Bootstrap are included in the bundle.
 
