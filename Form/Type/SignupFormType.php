@@ -42,7 +42,7 @@ class SignupFormType extends AbstractType
             ->add('description', 'textarea', array('label' => 'Listing Description', 'attr' => array('rows' => '5'), 'required' => false))
             ->add('products', null, array('label' => 'Products', 'expanded' => true, 'required' => false))
             ->add('attributes', null, array('label' => 'Attributes', 'expanded' => true, 'required' => false))
-            ->add('photoFile', 'file', array('required' => false, 'label' => 'Profile Photo', 'required' => false));
+            ->add('photoFile', 'file', array('required' => false, 'label' => 'Profile Photo', 'required' => false))
         ;
     }
 

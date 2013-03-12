@@ -62,9 +62,9 @@ class DirectoryController extends Controller
     public function signupAction()
     {
         $bundlePath = $this->container->getParameter('ccetc_directory.bundle_path');
-        $form = $this->createForm(new SignupFormType($bundlePath.'\Entity\Listing'));
-        $formHandler = new SignupFormHandler($form, $this->getRequest(), $this->container);
         $session = $this->getRequest()->getSession();
+        $form = $this->container->get('ccetc.directory.form.signup');
+        $formHandler = $this->container->get('ccetc.directory.form.handler.signup');
         
         if ($formHandler->process()) {
             $session->setFlash('template-flash', 'CCETCDirectoryBundle:Directory:_signup_thanks.html.twig');
