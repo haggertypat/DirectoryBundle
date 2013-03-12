@@ -143,11 +143,11 @@ You can extend the provided admin classes:
 ### Signup Form
 The signup form and handler exists as services, so you can provide your own form and/or handler and override the services.  Be sure to override the form template as well.
 
-    <service id="ccetc.directory.form.handler.signup" class="My\AppBundle\Form\Handler\SignupFormHandler" scope="request">
-        <argument type="service" id="ccetc.directory.form.signup" />
-        <argument type="service" id="request" />
-        <argument type="service" id="service_container" />
-    </service>
+        <service id="ccetc.directory.form.handler.signup" class="My\AppBundle\Form\Handler\SignupFormHandler" scope="request">
+            <argument type="service" id="ccetc.directory.form.signup" />
+            <argument type="service" id="request" />
+            <argument type="service" id="service_container" />
+        </service>
     
 ## Custom Pages
 You can use a default controller for your pages using this code in your routes:
