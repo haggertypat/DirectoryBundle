@@ -161,20 +161,6 @@ class BaseListing extends BaseEntity
     /**
      * @var string
      *
-     * @ORM\Column(name="lat", type="string", length=255, nullable=true)
-     */
-    private $lat;
-    
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="lng", type="string", length=255, nullable=true)
-     */
-    private $lng;    
-    
-    /**
-     * @var string
-     *
      * @ORM\Column(name="primaryEmail", type="string", length=255, nullable=true)
      */
     private $primaryEmail;
@@ -804,52 +790,6 @@ class BaseListing extends BaseEntity
     public function getApproved()
     {
         return $this->approved;
-    }
-
-    /**
-     * Set lat
-     *
-     * @param string $lat
-     * @return Listing
-     */
-    public function setLat($lat)
-    {
-        $this->lat = $lat;
-    
-        return $this;
-    }
-
-    /**
-     * Get lat
-     *
-     * @return string 
-     */
-    public function getLat()
-    {
-        return $this->lat;
-    }
-
-    /**
-     * Set lng
-     *
-     * @param string $lng
-     * @return Listing
-     */
-    public function setLng($lng)
-    {
-        $this->lng = $lng;
-    
-        return $this;
-    }
-
-    /**
-     * Get lng
-     *
-     * @return string 
-     */
-    public function getLng()
-    {
-        return $this->lng;
     }
 
     /**

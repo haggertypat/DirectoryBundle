@@ -13,19 +13,30 @@ class DirectoryController extends Controller
     public function listingsAction()
     {
         $listingAdmin = $this->get('ccetc.directory.admin.listing');
-        
-        $listings = $listingAdmin->findForDirectory($this->getRequest()->get('filters'), $this->getRequest()->get('searchTerms'));
 
+        $request = $this->getRequest();
+        $listingAdmin->setRequest($request);
+        
+        $datagrid = $listingAdmin->getDatagrid();
+        $datagridFormView = $datagrid->getForm()->createView();
+        $listings = $datagrid->getResults();
+        $filterParameters = $listingAdmin->getFilterParameters();
+                
+        if(isset($filterParameters['location']['value']) && trim($filterParameters['location']['value']) != ""
+                && isset($filterParameters['location']['type']) && trim($filterParameters['location']['type']) != "") {
+            $listings = $listingAdmin->filterByDistance($listings, $filterParameters['location']['value'], $filterParameters['location']['type']);
+        }
+        
         $templateParameters = array(
             'listingAdmin' => $listingAdmin,
             'listings' => $listings,
+            'form'     => $datagridFormView,
+            'datagrid' => $datagrid
         );
-        
-        $templateParameters['filters'] = $this->getRequest()->get('filters');
-        $templateParameters['searchTerms'] = $this->getRequest()->get('searchTerms');
-        
+                
         return $this->render('CCETCDirectoryBundle:Directory:listings.html.twig', $templateParameters);
     }
+    
     public function profileAction($id)
     {
         $bundleName = $this->container->getParameter('ccetc_directory.bundle_name');

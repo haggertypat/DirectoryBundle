@@ -8,21 +8,72 @@ use Sonata\AdminBundle\Validator\ErrorElement;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Doctrine\ORM\Query\Expr\Join;
+use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
 
 class ListingAdmin extends Admin
 {
     public function getFilterParameters()
     {
-        $this->datagridValues = array_merge(array(
-                'spam' => array(
-                    'value' => 2,
-                )
-            ),
-            $this->datagridValues
-        );
+        if($this->isAdmin()) {
+            $this->datagridValues = array_merge(array(
+                    'spam' => array(
+                        'value' => 2,
+                    )
+                ),
+                $this->datagridValues
+            );            
+        } else {
+            
+            $this->datagridValues = array_merge(array(
+                    '_sort_order' => 'ASC', 
+                    '_sort_by' => 'name',
+                ),
+                $this->datagridValues
+            );            
+
+            // we have to set the maxPerPage twice, the datagrid value is set on construct,
+            // but we don't have the request on construct to know if we should change this
+            $this->maxPerPage = 500;            
+            $this->datagridValues['_per_page'] = $this->maxPerPage;
+        }
+        
 
         return parent::getFilterParameters();
     }    
+    
+    public function createQuery($context = 'list') 
+    { 
+        $queryBuilder = $this->getModelManager()->getEntityManager($this->getClass())->createQueryBuilder();
+
+        $queryBuilder->select('e')->from($this->getClass(), 'e');
+
+        if(!$this->isAdmin()) {
+            $queryBuilder->andWhere('e.approved=1');
+        }
+
+        $proxyQuery = new ProxyQuery($queryBuilder);
+        
+        return $proxyQuery;
+    }
+
+    protected function configureDatagridFilters(DatagridMapper $datagridMapper)
+    {
+        if($this->isAdmin()) {
+            $datagridMapper
+                ->add('name')
+                ->add('spam')
+                ->add('approved')
+                ->add('products')
+                ->add('attributes')
+            ;
+        } else {
+            $datagridMapper
+                ->add('location', 'ccetc_directory_filter_location', array())
+                ->add('products', null, array('field_options' => array('multiple' => true, 'expanded' => true)))
+                ->add('attributes', null, array('field_options' => array('multiple' => true, 'expanded' => true)))
+            ;
+        }
+    }
     
     protected function configureFormFields(FormMapper $formMapper)
     {
@@ -80,16 +131,6 @@ class ListingAdmin extends Admin
         ;
     }
 
-    protected function configureDatagridFilters(DatagridMapper $datagridMapper)
-    {
-        $datagridMapper
-            ->add('name')
-            ->add('spam')
-            ->add('approved')
-            ->add('products')
-            ->add('attributes')
-        ;
-    }
 
     public function getBatchActions()
     {
@@ -193,10 +234,13 @@ class ListingAdmin extends Admin
         if($object->getPhotoFile()) {
             $this->saveFile($object);
         }
-        
-        $this->geocodeAddress($object);
 
         parent::prePersist($object);
+    }
+    
+    public function postPersist($object)
+    {
+        $this->setLocation($object);        
     }
         
     public function preUpdate($object)
@@ -207,15 +251,47 @@ class ListingAdmin extends Admin
             $this->saveFile($object);
         }
         
-        $this->geocodeAddress($object);
+        $this->updateLocation($object);
         
         parent::preUpdate($object);        
+    }
+    
+    public function setLocation($object)
+    {
+        $geocodeResult = $this->geocodeAddress($object);
+        $bundlePath = $this->configurationPool->getContainer()->getParameter('ccetc_directory.bundle_path');
+        
+        if(isset($geocodeResult['lat']) && isset($geocodeResult['lng'])) {
+            $listingLocationAdmin = $this->configurationPool->getContainer()->get('ccetc.directory.admin.listinglocation');
+            $listingLocationEntityPath = $bundlePath.'\Entity\ListingLocation';
+            $listingLocation = new $listingLocationEntityPath();
+            $listingLocation->setListing($object);
+            $listingLocation->setLat($geocodeResult['lat']);
+            $listingLocation->setLng($geocodeResult['lng']);
+            
+            $listingLocationAdmin->create($listingLocation);
+            
+            $object->setLocation($listingLocation);
+        }
+    }
+    
+    public function updateLocation($object)
+    {
+        $geocodeResult = $this->geocodeAddress($object);
+        
+        if(isset($geocodeResult['lat']) && isset($geocodeResult['lng'])
+                && ($geocodeResult['lat'] != $object->getLocation()->getLat() || $geocodeResult['lng'] != $object->getLocation()->getLng())) {
+            $listingLocationAdmin = $this->configurationPool->getContainer()->get('ccetc.directory.admin.listinglocation');
+            $object->getLocation()->setLat($geocodeResult['lat']);
+            $object->getLocation()->setLng($geocodeResult['lng']);
+            $listingLocationAdmin->update($object->getLocation());
+        }
     }
     
     public function geocodeAddress($object)
     {
         $geocoder = $this->configurationPool->getContainer()->get('ccetc.directory.helper.geocoder');
-        
+
         $stringsToCheck = array(
             $object->getAddress().' '.$object->getCity().', '.$object->getState().' '.$object->getZip(),
             $object->getCity().', '.$object->getState().' '.$object->getZip(),
@@ -226,9 +302,7 @@ class ListingAdmin extends Admin
         {
             $result = $geocoder->geocodeAddress($string);
             if(isset($result['lat']) && isset($result['lng'])) {
-                $object->setLat($result['lat']);
-                $object->setLng($result['lng']);
-                return;
+                return $result;
             }
         }
     }
@@ -238,55 +312,33 @@ class ListingAdmin extends Admin
         $object->uploadPhoto();
     }  
     
-    public function findForDirectory($filters = null, $searchTerms = null)
+    public function isAdmin()
     {
-        $bundleName = $this->configurationPool->getContainer()->getParameter('ccetc_directory.bundle_name');
-        $listingRepository = $this->configurationPool->getContainer()->get('doctrine')->getRepository($bundleName.':Listing');
+        return strstr($this->request->getUri(), 'admin');
+    }
+    
+    public function filterByDistance($listings, $address, $miles)
+    {
         $geocoder = $this->configurationPool->getContainer()->get('ccetc.directory.helper.geocoder');
 
-        $query = $listingRepository->createQueryBuilder('l');
-        
-        if(isset($filters['product']) && $filters['product'] != 0) {
-            $query    
-                ->join("l.products", "p")
-                ->andWhere('p.id = :productId')
-                ->setParameter('productId', $filters['product']);
-        }
+        if(isset($address) && trim($address) != "" && isset($miles)) {
+            $newListings = array();
 
-        if(isset($filters['attributes']) && $filters['attributes'] != 0) {
-            foreach($filters['attributes'] as $attributeId) 
-            {
-                $query->join("l.attributes", "a".$attributeId, Join::WITH, "a".$attributeId.".id=".$attributeId);
-            }
-        }
-
-        if(isset($searchTerms) && $searchTerms != "") {
-            $query    
-                ->andWhere('l.name LIKE :searchTerms')
-                ->setParameter('searchTerms', '%' . $searchTerms . '%');
-        }
-        
-        $query->andWhere('l.approved = 1');
-        $query->orderBy('l.name', 'ASC');
-
-        $results = $query->getQuery()->getResult();
-
-        if(isset($filters['address']) && trim($filters['address']) != "" && isset($filters['miles'])) {
-            $newResults = array();
-
-            $geocodedAddress = $geocoder->geocodeAddress($filters['address']);
+            $geocodedAddress = $geocoder->geocodeAddress($address);
             
-            foreach($results as $listing)
+            foreach($listings as $listing)
             {
-                if(isset($geocodedAddress['lat']) && isset($geocodedAddress['lng']) && $listing->getLat() && $listing->getLng()
-                        && $geocoder->distanceBetween($listing->getLat(), $listing->getLng(), $geocodedAddress['lat'], $geocodedAddress['lng']) <= $filters['miles']) { 
-                            $newResults[] = $listing;
+                if(isset($geocodedAddress['lat']) && isset($geocodedAddress['lng'])
+                        && $listing->getLat() && $listing->getLng()
+                        && $geocoder->distanceBetween($listing->getLat(), $listing->getLng(), $geocodedAddress['lat'], $geocodedAddress['lng']) <= $miles) { 
+                    $newListings[] = $listing;
                 }
             }
 
-            $results = $newResults;
+            $listings = $newListings;
         }
         
-        return $results;
+        return $listings;
     }    
+
 }

@@ -73,3 +73,14 @@
 .find-a-listing .other-filters-container .control-group {
     margin-top: 10px;
 }
+
+.filter {
+    border: 1px solid #ccc;
+    float: left;
+    width: 100%;
+    padding: 15px;
+}
+
+.filter div {
+    float: left;
+}

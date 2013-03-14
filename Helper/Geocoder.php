@@ -16,22 +16,27 @@ class Geocoder
     public function geocodeAddress($string)
     {
         $adr = urlencode($string);
-        $url = "http://maps.google.com/maps/geo?q=".$adr."&output=xml&key=".$this->googleMapsKey;
+        $url = "http://maps.googleapis.com/maps/api/geocode/xml?sensor=false&address=".$adr;
+
         $xml = simplexml_load_file($url);
-        $status = $xml->Response->Status->code;
         
-        if($status == '200') {
-            $numResults = count($xml->Response->Placemark);
+        $status = $xml->status;
         
-            foreach($xml->Response->Placemark as $node) {
-                $coordinates = explode(',', $node->Point->coordinates);
-                
-                $result = array(
-                    'lat' => $coordinates[1],
-                    'lng' => $coordinates[0],
+        if($status == 'OK') {
+            
+            $numResults = count($xml->result);
+        
+            foreach($xml->result as $result) {
+                $lat = $result->geometry->location->lat;
+                $lng = $result->geometry->location->lng[0];
+
+                $resultCoords = array(
+                    'lat' => $lat->__toString(),
+                    'lng' => $lng->__toString(),
                 );
 
-                return $result; // return result as soon as we find one
+
+                return $resultCoords; // return result as soon as we find one
             }
         }
         return null;

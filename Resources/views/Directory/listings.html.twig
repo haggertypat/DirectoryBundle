@@ -32,7 +32,49 @@
     {% else %}
         <div class="row">
             <div class="span12">
-                {% render 'CCETCDirectoryBundle:Directory:findAListing' with {'filters' : filters } %}    
+                <form action="{{ url('listings') }}" method="GET">
+                    <h2>Active Filters</h2>
+                    {% for filter in listingAdmin.datagrid.filters if filter.isActive %}
+                        <div class="filter">
+                            <div class="filter-title">{{ listingAdmin.trans(filter.label) }}</div>
+                            <div class="filter-type">{{ form_widget(form.children[filter.formName].children['type']) }}</div>
+                            <div class="filter-value">{{ form_widget(form.children[filter.formName].children['value']) }}</div>
+                            <div style="clear: both; line-height: 0px;">&nbsp;</div>
+                        </div>
+                    {% endfor %}
+                    <h2>Inactive Filters</h2>
+                    {% for filter in listingAdmin.datagrid.filters if not filter.isActive %}
+                        <div class="filter">
+                            {% if filter.getFieldOptions.expanded is defined %}
+                                {% for test in filter.getAssociationMapping %}
+                                {% endfor %}
+                            {% endif %}
+                            <div class="filter-title">{{ listingAdmin.trans(filter.label) }}</div>
+                            <div class="filter-type" style="{{ filter.name is defined and filter.name == 'location' ? 'f' : 'display: none;' }}">
+                                {% if filter.name is defined and filter.name == 'location' %}
+                                    Within
+                                {% endif %}
+                                {{ form_widget(form.children[filter.formName].children['type']) }}
+                            </div>
+                            <div class="filter-value">
+                                {% if filter.name is defined and filter.name == 'location' %}
+                                    miles of
+                                {% endif %}
+                                {{ form_widget(form.children[filter.formName].children['value']) }}
+                            </div>
+                            <div style="clear: both; line-height: 0px;">&nbsp;</div>
+                        </div>
+                    {% endfor %}                        
+
+                    <input type="hidden" name="filter[_page]" id="filter__page" value="1" />
+
+                    {% set foo = form.children['_page'].setRendered() %}
+                    {{ form_rest(form) }}
+
+                    <input type="submit" class="btn btn-primary" value="Update" />
+
+                    <a class="btn" href="{{ url('listings', {filters: 'reset'}) }}">Clear</a>
+                </form>
             </div>
         </div>
     {% endif %}
