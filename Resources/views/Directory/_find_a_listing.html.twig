@@ -2,7 +2,7 @@
     <h4>{{ filters is defined and filters != "" ? 'Showing ' ~ 'Listings'|trans : 'Find a ' ~ 'Listing'|trans }}</h4>
     <h4>within</h4>
     <span>
-        <select name="filters[miles]" class="miles">
+        <select name="filter[location][type]" class="miles">
             <option {{ filters.miles is defined and filters.miles == 25 ? 'selected' : '' }}>25</option>
             <option {{ filters.miles is defined and filters.miles == 50 ? 'selected' : '' }}>50</option>
             <option {{ filters.miles is defined and filters.miles == 75 ? 'selected' : '' }}>75</option>
@@ -10,29 +10,16 @@
         </select>
     </span>
     <h4>miles of</h4>
-    <input name="filters[address]" placeholder="your zip or address" value="{{ filters.address is defined ? filters.address : '' }}" />
+    <input name="filter[location][value]" placeholder="your zip or address" value="{{ filters.address is defined ? filters.address : '' }}" />
     <h4>{{ filters is defined and filters != "" ? 'that sell' : 'that sells' }}</h4>
     <span>
-        <select name="filters[product]" class="products">
+        <select name="filter[products][value][]" class="products">
           <option value="0">any Product</option>
           {% for product in products %}
             <option {{ filters.product is defined and filters.product == product.id ? 'selected' : ''}} value="{{ product.id }}">{{ product.name }}</option>
           {% endfor %}
         </select>           
     </span>
-
-    {% if filters is defined and filters != "" %}
-        <div class="other-filters-container">
-            <h5>Other Filters</h5>
-            <div class="control-group">
-            {% for attribute in attributes %}
-                <label>
-                    <input type="checkbox" name="filters[attributes][]" {{ filters.attributes is defined and attribute.id in filters.attributes ? 'checked="checked"' : '' }} value="{{ attribute.id }}"> {{ attribute }}
-                </label>
-            {% endfor %}
-            </div>
-        </div>
-    {% endif %}
 
     <div class="pull-right">
         <button type="submit" class="btn">{{ filters is defined and filters != "" ? '<i class="icon-refresh"></i> Update' : '<i class="icon-search"></i> Search' }}</button>
