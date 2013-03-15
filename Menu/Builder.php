@@ -19,7 +19,7 @@ class Builder extends ContainerAware
         $menu->setChildrenAttribute('class', 'nav');
 
         $menu->addChild('Home', array('route' => 'home'));
-        $menu->addChild('Listings', array('route' => 'listings'));
+        $menu->addChild('Listings', array('route' => 'listings', 'label' => $this->container->get('translator')->trans('Listings')));
         $menu->addChild('About', array('route' => 'about'));
 
         $menu->setCurrentUri($this->container->get('request')->getRequestUri());

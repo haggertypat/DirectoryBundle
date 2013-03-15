@@ -12,12 +12,14 @@ class DirectoryController extends Controller
 {
     public function listingsAction()
     {
+        $bundleName = $this->container->getParameter('ccetc_directory.bundle_name');
+        $bundlePath = $this->container->getParameter('ccetc_directory.bundle_path');
         $listingAdmin = $this->container->get('ccetc.directory.admin.listing');
         $userLocationAliasAdmin = $this->container->get('ccetc.directory.admin.userlocationalias');
         $userLocationAdmin = $this->container->get('ccetc.directory.admin.userlocation');
         $geocoder = $this->container->get('ccetc.directory.helper.geocoder');
-        $userLocationRepository = $this->getDoctrine()->getRepository('LBMIAppBundle:UserLocation');
-        $userLocationAliasRepository = $this->getDoctrine()->getRepository('LBMIAppBundle:UserLocationAlias');
+        $userLocationRepository = $this->getDoctrine()->getRepository($bundleName.':UserLocation');
+        $userLocationAliasRepository = $this->getDoctrine()->getRepository($bundleName.':UserLocationAlias');
 
         $request = $this->getRequest();
         $listingAdmin->setRequest($request);        
@@ -32,7 +34,8 @@ class DirectoryController extends Controller
                 $geocodeResult = $geocoder->geocodeAddress($aliasString);
 
                 if(isset($geocodeResult['lat']) && isset($geocodeResult['lng'])) { // if we found a geocoded match
-                    $aliasObject = new \LBMI\AppBundle\Entity\UserLocationAlias(); // create a new alias
+                    $userLocationAliasPath = $bundlePath.'\Entity\UserLocationAlias';
+                    $aliasObject = new $userLocationAliasPath(); // create a new alias
                     $aliasObject->setAlias($aliasString);
                     
                     $existingUserLocation = $userLocationRepository->findOneBy(array('lat' => $geocodeResult['lat'], 'lng' => $geocodeResult['lng']));
@@ -40,7 +43,8 @@ class DirectoryController extends Controller
                     if(isset($existingUserLocation)) { // if a location for this lat/lng exists, use it
                         $aliasObject->setLocation($existingUserLocation);
                     } else { // otherwise create a location as well
-                        $newUserLocation = new \LBMI\AppBundle\Entity\UserLocation();
+                        $userLocationPath = $bundlePath.'\Entity\UserLocation';
+                        $newUserLocation = new $userLocationPath();
                         $newUserLocation->setLat($geocodeResult['lat']);
                         $newUserLocation->setLng($geocodeResult['lng']);
                         $userLocationAdmin->create($newUserLocation);

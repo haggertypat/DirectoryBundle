@@ -82,7 +82,7 @@
         {% elseif searchTerms is not defined or searchTerms == "" %}
             <div class="span12">
                 <div class="alert alert-block">
-                    <h4>We couldn't find any listings! Try expanding your Search</h4>
+                    <h4>We couldn't find any {{ 'listings'|trans({}, "messages") }}! Try expanding your Search</h4>
                 </div>
             </div>
         {% endif %}
