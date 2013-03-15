@@ -3,7 +3,7 @@
 namespace My\Bundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use CCETC\DirectoryBundle\Entity;
+use CCETC\DirectoryBundle\Entity\Location;
 
 /**
  * UserLocation
