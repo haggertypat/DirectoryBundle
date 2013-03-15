@@ -9,6 +9,6 @@ use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Doctrine\ORM\Query\Expr\Join;
 
-class UserLocationAdmin extends BaseLocationAdmin
+class UserLocationAliasAdmin extends Admin
 {
 }

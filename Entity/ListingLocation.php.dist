@@ -1,0 +1,24 @@
+<?php
+
+namespace My\Bundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+use CCETC\DirectoryBundle\Entity;
+
+/**
+ * ListingLocation
+ *
+ * @ORM\Table()
+ * @ORM\Entity()
+ */
+class ListingLocation extends Location
+{
+    /**
+     * @ORM\OneToOne(targetEntity="Listing", inversedBy="location")
+     * @ORM\JoinColumn(name="listing_id", referencedColumnName="id")
+     **/
+    private $listing; 
+    
+    /** @ORM\OneToMany(targetEntity="LocationDistance", mappedBy="listingLocation", cascade={"persist", "remove"}) */
+    protected $distances;
+}

@@ -44,7 +44,6 @@ class BaseListing extends BaseEntity
     /**
      * @var string
      *
-     * @Assert\NotBlank()
      * @ORM\Column(name="contactName", type="string", length=255, nullable=true)
      */
     private $contactName;    
@@ -59,7 +58,6 @@ class BaseListing extends BaseEntity
     /**
      * @var string
      *
-     * @Assert\NotBlank()
      * @ORM\Column(name="address", type="string", length=255, nullable=true)
      */
     private $address;
@@ -67,7 +65,6 @@ class BaseListing extends BaseEntity
     /**
      * @var string
      *
-     * @Assert\NotBlank()
      * @ORM\Column(name="city", type="string", length=255, nullable=true)
      */
     private $city;
@@ -75,7 +72,6 @@ class BaseListing extends BaseEntity
     /**
      * @var string
      *
-     * @Assert\NotBlank()
      * @ORM\Column(name="state", type="string", length=2, nullable=true)
      */
     private $state;
@@ -83,7 +79,6 @@ class BaseListing extends BaseEntity
     /**
      * @var integer
      *
-     * @Assert\NotBlank()
      * @ORM\Column(name="zip", type="integer", nullable=true)
      */
     private $zip;

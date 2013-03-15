@@ -67,8 +67,20 @@ Full config options:
                 ...
                 - { position: left, type: ccetc.directory.block.admin_listing_approval }
 
+**Note**: The Location Admin classes should not be included on the backend interface.  If using basic HTTP authentication, the easiest way to do this is in your config file, by manually defining which classes *should* appear:
+
+            groups:
+              listings:
+                label: Listings
+                items: [ccetc.directory.admin.listing]
+              data:
+                label: Data
+                items: [ccetc.directory.admin.attribute, ccetc.directory.admin.product]
+
+
+
 ### Entities
-You need to create your entities by extending the base entities provided.  ``CCETCDirectoryBundle/Entity`` has ``dist`` classes that you can use.
+Assuming every installation will want to customize the entities, you'll need to create your own and extend the base entities and example ``dist`` files provided. 
 
 ### Admin Classes
 You need to add services for the admin classes provided that tie them to your entities:
@@ -89,6 +101,30 @@ You need to add services for the admin classes provided that tie them to your en
             <tag name="sonata.admin" manager_type="orm" group="Data" label="Products"/>
             <argument />
             <argument>Acme\DemoBundle\Entity\Product</argument>
+            <argument>SonataAdminBundle:CRUD</argument>
+        </service>
+        <service id="ccetc.directory.admin.listinglocation" class="CCETC\DirectoryBundle\Admin\ListingLocationAdmin">
+            <tag name="sonata.admin" manager_type="orm" group="Location Data" label="Listing Locations"/>
+            <argument />
+            <argument>Acme\AppBundle\Entity\ListingLocation</argument>
+            <argument>SonataAdminBundle:CRUD</argument>
+        </service>
+        <service id="ccetc.directory.admin.userlocation" class="CCETC\DirectoryBundle\Admin\UserLocationAdmin">
+            <tag name="sonata.admin" manager_type="orm" group="Location Data" label="User Locations"/>
+            <argument />
+            <argument>Acme\DemoBundle\Entity\UserLocation</argument>
+            <argument>SonataAdminBundle:CRUD</argument>
+        </service>
+        <service id="ccetc.directory.admin.userlocationalias" class="CCETC\DirectoryBundle\Admin\UserLocationAliasAdmin">
+            <tag name="sonata.admin" manager_type="orm" group="Location Data" label="User Location Aliases"/>
+            <argument />
+            <argument>Acme\DemoBundle\Entity\UserLocationAlias</argument>
+            <argument>SonataAdminBundle:CRUD</argument>
+        </service>        
+        <service id="ccetc.directory.admin.locationdistance" class="CCETC\DirectoryBundle\Admin\LocationDistanceAdmin">
+            <tag name="sonata.admin" manager_type="orm" group="Location Data" label="Location Distances"/>
+            <argument />
+            <argument>Acme\DemoBundle\Entity\LocationDistance</argument>
             <argument>SonataAdminBundle:CRUD</argument>
         </service>
 

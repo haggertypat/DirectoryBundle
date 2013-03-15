@@ -279,7 +279,9 @@ class ListingAdmin extends Admin
     {
         $geocodeResult = $this->geocodeAddress($object);
         
-        if(isset($geocodeResult['lat']) && isset($geocodeResult['lng'])
+        if(!$object->getLocation()) {
+            $this->setLocation($object);
+        } else if(isset($geocodeResult['lat']) && isset($geocodeResult['lng'])
                 && ($geocodeResult['lat'] != $object->getLocation()->getLat() || $geocodeResult['lng'] != $object->getLocation()->getLng())) {
             $listingLocationAdmin = $this->configurationPool->getContainer()->get('ccetc.directory.admin.listinglocation');
             $object->getLocation()->setLat($geocodeResult['lat']);
@@ -314,31 +316,6 @@ class ListingAdmin extends Admin
     
     public function isAdmin()
     {
-        return strstr($this->request->getUri(), 'admin');
+        return strstr($this->getRequest()->getUri(), 'admin');
     }
-    
-    public function filterByDistance($listings, $address, $miles)
-    {
-        $geocoder = $this->configurationPool->getContainer()->get('ccetc.directory.helper.geocoder');
-
-        if(isset($address) && trim($address) != "" && isset($miles)) {
-            $newListings = array();
-
-            $geocodedAddress = $geocoder->geocodeAddress($address);
-            
-            foreach($listings as $listing)
-            {
-                if(isset($geocodedAddress['lat']) && isset($geocodedAddress['lng'])
-                        && $listing->getLat() && $listing->getLng()
-                        && $geocoder->distanceBetween($listing->getLat(), $listing->getLng(), $geocodedAddress['lat'], $geocodedAddress['lng']) <= $miles) { 
-                    $newListings[] = $listing;
-                }
-            }
-
-            $listings = $newListings;
-        }
-        
-        return $listings;
-    }    
-
 }

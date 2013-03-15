@@ -14,9 +14,24 @@ class LocationFilter extends Filter
      */
     public function filter(ProxyQueryInterface $queryBuilder, $alias, $field, $data)
     {
+        if (!$data['value'] || !$data['type']) {
+            return;
+        }
+        $address = $data['value'];
+        $miles = $data['type'];
+        
+        $queryBuilder->leftjoin($alias.'.location', 'listLoc');
+        $queryBuilder->leftjoin('listLoc.distances', 'dist');
+        $queryBuilder->andWhere('dist.distance <= :distance');
+        $queryBuilder->setParameter('distance', $miles);        
+        $queryBuilder->leftjoin('dist.userLocation', 'userLoc');
+        $queryBuilder->leftjoin('userLoc.aliases', 'aliases');
+        $queryBuilder->andWhere('aliases.alias = :alias');
+        $queryBuilder->setParameter('alias', $address);        
+
         return;
     }
-
+    
     /**
      * {@inheritdoc}
      */

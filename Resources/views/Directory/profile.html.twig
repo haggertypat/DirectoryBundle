@@ -8,7 +8,8 @@
 {% endblock %}
 
 {% block content %}
-    {% if listing.lat is defined and listing.lat != "" and listing.lng is defined and listing.lng != "" %}
+        
+    {% if listing.location.lat is defined and listing.location.lat != "" and listing.location.lng is defined and listing.location.lng != "" %}
         <script type="text/javascript">
             {% include 'CCETCDirectoryBundle:Directory:_listing_object.js.twig' %}
                 
@@ -35,7 +36,7 @@
             
         </div>       
         <div class="span5">
-            {% if listing.lat is defined and listing.lat != "" and listing.lng is defined and listing.lng != "" %}
+            {% if listing.location.lat is defined and listing.location.lat != "" and listing.location.lng is defined and listing.location.lng != "" %}
                 <div id="map-canvas" class="profile-map"></div>
             {% endif %}
 

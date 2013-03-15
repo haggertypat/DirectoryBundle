@@ -1,0 +1,23 @@
+<?php
+
+namespace My\Bundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+use CCETC\DirectoryBundle\Entity;
+
+/**
+ * UserLocation
+ *
+ * @ORM\Table()
+ * @ORM\Entity()
+ */
+class UserLocation extends Location
+{
+    
+    /** @ORM\OneToMany(targetEntity="UserLocationAlias", mappedBy="location", cascade={"persist", "remove"}) */
+    protected $aliases;
+    
+    /** @ORM\OneToMany(targetEntity="LocationDistance", mappedBy="userLocation", cascade={"persist", "remove"}) */
+    protected $distances;
+
+}

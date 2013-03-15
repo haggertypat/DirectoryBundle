@@ -12,21 +12,51 @@ class DirectoryController extends Controller
 {
     public function listingsAction()
     {
-        $listingAdmin = $this->get('ccetc.directory.admin.listing');
+        $listingAdmin = $this->container->get('ccetc.directory.admin.listing');
+        $userLocationAliasAdmin = $this->container->get('ccetc.directory.admin.userlocationalias');
+        $userLocationAdmin = $this->container->get('ccetc.directory.admin.userlocation');
+        $geocoder = $this->container->get('ccetc.directory.helper.geocoder');
+        $userLocationRepository = $this->getDoctrine()->getRepository('LBMIAppBundle:UserLocation');
+        $userLocationAliasRepository = $this->getDoctrine()->getRepository('LBMIAppBundle:UserLocationAlias');
 
         $request = $this->getRequest();
-        $listingAdmin->setRequest($request);
+        $listingAdmin->setRequest($request);        
+        $filterParameters = $listingAdmin->getFilterParameters();        
+        
+        // check for a requested address in the filters and respond accordingly
+        if(isset($filterParameters['location']['value']) && $filterParameters['location']['value'] != "") { // if location filter is set        
+            $aliasString = $filterParameters['location']['value'];
+            $existingAlias = $userLocationAliasRepository->findOneByAlias($aliasString);        
+            
+            if(!isset($existingAlias)) { // if no alias exists for the requested address
+                $geocodeResult = $geocoder->geocodeAddress($aliasString);
+
+                if(isset($geocodeResult['lat']) && isset($geocodeResult['lng'])) { // if we found a geocoded match
+                    $aliasObject = new \LBMI\AppBundle\Entity\UserLocationAlias(); // create a new alias
+                    $aliasObject->setAlias($aliasString);
+                    
+                    $existingUserLocation = $userLocationRepository->findOneBy(array('lat' => $geocodeResult['lat'], 'lng' => $geocodeResult['lng']));
+                    
+                    if(isset($existingUserLocation)) { // if a location for this lat/lng exists, use it
+                        $aliasObject->setLocation($existingUserLocation);
+                    } else { // otherwise create a location as well
+                        $newUserLocation = new \LBMI\AppBundle\Entity\UserLocation();
+                        $newUserLocation->setLat($geocodeResult['lat']);
+                        $newUserLocation->setLng($geocodeResult['lng']);
+                        $userLocationAdmin->create($newUserLocation);
+                        
+                        $aliasObject->setLocation($newUserLocation);
+                    }
+                    $userLocationAliasAdmin->create($aliasObject);
+                }
+            }
+        }
         
         $datagrid = $listingAdmin->getDatagrid();
         $datagridFormView = $datagrid->getForm()->createView();
         $listings = $datagrid->getResults();
         $filterParameters = $listingAdmin->getFilterParameters();
                 
-        if(isset($filterParameters['location']['value']) && trim($filterParameters['location']['value']) != ""
-                && isset($filterParameters['location']['type']) && trim($filterParameters['location']['type']) != "") {
-            $listings = $listingAdmin->filterByDistance($listings, $filterParameters['location']['value'], $filterParameters['location']['type']);
-        }
-        
         $templateParameters = array(
             'listingAdmin' => $listingAdmin,
             'listings' => $listings,

@@ -8,7 +8,7 @@
     <script type="text/javascript">
         var listingMapData = new Object;
 
-        {% for listing in listings if listing.lat is defined and listing.lat != "" and listing.lng is defined and listing.lng != "" %}
+        {% for listing in listings if listing.location.lat is defined and listing.location.lat != "" and listing.location.lng is defined and listing.location.lng != "" %}
             {% include 'CCETCDirectoryBundle:Directory:_listing_object.js.twig' %}
             listingMapData["{{listing.id}}"] = listing;
         {% endfor %}            
