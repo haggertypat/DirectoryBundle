@@ -30,21 +30,20 @@
             </div>
         </div>        
     {% else %}
-        <div class="row">
-            <div class="span12">
+    {% endif %}
+    
+    <div class="row">
+        {% if listings|length > 0 %}
+            <div class="span7">
+                {% for listing in listings %}
+                    {% include 'CCETCDirectoryBundle:Directory:_listing_block.html.twig' with {'listing' : listing } %}
+                {% endfor %}
+            </div>
+            <div class="span5">
+                <h3>Filter Listings</h3>
                 <form action="{{ url('listings') }}" method="GET">
-                    <h2>Active Filters</h2>
-                    {% for filter in listingAdmin.datagrid.filters if filter.isActive %}
-                        <div class="filter">
-                            <div class="filter-title">{{ listingAdmin.trans(filter.label) }}</div>
-                            <div class="filter-type">{{ form_widget(form.children[filter.formName].children['type']) }}</div>
-                            <div class="filter-value">{{ form_widget(form.children[filter.formName].children['value']) }}</div>
-                            <div style="clear: both; line-height: 0px;">&nbsp;</div>
-                        </div>
-                    {% endfor %}
-                    <h2>Inactive Filters</h2>
-                    {% for filter in listingAdmin.datagrid.filters if not filter.isActive %}
-                        <div class="filter">
+                    {% for filter in listingAdmin.datagrid.filters %}
+                        <div class="filter {{ filter.isActive? 'active' : '' }}">
                             {% if filter.getFieldOptions.expanded is defined %}
                                 {% for test in filter.getAssociationMapping %}
                                 {% endfor %}
@@ -70,24 +69,15 @@
 
                     {% set foo = form.children['_page'].setRendered() %}
                     {{ form_rest(form) }}
+                    
+                    <div style="clear: both; line-height: 0px;">&nbsp;</div>
 
-                    <input type="submit" class="btn btn-primary" value="Update" />
-
-                    <a class="btn" href="{{ url('listings', {filters: 'reset'}) }}">Clear</a>
+                    <div>
+                        <input type="submit" class="btn btn-primary" value="Update" />
+                        <a class="btn" href="{{ url('listings', {filters: 'reset'}) }}">Clear</a>
+                    </div>
                 </form>
-            </div>
-        </div>
-    {% endif %}
-    
-    <div class="row">
-        {% if listings|length > 0 %}
-            <div class="span7">
-                {% for listing in listings %}
-                    {% include 'CCETCDirectoryBundle:Directory:_listing_block.html.twig' with {'listing' : listing } %}
-                {% endfor %}
-            </div>
-            <div class="span5">
-                <div id="map-canvas" class="listings-map"></div>
+                <div id="map-canvas" class="listings-map"></div>                
             </div>
         {% elseif searchTerms is not defined or searchTerms == "" %}
             <div class="span12">

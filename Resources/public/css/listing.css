@@ -75,10 +75,13 @@
 }
 
 .filter {
-    border: 1px solid #ccc;
     float: left;
-    width: 100%;
     padding: 15px;
+}
+
+.filter .filter-title {
+    float: none;
+    font-weight: bold;
 }
 
 .filter div {
