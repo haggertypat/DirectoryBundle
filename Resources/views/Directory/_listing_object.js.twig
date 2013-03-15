@@ -4,5 +4,5 @@ var listing={
     name:"{{ listing.name }}",
     id:"{{ listing.id }}",
     profileLink:"{{ path('profile', {'id' : listing.id }) }}",
-    address: "{{ listing.address }}, {{ listing.city }} {{ listing.state }}"
+    address: "{% if listing.address is defined and listing.address != "" %}{{ listing.address }},{% endif %} {{ listing.city }} {{ listing.state }}"
 }; 
