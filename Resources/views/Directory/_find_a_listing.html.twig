@@ -1,25 +1,27 @@
 <form action="{{ path('listings') }}" method="GET">
-    <h4>{{ filters is defined and filters != "" ? 'Showing ' ~ 'Listings'|trans : 'Find a ' ~ 'Listing'|trans }}</h4>
+    <h4>Find a {{ 'Listing'|trans }}</h4>
     <h4>within</h4>
     <span>
         <select name="filter[location][type]" class="miles">
-            <option {{ filters.miles is defined and filters.miles == 25 ? 'selected' : '' }}>25</option>
-            <option {{ filters.miles is defined and filters.miles == 50 ? 'selected' : '' }}>50</option>
-            <option {{ filters.miles is defined and filters.miles == 75 ? 'selected' : '' }}>75</option>
-            <option {{ filters.miles is defined and filters.miles == 100 ? 'selected' : '' }}>100</option>
+            <option>25</option>
+            <option>50</option>
+            <option>75</option>
+            <option>100</option>
         </select>
     </span>
     <h4>miles of</h4>
-    <input name="filter[location][value]" placeholder="your zip or address" value="{{ filters.address is defined ? filters.address : '' }}" />
-    <h4>{{ filters is defined and filters != "" ? 'that sell' : 'that sells' }}</h4>
-    <span>
-        <select name="filter[products][value][]" class="products">
-          <option value="0">any Product</option>
-          {% for product in products %}
-            <option {{ filters.product is defined and filters.product == product.id ? 'selected' : ''}} value="{{ product.id }}">{{ product.name }}</option>
-          {% endfor %}
-        </select>           
-    </span>
+    <input name="filter[location][value]" placeholder="your zip or address" />
+    {% if includeProducts %}
+        <h4>that sells</h4>
+        <span>
+            <select name="filter[products][value][]" class="products">
+              <option value="0">any Product</option>
+              {% for product in products %}
+                <option {{ filters.product is defined and filters.product == product.id ? 'selected' : ''}} value="{{ product.id }}">{{ product.name }}</option>
+              {% endfor %}
+            </select>           
+        </span>
+    {% endif %}
 
     <div class="pull-right">
         <button type="submit" class="btn">{{ filters is defined and filters != "" ? '<i class="icon-refresh"></i> Update' : '<i class="icon-search"></i> Search' }}</button>

@@ -59,7 +59,6 @@ class DirectoryController extends Controller
         $datagrid = $listingAdmin->getDatagrid();
         $datagridFormView = $datagrid->getForm()->createView();
         $listings = $datagrid->getResults();
-        $filterParameters = $listingAdmin->getFilterParameters();
                 
         $templateParameters = array(
             'listingAdmin' => $listingAdmin,
@@ -89,17 +88,15 @@ class DirectoryController extends Controller
         ));                                    
         
     }
-    public function findAListingAction($filters = null)
+    public function findAListingAction($includeProducts = true)
     {
-        $bundleName = $this->container->getParameter('ccetc_directory.bundle_name');
-        $productRepository = $this->getDoctrine()->getRepository($bundleName.':Product');
-        $attributeRepository = $this->getDoctrine()->getRepository($bundleName.':Attribute');
+        $templateParameters = array('includeProducts' => $includeProducts);
         
-        $templateParameters = array(
-            'filters' => $filters,
-            'products' => $productRepository->findAll(),
-            'attributes' => $attributeRepository->findAll()
-        );
+        if($includeProducts) {
+            $productRepository = $this->getDoctrine()->getRepository($bundleName.':Product');
+            $bundleName = $this->container->getParameter('ccetc_directory.bundle_name');
+            $templateParameters['products'] = $productRepository->findAll();
+        }
         
         return $this->render('CCETCDirectoryBundle:Directory:_find_a_listing.html.twig', $templateParameters);        
     }

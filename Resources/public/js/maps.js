@@ -46,7 +46,7 @@ function profileMapInit()
 
     var mapOptions = {
         center: listingLatLng,
-        zoom: 9,
+        zoom: 12,
         mapTypeId: google.maps.MapTypeId.ROADMAP,
         scrollwheel: false
     };

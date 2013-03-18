@@ -30,7 +30,7 @@
         {% if is_granted("ROLE_ADMIN") %}
             <a class="btn pull-right edit-listing" target="_blank" href="{{ listingAdmin.generateObjectUrl('edit', listing) }}" ><i class="icon-pencil"></i> Edit</a> 
         {% endif %}
-        <a class="btn pull-right" href="{{ path('profile', {'id' : listing.id }) }}" ><i class="icon-search"></i> View Profile</a>
+        <a class="btn pull-right" href="{{ path('profile', {'id' : listing.id }) }}" ><i class="icon-search"></i> View</a>
         <div style="clear: both; line-height: 0;">&nbsp;</div>    
     </div>
 </div>
