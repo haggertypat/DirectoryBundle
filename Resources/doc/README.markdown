@@ -97,12 +97,6 @@ You need to add services for the admin classes provided that tie them to your en
             <argument>Acme\DemoBundle\Entity\Attribute</argument>
             <argument>SonataAdminBundle:CRUD</argument>
         </service>
-        <service id="ccetc.directory.admin.product" class="CCETC\DirectoryBundle\Admin\ProductAdmin">
-            <tag name="sonata.admin" manager_type="orm" group="Data" label="Products"/>
-            <argument />
-            <argument>Acme\DemoBundle\Entity\Product</argument>
-            <argument>SonataAdminBundle:CRUD</argument>
-        </service>
         <service id="ccetc.directory.admin.listinglocation" class="CCETC\DirectoryBundle\Admin\ListingLocationAdmin">
             <tag name="sonata.admin" manager_type="orm" group="Location Data" label="Listing Locations"/>
             <argument />
