@@ -208,7 +208,14 @@ class BaseListing extends BaseEntity
      * @ORM\Column(name="secondaryPhoneType", type="string", length=255, nullable=true)
      */
     private $secondaryPhoneType;
-
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="preferredMethodOfContact", type="string", length=255, nullable=true)
+     */
+    private $preferredMethodOfContact; 
+    
     /**
      * @var string
      *
