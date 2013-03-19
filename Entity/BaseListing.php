@@ -706,6 +706,29 @@ class BaseListing extends BaseEntity
      *
      * @return string 
      */
+    public function getSecondaryContactName()
+    {
+        return $this->secondaryContactName;
+    }
+    
+    /**
+     * Set contactName
+     *
+     * @param string $secondaryContactName
+     * @return Listing
+     */
+    public function setSecondaryContactName($secondaryContactName)
+    {
+        $this->secondaryContactName = $secondaryContactName;
+    
+        return $this;
+    }
+
+    /**
+     * Get contactName
+     *
+     * @return string 
+     */
     public function getContactName()
     {
         return $this->contactName;

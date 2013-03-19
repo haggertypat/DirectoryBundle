@@ -1,4 +1,5 @@
 {% if listing.contactName %}{{ listing.contactName }}<br/>{% endif %}
+{% if listing.secondaryContactName %}{{ listing.secondaryContactName }}<br/>{% endif %}
 {% if listing.primaryEmail %}
     <a href="mailto:{{ listing.primaryEmail }}">{{ listing.primaryEmail }}</a>
     {% if listing.primaryEmailType %} ({{ listing.primaryEmailType }}){% endif %}

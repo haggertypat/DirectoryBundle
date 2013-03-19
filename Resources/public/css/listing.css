@@ -16,7 +16,7 @@
     display: inline-block;    
 }
 
-.listing-block-container .edit-listing {
+.btn.edit-listing {
     margin-left: 5px;
 }
 
