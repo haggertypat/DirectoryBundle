@@ -107,6 +107,7 @@ class ListingAdmin extends Admin
                 ->add('addressLabel2', null, array('label' => 'Address Label'))
             ->end()
             ->with('Contact')
+                ->add('preferredMethodOfContact')
                 ->add('primaryEmail')
                 ->add('primaryEmailType')
                 ->add('secondaryEmail')
@@ -204,6 +205,7 @@ class ListingAdmin extends Admin
            ->end()
 
             ->with('Contact')
+                ->add('preferredMethodOfContact')
                 ->add('primaryEmail')
                 ->add('primaryEmailType')
                 ->add('secondaryEmail')

@@ -1000,4 +1000,27 @@ class BaseListing extends BaseEntity
     {
         return $this->addressLabel2;
     }
+    
+     /**
+     * Set preferredMethodOfContact
+     *
+     * @param string $preferredMethodOfContact
+     * @return Listing
+     */
+    public function setPreferredMethodOfContact($preferredMethodOfContact)
+    {
+        $this->preferredMethodOfContact = $preferredMethodOfContact;
+    
+        return $this;
+    }
+
+    /**
+     * Get preferredMethodOfContact
+     *
+     * @return string 
+     */
+    public function getPreferredMethodOfContact()
+    {
+        return $this->preferredMethodOfContact;
+    }
 }

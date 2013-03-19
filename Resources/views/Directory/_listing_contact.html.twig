@@ -19,5 +19,6 @@
     {% if listing.secondaryPhoneType %} ({{ listing.secondaryPhoneType }}){% endif %}
     <br/>
 {% endif %}
-{% if listing.website %}<a href="{{ listing.website }}" target="_blank">{{ listing.website }}</a>{% endif %}
+{% if listing.website %}<a href="{{ listing.website }}" target="_blank">{{ listing.website }}</a><br/>{% endif %}
+{% if listing.preferredMethodOfContact %}<br/><b>Preferred Method of Contact</b>: {{ listing.preferredMethodOfContact }}{% endif %}
     

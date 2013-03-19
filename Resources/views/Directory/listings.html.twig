@@ -49,7 +49,7 @@
                 {% for filter in listingAdmin.datagrid.filters %}
                     <div class="filter {{ filter.isActive? 'active' : '' }}">
                         <div class="filter-title">{{ listingAdmin.trans(filter.label) }}</div>
-                        <div class="filter-type" style="{{ filter.name is defined and filter.name == 'location' ? 'f' : 'display: none;' }}">
+                        <div class="filter-type" style="{{ filter.options.hideValue is defined and filter.options.hideValue ? 'display: none;' : '' }}">
                             {% if filter.name is defined and filter.name == 'location' %}
                                 Within
                             {% endif %}
