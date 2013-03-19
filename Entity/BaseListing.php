@@ -47,6 +47,12 @@ class BaseListing extends BaseEntity
      * @ORM\Column(name="contactName", type="string", length=255, nullable=true)
      */
     private $contactName;    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="secondaryContactName", type="string", length=255, nullable=true)
+     */
+    private $secondaryContactName;    
 
     /**
      * @var string
