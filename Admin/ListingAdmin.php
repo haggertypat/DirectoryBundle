@@ -33,8 +33,11 @@ class ListingAdmin extends Admin
 
             // we have to set the maxPerPage twice, the datagrid value is set on construct,
             // but we don't have the request on construct to know if we should change this
-            $this->maxPerPage = 500;            
+            $this->maxPerPage = 10;            
             $this->datagridValues['_per_page'] = $this->maxPerPage;
+            
+            // update per page options
+            $this->predefinePerPageOptions();
         }
         
 

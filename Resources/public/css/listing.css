@@ -89,11 +89,13 @@
     float: left;
 }
 .listings-meta {
-    
-}
-
-.listings-meta td {
     text-align: center;
-    vertical-align: middle;
-    color: #666;
+    color: #555;
+}
+.listings-meta span {
+    border-right: 1px solid #bbb;
+    padding: 0 7px 0 5px;
+}
+.listings-meta span.last {
+    border-right: none;
 }

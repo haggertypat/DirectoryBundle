@@ -79,13 +79,12 @@
                     </td>
                 </tr>
             {% endif %}
-            <table class="table table-bordered listings-meta">
-                <tr>
-                    <td>{{ listingAdmin.datagrid.pager.nbresults }} Listings</td>
-                    <td>Page {{ listingAdmin.datagrid.pager.page }} of {{ listingAdmin.datagrid.pager.lastpage }}</td>
-                    <td>
+            <div class="listings-meta">
+                    <span>{{ listingAdmin.datagrid.pager.nbresults }} Listings</span>
+                    <span>Page {{ listingAdmin.datagrid.pager.page }} of {{ listingAdmin.datagrid.pager.lastpage }}</span>
+                    <span class="last">
                         Show 
-                        <select class="per-page" id="{{ listingAdmin.uniqid }}_per_page" style="width: auto; height: auto">
+                        <select class="per-page" id="{{ listingAdmin.uniqid }}_per_page" style="width: auto; height: auto; margin-bottom: 2px;">
                             {% for per_page in listingAdmin.getperpageoptions %}
                                 <option {% if per_page == listingAdmin.datagrid.pager.maxperpage %}selected="selected"{% endif %} value="{{ path('listings', {'filter': listingAdmin.datagrid.values | merge({'_per_page': per_page})}) }}">
                                     {{ per_page }}
@@ -94,9 +93,8 @@
                         </select>
 
                         Per Page
-                    </td>
-                </tr>
-            </table>
+                    </span>
+            </div>
         </div>
         <div class="span5">
             <h3>Filter Listings</h3>
