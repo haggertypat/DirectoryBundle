@@ -42,6 +42,61 @@
                     <h4>We couldn't find any {{ 'listings'|trans({}, "messages") }}! Try expanding your Search</h4>
                 </div>
             {% endif %}
+            {% if listingAdmin.datagrid.pager.haveToPaginate() %}
+                <tr>
+                    <td colspan="{{ listingAdmin.list.elements|length }}">
+                        <div class="pagination pagination-centered">
+                            <ul>
+                                {% if listingAdmin.datagrid.pager.page != 1  %}
+                                    <li><a href="{{ path('listings', listingAdmin.modelmanager.paginationparameters(listingAdmin.datagrid, 1)) }}" title="{{ 'link_first_pager'|trans({}, 'SonataAdminBundle') }}">&laquo;</a></li>
+                                {% endif %}
+
+                                {% if listingAdmin.datagrid.pager.page != listingAdmin.datagrid.pager.previouspage %}
+                                    <li><a href="{{ path('listings', listingAdmin.modelmanager.paginationparameters(listingAdmin.datagrid, listingAdmin.datagrid.pager.previouspage)) }}" title="{{ 'link_previous_pager'|trans({}, 'SonataAdminBundle') }}">&lsaquo;</a></li>
+                                {% endif %}
+
+                                {# Set the number of pages to display in the pager #}
+                                {% set firstTile = listingAdmin.datagrid.pager.page - 4 %}
+                                {% set lastTile = listingAdmin.datagrid.pager.page + 4 %}
+                                    
+                                {% for page in listingAdmin.datagrid.pager.getLinks() if (page > firstTile and page < lastTile)  %}
+                                    {% if page == listingAdmin.datagrid.pager.page %}
+                                        <li class="active"><a href="{{ path('listings', listingAdmin.modelmanager.paginationparameters(listingAdmin.datagrid, page)) }}">{{ page }}</a></li>
+                                    {% else %}
+                                        <li><a href="{{ path('listings', listingAdmin.modelmanager.paginationparameters(listingAdmin.datagrid, page)) }}">{{ page }}</a></li>
+                                    {% endif %}
+                                {% endfor %}
+
+                                {% if listingAdmin.datagrid.pager.page != listingAdmin.datagrid.pager.nextpage %}
+                                    <li><a href="{{ path('listings', listingAdmin.modelmanager.paginationparameters(listingAdmin.datagrid, listingAdmin.datagrid.pager.nextpage)) }}" title="{{ 'link_next_pager'|trans({}, 'SonataAdminBundle') }}">&rsaquo;</a></li>
+                                {% endif %}
+
+                                {% if listingAdmin.datagrid.pager.page != listingAdmin.datagrid.pager.lastpage  %}
+                                    <li><a href="{{ path('listings', listingAdmin.modelmanager.paginationparameters(listingAdmin.datagrid, listingAdmin.datagrid.pager.lastpage)) }}" title="{{ 'link_last_pager'|trans({}, 'SonataAdminBundle') }}">&raquo;</a></li>
+                                {% endif %}
+                            </ul>
+                        </div>
+                    </td>
+                </tr>
+            {% endif %}
+            <table class="table table-bordered listings-meta">
+                <tr>
+                    <td>{{ listingAdmin.datagrid.pager.nbresults }} Listings</td>
+                    <td>Page {{ listingAdmin.datagrid.pager.page }} of {{ listingAdmin.datagrid.pager.lastpage }}</td>
+                    <td>
+                        Show 
+                        <select class="per-page" id="{{ listingAdmin.uniqid }}_per_page" style="width: auto; height: auto">
+                            {% for per_page in listingAdmin.getperpageoptions %}
+                                <option {% if per_page == listingAdmin.datagrid.pager.maxperpage %}selected="selected"{% endif %} value="{{ path('listings', {'filter': listingAdmin.datagrid.values | merge({'_per_page': per_page})}) }}">
+                                    {{ per_page }}
+                                </option>
+                            {% endfor %}
+                        </select>
+
+                        Per Page
+                    </td>
+                </tr>
+            </table>
         </div>
         <div class="span5">
             <h3>Filter Listings</h3>

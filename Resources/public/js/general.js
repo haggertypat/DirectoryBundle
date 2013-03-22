@@ -29,4 +29,10 @@ $(document).ready(function() {
     $('#signup-submit').live("click touchstart", function(e){
         $(this).button('loading');
     });
+
+
+    $('select.per-page').change(function(event) {
+        window.top.location.href=this.options[this.selectedIndex].value;
+    });
+
 });

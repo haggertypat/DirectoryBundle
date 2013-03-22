@@ -16,10 +16,6 @@
     display: inline-block;    
 }
 
-.btn.edit-listing {
-    margin-left: 5px;
-}
-
 .profile-meta,
 .block-meta {
     margin-bottom: 10px;
@@ -91,4 +87,13 @@
 
 .filter div {
     float: left;
+}
+.listings-meta {
+    
+}
+
+.listings-meta td {
+    text-align: center;
+    vertical-align: middle;
+    color: #666;
 }

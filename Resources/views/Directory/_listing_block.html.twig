@@ -26,11 +26,11 @@
         
     <br/>    
         
-    <div>
+    <div class="btn-group">
         {% if is_granted("ROLE_ADMIN") %}
-            <a class="btn pull-right edit-listing" href="{{ listingAdmin.generateObjectUrl('edit', listing) }}" ><i class="icon-pencil"></i> Edit</a> 
+            <a class="btn" href="{{ listingAdmin.generateObjectUrl('edit', listing) }}" ><i class="icon-pencil"></i> Edit</a> 
         {% endif %}
-        <a class="btn pull-right" href="{{ path('profile', {'id' : listing.id }) }}" ><i class="icon-search"></i> View</a>
-        <div style="clear: both; line-height: 0;">&nbsp;</div>    
+        <a class="btn" href="{{ path('profile', {'id' : listing.id }) }}" ><i class="icon-search"></i> View</a>
     </div>
+    <div style="clear: both; line-height: 0;">&nbsp;</div>    
 </div>
