@@ -25,6 +25,11 @@
     margin-bottom: 10px;
 }
 
+.profile-menu {
+    margin: 10px 0;
+    float: right;
+}
+
 .find-a-listing {
     line-height: 50px;
     padding-right: 14px;

@@ -2,9 +2,12 @@
 
 {% block page_header %}
     {{ listing.name }}
-    {% if is_granted("ROLE_ADMIN") %}
-        <a class="btn pull-right" href="{{ listingAdmin.generateObjectUrl('edit', listing) }}" ><i class="icon-pencil"></i> Edit</a>
-    {% endif %}
+    <div class="profile-menu">
+        <a class="btn pull-right edit-listing" href="javascript:if(window.print)window.print()" ><i class="icon-print"></i> Print</a> 
+        {% if is_granted("ROLE_ADMIN") %}
+            <a class="btn pull-right edit-listing" href="{{ listingAdmin.generateObjectUrl('edit', listing) }}" ><i class="icon-pencil"></i> Edit</a> 
+        {% endif %}
+    </div>
 {% endblock %}
 
 {% block content %}
