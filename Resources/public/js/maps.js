@@ -33,11 +33,6 @@ function listingsMapInit()
     }
         
     map.fitBounds(bounds);
-            
-    // set a minimum zoom level
-    google.maps.event.addListener(map, 'zoom_changed', function() {
-        if (map.getZoom() > 12) map.setZoom(12);
-    });
 }
 
 function profileMapInit()
