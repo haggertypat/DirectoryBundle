@@ -88,6 +88,18 @@
                 <div class="navbar">
                     <div class="navbar-inner">
                         {{ knp_menu_render(directoryMenuBuilder, {'currentClass' : 'active' } ) }}
+                            
+                        {% if app.user.username is defined %}    
+                            <ul class="nav pull-right">
+                                <li>
+                                    <p class="navbar-text">Logged in as {{ app.user.username }}</p>
+                                </li>
+                                <li><a href="{{ path('sonata_admin_dashboard') }}">Go to Admin</a>
+                                <li>
+                                    <p class="navbar-text"><i>Close your browser to log out</i></p>
+                                </li>
+                            </ul>
+                        {% endif %}
                     </div>
                 </div>
 
