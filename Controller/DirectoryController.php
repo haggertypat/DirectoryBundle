@@ -93,8 +93,8 @@ class DirectoryController extends Controller
         $templateParameters = array('includeProducts' => $includeProducts);
         
         if($includeProducts) {
-            $productRepository = $this->getDoctrine()->getRepository($bundleName.':Product');
             $bundleName = $this->container->getParameter('ccetc_directory.bundle_name');
+            $productRepository = $this->getDoctrine()->getRepository($bundleName.':Product');
             $templateParameters['products'] = $productRepository->findAll();
         }
         
