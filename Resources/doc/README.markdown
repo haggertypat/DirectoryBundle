@@ -34,6 +34,7 @@ You must add ``home`` and ``about`` routes to your bundle.
 * og_* - used for og meta tags
 * google_maps_key - optional
 * google_analytics_account - optional
+* use_profile - boolean, default: true (if false, profile routes will redirect to the listings page with a single listing)
 
 Full config options:
 
@@ -51,6 +52,7 @@ Full config options:
         og_url: http://yoururl
         google_maps_key: yourkey
         google_analytics_account: UA-NNNNNNNNN-1
+        use_profile: true
 
     sonata_block:
         ...

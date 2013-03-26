@@ -47,3 +47,9 @@
     bottom: 15px;
     right: 10px;
 }
+
+
+.page-btns {
+    margin: 10px 0;
+    float: right;
+}

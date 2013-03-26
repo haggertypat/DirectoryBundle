@@ -1,7 +1,11 @@
-<div class="listing-block-container block-link">
+<div class="listing-block-container {{ linkBlock? 'block-link' : '' }}">
     <div>
         <div class="listing-name">
-            <h3><a href="{{ path('profile', {'id' : listing.id }) }}">{{ listing.name }}</a></h3>                             
+            <h3>
+                {% if linkBlock %}<a href="{{ path('profile', {'id' : listing.id }) }}">{% endif %}
+                {{ listing.name }}
+                {% if linkBlock %}</a>{% endif %}
+            </h3>                             
         </div>
         <div style="clear: both; line-height: 0;">&nbsp;</div>    
     </div>
@@ -30,7 +34,7 @@
         {% if is_granted("ROLE_ADMIN") %}
             <a class="btn" href="{{ listingAdmin.generateObjectUrl('edit', listing) }}" ><i class="icon-pencil"></i> Edit</a> 
         {% endif %}
-        <a class="btn" href="{{ path('profile', {'id' : listing.id }) }}" ><i class="icon-search"></i> View</a>
+        {% if linkBlock %}<a class="btn" href="{{ path('profile', {'id' : listing.id }) }}" ><i class="icon-search"></i> View</a>{% endif %}
     </div>
     <div style="clear: both; line-height: 0;">&nbsp;</div>    
 </div>

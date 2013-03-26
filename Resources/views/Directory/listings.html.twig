@@ -2,6 +2,9 @@
 
 {% block page_header %}
     {{ 'Listings'|trans({}, "messages") }}
+    <div class="page-btns btn-group">
+        <a class="btn" href="javascript:if(window.print)window.print()" ><i class="icon-print"></i> Print</a> 
+    </div>
 {% endblock %}
 
 {% block content %}
@@ -31,18 +34,19 @@
         </div>        
     {% endif %}
     
+    
     <div class="row">
         <div class="span7">
             {% if listings|length > 0 %}
                 {% for listing in listings %}
-                    {% include 'CCETCDirectoryBundle:Directory:_listing_block.html.twig' with {'listing' : listing } %}
+                    {% include 'CCETCDirectoryBundle:Directory:_listing_block.html.twig' with {'listing' : listing, 'linkBlock' : linkBlocks } %}
                 {% endfor %}
             {% elseif searchTerms is not defined or searchTerms == "" %}
                 <div class="alert alert-block">
                     <h4>We couldn't find any {{ 'listings'|trans({}, "messages") }}! Try expanding your Search</h4>
                 </div>
             {% endif %}
-            {% if listingAdmin.datagrid.pager.haveToPaginate() %}
+            {% if listingAdmin.datagrid.pager.haveToPaginate() and not singleListing %}
                 <tr>
                     <td colspan="{{ listingAdmin.list.elements|length }}">
                         <div class="pagination pagination-centered">
@@ -78,58 +82,66 @@
                         </div>
                     </td>
                 </tr>
-            {% endif %}
-            <div class="listings-meta">
-                    <span>{{ listingAdmin.datagrid.pager.nbresults }} Listings</span>
-                    <span>Page {{ listingAdmin.datagrid.pager.page }} of {{ listingAdmin.datagrid.pager.lastpage }}</span>
-                    <span class="last">
-                        Show 
-                        <select class="per-page" id="{{ listingAdmin.uniqid }}_per_page" style="width: auto; height: auto; margin-bottom: 2px;">
-                            {% for per_page in listingAdmin.getperpageoptions %}
-                                <option {% if per_page == listingAdmin.datagrid.pager.maxperpage %}selected="selected"{% endif %} value="{{ path('listings', {'filter': listingAdmin.datagrid.values | merge({'_per_page': per_page})}) }}">
-                                    {{ per_page }}
-                                </option>
-                            {% endfor %}
-                        </select>
+                <div class="listings-meta">
+                        <span>{{ listingAdmin.datagrid.pager.nbresults }} Listings</span>
+                        <span>Page {{ listingAdmin.datagrid.pager.page }} of {{ listingAdmin.datagrid.pager.lastpage }}</span>
+                        <span class="last">
+                            Show 
+                            <select class="per-page" id="{{ listingAdmin.uniqid }}_per_page" style="width: auto; height: auto; margin-bottom: 2px;">
+                                {% for per_page in listingAdmin.getperpageoptions %}
+                                    <option {% if per_page == listingAdmin.datagrid.pager.maxperpage %}selected="selected"{% endif %} value="{{ path('listings', {'filter': listingAdmin.datagrid.values | merge({'_per_page': per_page})}) }}">
+                                        {{ per_page }}
+                                    </option>
+                                {% endfor %}
+                            </select>
 
-                        Per Page
-                    </span>
-            </div>
+                            Per Page
+                        </span>
+                </div>
+            {% endif %}
+            {% if singleListing %}
+                <div class="alert alert-block alert-info">
+                    <h5>Viewing a Single Listing</h5>
+                    <a href="{{ path('listings') }}" class="btn"><i class="icon-search"></i> View all</a>
+                </div>
+            {% endif %}                
         </div>
         <div class="span5">
-            <h3>Filter Listings</h3>
-            <form action="{{ url('listings') }}" method="GET">
-                {% for filter in listingAdmin.datagrid.filters %}
-                    <div class="filter {{ filter.isActive? 'active' : '' }}">
-                        <div class="filter-title">{{ listingAdmin.trans(filter.label) }}</div>
-                        <div class="filter-type" style="{{ filter.options.hideValue is defined and filter.options.hideValue ? 'display: none;' : '' }}">
-                            {% if filter.name is defined and filter.name == 'location' %}
-                                Within
-                            {% endif %}
-                            {{ form_widget(form.children[filter.formName].children['type']) }}
+            {% if not singleListing %}
+                <h3>Filter Listings</h3>
+                <form action="{{ url('listings') }}" method="GET">
+                    {% for filter in listingAdmin.datagrid.filters %}
+                        <div class="filter {{ filter.isActive? 'active' : '' }}">
+                            <div class="filter-title">{{ listingAdmin.trans(filter.label) }}</div>
+                            <div class="filter-type" style="{{ filter.options.hideValue is defined and filter.options.hideValue ? 'display: none;' : '' }}">
+                                {% if filter.name is defined and filter.name == 'location' %}
+                                    Within
+                                {% endif %}
+                                {{ form_widget(form.children[filter.formName].children['type']) }}
+                            </div>
+                            <div class="filter-value">
+                                {% if filter.name is defined and filter.name == 'location' %}
+                                    miles of
+                                {% endif %}
+                                {{ form_widget(form.children[filter.formName].children['value']) }}
+                            </div>
+                            <div style="clear: both; line-height: 0px;">&nbsp;</div>
                         </div>
-                        <div class="filter-value">
-                            {% if filter.name is defined and filter.name == 'location' %}
-                                miles of
-                            {% endif %}
-                            {{ form_widget(form.children[filter.formName].children['value']) }}
-                        </div>
-                        <div style="clear: both; line-height: 0px;">&nbsp;</div>
+                    {% endfor %}                        
+
+                    <input type="hidden" name="filter[_page]" id="filter__page" value="1" />
+
+                    {% set foo = form.children['_page'].setRendered() %}
+                    {{ form_rest(form) }}
+
+                    <div style="clear: both; line-height: 0px;">&nbsp;</div>
+
+                    <div>
+                        <input type="submit" class="btn btn-primary" value="Update" />
+                        <a class="btn" href="{{ url('listings', {filters: 'reset'}) }}">Clear</a>
                     </div>
-                {% endfor %}                        
-
-                <input type="hidden" name="filter[_page]" id="filter__page" value="1" />
-
-                {% set foo = form.children['_page'].setRendered() %}
-                {{ form_rest(form) }}
-
-                <div style="clear: both; line-height: 0px;">&nbsp;</div>
-
-                <div>
-                    <input type="submit" class="btn btn-primary" value="Update" />
-                    <a class="btn" href="{{ url('listings', {filters: 'reset'}) }}">Clear</a>
-                </div>
-            </form>
+                </form>
+            {% endif %}
             {% if listings|length > 0 %}            
                 <div id="map-canvas" class="listings-map"></div>                
             {% endif %}

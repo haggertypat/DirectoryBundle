@@ -26,10 +26,14 @@ function listingsMapInit()
         
         google.maps.event.addListener(marker, 'click', (function(marker, listing) {
             return function() {
-                infowindow.setContent('<h4>' + listing.name + '</h4>' + listing.address + '<br/><br/><a class="btn" href="' + listing.profileLink + '"><i class="icon-search"></i> View Profile</a>');
+                infowindow.setContent('<h4>' + listing.name + '</h4>' + listing.address + '<br/><br/><a class="btn" href="' + listing.profileLink + '"><i class="icon-search"></i> View</a>');
                 infowindow.open(map, marker);
             }
         })(marker, listing));
+        
+        google.maps.event.addListener(map, 'zoom_changed', function() {
+            if (map.getZoom() > 17) map.setZoom(17);
+        });        
     }
         
     map.fitBounds(bounds);
