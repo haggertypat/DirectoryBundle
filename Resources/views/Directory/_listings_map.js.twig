@@ -2,7 +2,7 @@
     var listingMapData = new Object;
 
     {% for listing in listings if listing.location.lat is defined and listing.location.lat != "" and listing.location.lng is defined and listing.location.lng != "" %}
-        {% include 'CCETCDirectoryBundle:Directory:_listing_object.js.twig' %}
+        {% include 'CCETCDirectoryBundle:Directory:_listings_marker_object.js.twig' %}
         listingMapData["{{listing.id}}"] = listing;
     {% endfor %}            
 

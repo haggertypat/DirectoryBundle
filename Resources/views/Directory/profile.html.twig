@@ -14,7 +14,7 @@
         
     {% if listing.location.lat is defined and listing.location.lat != "" and listing.location.lng is defined and listing.location.lng != "" %}
         <script type="text/javascript">
-            {% include 'CCETCDirectoryBundle:Directory:_listing_object.js.twig' %}
+            {% include 'CCETCDirectoryBundle:Directory:_profile_marker_object.js.twig' %}
                 
             $(document).ready(function() {
                 profileMapInit();
