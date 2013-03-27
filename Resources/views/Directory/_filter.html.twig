@@ -11,10 +11,13 @@
                 miles of
             {% endif %}
             {{ form_widget(form.children[filter.formName].children['value']) }}
-            {% if filter.isActive %}
-                {% set key = 'filter[' ~ filter.name ~ '][value]' %}
-                <a href="{{ path('listings', listingAdmin.datagridparameters(listingAdmin.datagrid, { (key) : '' })) }}" class="btn btn-small btn-danger remove-btn"><i class="icon-trash icon-white"></i> Remove</a>
-            {% endif %}
         </div>
+            {% if filter.isActive %}
+            <div class="btn-group">
+                <button type="submit" class="btn btn-primry btn-small">{{ filter.isActive? '<i class="icon-refresh icon-whit"></i> Update' : '<i class="icon-search icon-whit"></i> Go'}}</button>
+                {% set key = 'filter[' ~ filter.name ~ '][value]' %}
+                <a href="{{ path('listings', listingAdmin.datagridparameters(listingAdmin.datagrid, { (key) : '' })) }}" class="btn btn-small btn-danger"><i class="icon-trash icon-white"></i> Remove</a>
+            </div>
+            {% endif %}
         <div style="clear: both; line-height: 0px;">&nbsp;</div>
     </div>

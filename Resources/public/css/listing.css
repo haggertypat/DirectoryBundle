@@ -71,14 +71,15 @@
 }
 
 .filter {
-    float: left;
     padding: 15px;
     margin: 5px;
-    width: 254px;
+    width: 251px;
+    display: inline-block;
+    vertical-align: top;
     
     background: #f8f8f8;
     border-radius: 7px;
-    border: 1px solid #eee;
+    border: 1px solid #bce8f1;
 }
 
 .filter .filter-title {
@@ -86,13 +87,6 @@
     font-weight: bold;
 }
 
-.filter .remove-btn {
-    margin-bottom: 10px;
-}
-
-.filter div {
-    float: left;
-}
 .listings-meta {
     text-align: center;
     color: #555;
@@ -103,4 +97,8 @@
 }
 .listings-meta span.last {
     border-right: none;
+}
+.listings-info-window-container,
+.profile-info-window-container {
+    width: 300px;
 }
