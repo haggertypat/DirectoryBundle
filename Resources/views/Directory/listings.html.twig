@@ -8,7 +8,7 @@
 {% endblock %}
 
 {% block content %}
-    {% include 'CCETCDirectoryBundle:Directory:_listings_map.js.twig' %}
+  {#  {% include 'CCETCDirectoryBundle:Directory:_listings_map.js.twig' %} #}
     
     {% if searchTerms is  defined and searchTerms != "" %}
         <div class="row">
@@ -20,6 +20,65 @@
             </div>
         </div>        
     {% endif %}
+
+    {% if not singleListing %}
+        <div class="row">
+            <div class="span12">
+                <form action="{{ url('listings') }}" method="GET">
+                    {% if listingAdmin.datagrid.hasActiveFilters %}
+                        <div class="alert-block alert-success alert">
+                            <h4>Active Searches</h4>
+                            
+                            {% for filter in listingAdmin.datagrid.filters if filter.isActive %}
+                                {% include 'CCETCDirectoryBundle:Directory:_filter.html.twig' %}
+                            {% endfor %} 
+                            <div style="clear: both; line-height: 0px;">&nbsp;</div>
+                        </div>
+                    {% else %}
+                        <div class="alert-block alert-info alert">
+                            <h4>Search</h4>
+                            {% for filter in listingAdmin.datagrid.filters if filter.options.isBasic is defined and filter.options.isBasic %}
+                                {% include 'CCETCDirectoryBundle:Directory:_filter.html.twig' %}
+                            {% endfor %} 
+                            <div style="clear: both; line-height: 0px;">&nbsp;</div>
+                        </div>
+                    {% endif %}
+                    <div class="more-filters-container alert-block alert-info alert" style="display: none;">
+                        <h4>More Searches</h4>
+                        
+                        {% for filter in listingAdmin.datagrid.filters
+                            if (listingAdmin.datagrid.hasActiveFilters and not filter.isActive)
+                            or
+                            (not listingAdmin.datagrid.hasActiveFilters and (filter.options.isBasic is not defined or not filter.options.isBasic)) %}
+                                {% include 'CCETCDirectoryBundle:Directory:_filter.html.twig' %}
+                        {% endfor %} 
+                        <div style="clear: both; line-height: 0px;">&nbsp;</div>
+                    </div>
+
+                    <input type="hidden" name="filter[_page]" id="filter__page" value="1" />
+
+                    {% set foo = form.children['_page'].setRendered() %}
+                    {{ form_rest(form) }}
+
+                    <div style="clear: both; line-height: 0px;">&nbsp;</div>
+
+                    <div class="btn-group">
+                        <button type="submit" class="btn btn-primary">
+                            {% if listingAdmin.datagrid.hasActiveFilters %}
+                                <i class="icon-refresh icon-white"></i> Update
+                            {% else %}    
+                                <i class="icon-search icon-white"></i> Search
+                            {% endif %}    
+                        </button>
+                        <a class="btn more-filters-btn" href="#"><i class="icon-plus"></i> More Searches</a>
+                        <a class="btn less-filters-btn" style="display: none;" href="#"><i class="icon-minus"></i> Less Searches</a>
+                        <a class="btn" href="{{ url('listings', {filters: 'reset'}) }}"><i class="icon-remove"></i>  Clear All</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    {% endif %}
+    
     
     
     <div class="row">
@@ -94,41 +153,6 @@
             {% endif %}                
         </div>
         <div class="span5">
-            {% if not singleListing %}
-                <h3>Filter Listings</h3>
-                <form action="{{ url('listings') }}" method="GET">
-                    {% for filter in listingAdmin.datagrid.filters %}
-                        <div class="filter {{ filter.isActive? 'active' : '' }}">
-                            <div class="filter-title">{{ listingAdmin.trans(filter.label) }}</div>
-                            <div class="filter-type" style="{{ filter.options.hideValue is defined and filter.options.hideValue ? 'display: none;' : '' }}">
-                                {% if filter.name is defined and filter.name == 'location' %}
-                                    Within
-                                {% endif %}
-                                {{ form_widget(form.children[filter.formName].children['type']) }}
-                            </div>
-                            <div class="filter-value">
-                                {% if filter.name is defined and filter.name == 'location' %}
-                                    miles of
-                                {% endif %}
-                                {{ form_widget(form.children[filter.formName].children['value']) }}
-                            </div>
-                            <div style="clear: both; line-height: 0px;">&nbsp;</div>
-                        </div>
-                    {% endfor %}                        
-
-                    <input type="hidden" name="filter[_page]" id="filter__page" value="1" />
-
-                    {% set foo = form.children['_page'].setRendered() %}
-                    {{ form_rest(form) }}
-
-                    <div style="clear: both; line-height: 0px;">&nbsp;</div>
-
-                    <div>
-                        <input type="submit" class="btn btn-primary" value="Update" />
-                        <a class="btn" href="{{ url('listings', {filters: 'reset'}) }}">Clear</a>
-                    </div>
-                </form>
-            {% endif %}
             {% if listings|length > 0 %}            
                 <div id="map-canvas" class="listings-map"></div>                
             {% endif %}

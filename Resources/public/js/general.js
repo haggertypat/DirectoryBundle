@@ -35,4 +35,19 @@ $(document).ready(function() {
         window.top.location.href=this.options[this.selectedIndex].value;
     });
 
+    $('.more-filters-btn').live("click", function(e){
+        e.preventDefault();
+        $('.more-filters-container').show();
+        $(this).hide();
+        $('.less-filters-btn').show();
+    });
+    $('.less-filters-btn').live("click", function(e){
+        e.preventDefault();
+        $('.more-filters-container').hide();
+        $("html, body").animate({ scrollTop: 0 }, "fast");
+        $(this).hide();
+        $('.more-filters-btn').show();
+    });
+
+
 });

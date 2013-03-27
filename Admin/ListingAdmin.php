@@ -325,4 +325,37 @@ class ListingAdmin extends Admin
     {
         return strstr($this->getRequest()->getUri(), 'admin');
     }
+    
+    public function getRelationChoices($repository, $field = 'name', $attribute = false) {
+        $repository = $this->configurationPool->getContainer()->get('doctrine')->getRepository($repository);
+        
+        $constraints = array();
+        
+        if($attribute) {
+            $constraints['searchable'] = true;
+        }
+        
+        $entities = $repository->findBy($constraints, array($field => 'ASC'));
+        $choices = array();
+        foreach($entities as $entity)
+        {
+            $choices[$entity->getId()] = $entity->__toString();
+        }
+        
+        return $choices;        
+    }
+    
+    public function getDatagridParameters($datagrid, $additions = array())
+    {
+        $parameters = array (
+            'filter' => $datagrid->getValues()
+        );
+        
+        foreach($additions as $key => $value)
+        {
+          $parameters[$key] = $value;
+        }
+        
+        return $parameters;
+    }    
 }

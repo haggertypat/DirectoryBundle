@@ -25,6 +25,14 @@ class BaseAttribute extends BaseEntity
      */
     private $name;
 
+    /**
+     * @var boolean $searchable
+     *
+     * @ORM\Column(name="searchable", type="boolean", nullable=true)
+     */
+    private $searchable = true;    
+    
+    
     public function __toString()
     {
         return $this->getName();
@@ -61,5 +69,28 @@ class BaseAttribute extends BaseEntity
     public function getName()
     {
         return $this->name;
+    }
+    
+    /**
+     * Set searchable
+     *
+     * @param string $searchable
+     * @return Attribute
+     */
+    public function setSearchable($searchable)
+    {
+        $this->searchable = $searchable;
+    
+        return $this;
+    }
+
+    /**
+     * Get searchable
+     *
+     * @return string 
+     */
+    public function getSearchable()
+    {
+        return $this->searchable;
     }
 }

@@ -73,11 +73,21 @@
 .filter {
     float: left;
     padding: 15px;
+    margin: 5px;
+    width: 254px;
+    
+    background: #f8f8f8;
+    border-radius: 7px;
+    border: 1px solid #eee;
 }
 
 .filter .filter-title {
     float: none;
     font-weight: bold;
+}
+
+.filter .remove-btn {
+    margin-bottom: 10px;
 }
 
 .filter div {

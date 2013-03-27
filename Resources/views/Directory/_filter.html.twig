@@ -1,0 +1,20 @@
+    <div class="filter">
+        <div class="filter-title">{{ listingAdmin.trans(filter.label) }}</div>
+        <div class="filter-type" style="{{ filter.options.hideValue is defined and filter.options.hideValue ? 'display: none;' : '' }}">
+            {% if filter.name is defined and filter.name == 'location' %}
+                Within
+            {% endif %}
+            {{ form_widget(form.children[filter.formName].children['type']) }}
+        </div>
+        <div class="filter-value">
+            {% if filter.name is defined and filter.name == 'location' %}
+                miles of
+            {% endif %}
+            {{ form_widget(form.children[filter.formName].children['value']) }}
+            {% if filter.isActive %}
+                {% set key = 'filter[' ~ filter.name ~ '][value]' %}
+                <a href="{{ path('listings', listingAdmin.datagridparameters(listingAdmin.datagrid, { (key) : '' })) }}" class="btn btn-small btn-danger remove-btn"><i class="icon-trash icon-white"></i> Remove</a>
+            {% endif %}
+        </div>
+        <div style="clear: both; line-height: 0px;">&nbsp;</div>
+    </div>

@@ -14,6 +14,7 @@ class AttributeAdmin extends Admin
     {
         $formMapper
             ->add('name')
+            ->add('searchable')
         ;
     }
 
@@ -21,6 +22,7 @@ class AttributeAdmin extends Admin
     {
         $datagridMapper
              ->add('name')
+            ->add('searchable')
        ;
     }
 
@@ -28,6 +30,7 @@ class AttributeAdmin extends Admin
     {
         $listMapper
             ->addIdentifier('name')
+            ->add('searchable', null, array('editable' => true))
             ->add('_action', 'actions', array(
                 'actions' => array(
                     'edit' => array(),
