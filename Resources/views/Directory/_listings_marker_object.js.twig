@@ -1,0 +1,7 @@
+var listing={
+    lat:"{{ listing.location.lat }}",
+    lng:"{{ listing.location.lng }}",
+    name:"{{ listing.name }}",
+    id:"{{ listing.id }}",
+    infoWindowContent: "{% filter escape('js') %}{% include 'CCETCDirectoryBundle:Directory:_listings_info_window_content.html.twig' %}{% endfilter %}"
+}; 
