@@ -1,7 +1,7 @@
 {% set hasAdvancedFilters = false %}
 {% set hasActiveAdvancedFilters = false %}
 {% for filter in listingAdmin.datagrid.filters %}
-    {% if filter.options.isBasic is not defined or not filter.options.isBasic %}
+    {% if filter.options.isAdvanced is defined and filter.options.isAdvanced %}
         {% set hasAdvancedFilters = true %}
         {% if filter.isActive %}
             {% set hasActiveAdvancedFilters = true %}
@@ -13,7 +13,7 @@
         <h3>Search</h3>
         <form action="{{ url('listings') }}" method="GET">
             <div>
-                {% for filter in listingAdmin.datagrid.filters if filter.options.isBasic is defined and filter.options.isBasic %}
+                {% for filter in listingAdmin.datagrid.filters if filter.options.isAdvanced is not defined or not filter.options.isAdvanced %}
                     {% include 'CCETCDirectoryBundle:Directory:_filter.html.twig' %}
                 {% endfor %} 
                 <div style="clear: both; line-height: 0px;">&nbsp;</div>
@@ -23,7 +23,7 @@
                 <div class="more-filters-container" style="{{ not hasActiveAdvancedFilters? 'display: none;' : '' }}">
                     <h4>Advanced Search</h4>
 
-                    {% for filter in listingAdmin.datagrid.filters if filter.options.isBasic is not defined or not filter.options.isBasic %}
+                    {% for filter in listingAdmin.datagrid.filters if filter.options.isAdvanced is defined and filter.options.isAdvanced %}
                         {% include 'CCETCDirectoryBundle:Directory:_filter.html.twig' %}
                     {% endfor %} 
                     <div style="clear: both; line-height: 0px;">&nbsp;</div>

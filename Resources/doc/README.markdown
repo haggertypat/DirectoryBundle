@@ -172,6 +172,9 @@ You can extend the provided admin classes:
 
 **Note**: Make sure that any entities or fields not used by your front end do not appear on your signup form or admin classes
 
+### Frontend Filters
+The directory uses ``ListingAdmin.datagrid`` for the filters on the frontend.  Filters with the option ``isAdvanced`` equal to ``true`` will but put into an "advanced search" section.
+
 ### Signup Form
 The signup form and handler exists as services, so you can provide your own form and/or handler and override the services.  Be sure to override the form template as well.
 

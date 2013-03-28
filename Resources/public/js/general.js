@@ -44,7 +44,7 @@ $(document).ready(function() {
     $('.less-filters-btn').live("click", function(e){
         e.preventDefault();
         $('.more-filters-container').hide();
-        $("html, body").animate({ scrollTop: 0 }, "fast");
+        $("html, body").animate({ scrollTop: $(".filters-container").offset().top }, "fast");
         $(this).hide();
         $('.more-filters-btn').show();
     });

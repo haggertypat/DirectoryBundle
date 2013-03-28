@@ -71,7 +71,7 @@ class ListingAdmin extends Admin
             ;
         } else {
             $datagridMapper
-                ->add('location', 'ccetc_directory_filter_location', array('isBasic' => true))
+                ->add('location', 'ccetc_directory_filter_location')
             ;
         }
     }
