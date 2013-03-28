@@ -70,16 +70,26 @@
     margin-top: 10px;
 }
 
+.filters-container {
+    padding: 10px 20px;
+    border-radius: 7px;  
+    -moz-border-radius: 7px;
+    -webkit-border-radius: 7px;
+    margin: 0 0 15px 0;
+}
+
 .filter {
     padding: 15px;
     margin: 5px;
-    width: 251px;
+    width: 255px;
     display: inline-block;
     vertical-align: top;
     
-    background: #f8f8f8;
+    background: #f8f8f8; 
+    border: 1px solid #ccc; 
     border-radius: 7px;
-    border: 1px solid #bce8f1;
+    -moz-border-radius: 7px;
+    -webkit-border-radius: 7px;
 }
 
 .filter .filter-title {
