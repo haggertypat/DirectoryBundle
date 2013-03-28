@@ -71,9 +71,9 @@ class ListingAdmin extends Admin
             ;
         } else {
             $datagridMapper
-                ->add('location', 'ccetc_directory_filter_location', array())
-                ->add('products', null, array('field_options' => array('multiple' => true, 'expanded' => true), 'hideValue' => true))
-                ->add('attributes', null, array('field_options' => array('multiple' => true, 'expanded' => true), 'hideValue' => true))
+                ->add('location', 'ccetc_directory_filter_location', array('isBasic' => true))
+                ->add('products', null, array('field_options' => array('multiple' => true, 'expanded' => true), 'hideValue' => true, 'isBasic' => true))
+                ->add('attributes', null, array('field_options' => array('multiple' => true, 'expanded' => true), 'hideValue' => true, 'isBasic' => true))
             ;
         }
     }

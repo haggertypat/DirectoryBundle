@@ -28,7 +28,9 @@ class LocationFilter extends Filter
         $queryBuilder->leftjoin('userLoc.aliases', 'aliases');
         $queryBuilder->andWhere('aliases.alias = :alias');
         $queryBuilder->setParameter('alias', $address);        
-
+        
+        $this->active = true;
+        
         return;
     }
     
