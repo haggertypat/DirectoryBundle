@@ -13,14 +13,15 @@
     <div class="row">
         <div class="span12">
             {% if listings|length == 0 %}
-                <div class="alert alert-block" style="text-align: center;">
+                <div class="alert alert-block">
                     <h4>We couldn't find any {{ 'listings'|trans({}, "messages") }}! Try expanding your Search</h4>
                 </div>
             {% else %}
-                <div class="alert alert-block alert-info" style="text-align: center;">
+                <div class="alert alert-block alert-info">
                     <h4>
                         {% if listingAdmin.datagrid.hasActiveFilters %}
-                            Showing {{ listingAdmin.datagrid.pager.nbresults }} Search Results                            
+                            Showing {{ listingAdmin.datagrid.pager.nbresults }} Search Results                       
+                            <a class="btn btn-small pull-right" style="font-weight: normal;" href="{{ url('listings', {filters: 'reset'}) }}"><i class="icon-remove"></i>  Clear Search</a>     
                         {% else %}
                             Browsing all {{ listingAdmin.datagrid.pager.nbresults }} {{ 'listings'|trans({}, "messages") }}
                         {% endif %}

@@ -53,3 +53,6 @@
     margin: 10px 0;
     float: right;
 }
+.page-btns .btn {
+    font-weight: normal;
+}
