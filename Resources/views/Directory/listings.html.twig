@@ -10,30 +10,36 @@
 {% block content %}
     {% include 'CCETCDirectoryBundle:Directory:_listings_map.js.twig' %}
     
-    {% if not singleListing and listingAdmin.datagrid.hasActiveFilters %}
-        <div class="row">
-            <div class="span12">
-                {% include 'CCETCDirectoryBundle:Directory:_filters.html.twig' %}
-            </div>
-        </div>
-    {% endif %}
-    
-    {% if listings|length == 0 %}
-        <div class="row">
-            <div class="span12">
-                <div class="alert alert-block">
+    <div class="row">
+        <div class="span12">
+            {% if listings|length == 0 %}
+                <div class="alert alert-block" style="text-align: center;">
                     <h4>We couldn't find any {{ 'listings'|trans({}, "messages") }}! Try expanding your Search</h4>
                 </div>
-            </div>
-        </div>        
-    {% else %}
+            {% else %}
+                <div class="alert alert-block alert-info" style="text-align: center;">
+                    <h4>
+                        {% if listingAdmin.datagrid.hasActiveFilters %}
+                            Showing {{ listingAdmin.datagrid.pager.nbresults }} Search Results                            
+                        {% else %}
+                            Browsing all {{ listingAdmin.datagrid.pager.nbresults }} {{ 'listings'|trans({}, "messages") }}
+                        {% endif %}
+                    </h4>
+                </div>
+            {% endif %}
+            
+            {% if listingAdmin.datagrid.hasActiveFilters %}
+                {% include 'CCETCDirectoryBundle:Directory:_filters.html.twig' %}
+            {% endif %}
+        </div>
+    </div>     
+
+    {% if listings|length > 0 %}
         <div class="row">
             <div class="span7">
-                {% if listings|length > 0 %}
-                    {% for listing in listings %}
-                        {% include 'CCETCDirectoryBundle:Directory:_listing_block.html.twig' with {'listing' : listing, 'linkBlock' : linkBlocks } %}
-                    {% endfor %}
-                {% endif %}
+                {% for listing in listings %}
+                    {% include 'CCETCDirectoryBundle:Directory:_listing_block.html.twig' with {'listing' : listing, 'linkBlock' : linkBlocks } %}
+                {% endfor %}
                 {% if listingAdmin.datagrid.pager.haveToPaginate() and not singleListing %}
                     <tr>
                         <td colspan="{{ listingAdmin.list.elements|length }}">
@@ -72,7 +78,7 @@
                     </tr>
                 {% endif %}
                 <div class="listings-meta">
-                        <span>{{ listingAdmin.datagrid.pager.nbresults }} Listings</span>
+                        <span>{{ listingAdmin.datagrid.pager.nbresults }} {{ 'Listings'|trans({}, "messages") }}</span>
                         <span>Page {{ listingAdmin.datagrid.pager.page }} of {{ listingAdmin.datagrid.pager.lastpage }}</span>
                         <span class="last">
                             Show 
