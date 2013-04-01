@@ -128,8 +128,8 @@ class ListingAdmin extends Admin
                 ->add('approved', null, array('required' => false))
             ->end()
             ->setHelps(array(
-                'addressLabel' => 'Office, Mailing, etc.',
-                'addressLabel2' => 'Office, Mailing, etc.',
+                'addressLabel' => 'Example: Office, Mailing, etc.',
+                'addressLabel2' => 'Example: Office, Mailing, etc.',
             ))
         ;
     }
