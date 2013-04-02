@@ -2,6 +2,10 @@ listings:
     pattern:  /listings
     defaults: { _controller: CCETCDirectoryBundle:Directory:listings }
 
+generateLocations:
+    pattern:  /listings/generate-locations
+    defaults: { _controller: CCETCDirectoryBundle:Directory:generateLocations }
+
 profile:
     pattern:  /listings/{id}
     defaults: { _controller: CCETCDirectoryBundle:Directory:profile, id: id }

@@ -140,4 +140,16 @@ class DirectoryController extends Controller
         
         return $this->render('CCETCDirectoryBundle:Directory:signup.html.twig', $templateParameters);                
     }
+    
+    public function generateLocationsAction()
+    {
+        $bundleName = $this->container->getParameter('ccetc_directory.bundle_name');
+        $listingRepository = $this->getDoctrine()->getRepository($bundleName.':Listing');
+        $listingAdmin = $this->container->get('ccetc.directory.admin.listing');
+        
+        foreach($listingRepository->findAll() as $listing)
+        {
+            $listingAdmin->update($listing);
+        }
+    }
 }
