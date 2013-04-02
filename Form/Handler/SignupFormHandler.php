@@ -60,14 +60,18 @@ class SignupFormHandler
     {
         $directoryTitle = $this->container->getParameter('ccetc_directory.title');
         
+        $content = $this->container->get('templating')->render('CCETCDirectoryBundle:Directory:_new_listing_admin_email.html.twig', array(
+            'listing' => $listing,
+            'link' => $link,
+            'directoryTitle' => $directoryTitle
+        ));
+        
         $message = \Swift_Message::newInstance()
                 ->setSubject($directoryTitle.' - Sign Up')
                 ->setFrom('noreply@ccetompkins.org')
                 ->setTo($to)
                 ->setContentType('text/html')
-                ->setBody('<html>
-                       <a href="mailto:'.$listing->getPrimaryemail().'">'.$listing->__toString().'</a> signed up for '.$directoryTitle.'.<br/><br/>
-                       Approve their '.$this->container->get('translator')->trans('listing').' here: <a href="'.$link.'">' . $link . '</a></html>')
+                ->setBody($content)
         ;
         $this->container->get('mailer')->send($message);
     }
