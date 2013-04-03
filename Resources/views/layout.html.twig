@@ -97,13 +97,17 @@
                 {% if app.user.username is defined %}    
                     <ul class="frontend-admin-menu">
                         <li>
-                            <i class="icon-lock"></i> Logged in as {{ app.user.username }}
+                            <span>
+                                Logged in as {{ app.user.username }}
+                            </span>
                         </li>
                         <li>
-                            <i>Close your browser to log out</i>
+                            <span>
+                                <i>Close your browser to log out</i>
+                            </span>
                         </li>
                         <li>
-                            <a class="btn btn-small" href="{{ path('sonata_admin_dashboard') }}"><i class="icon-cog"></i> Go to Admin</a>
+                            <a class="btn btn-small" href="{{ path('sonata_admin_dashboard') }}">Go to Admin <i class="icon-arrow-right"></i></a>
                         </li>
                     </ul>
                 {% endif %}
