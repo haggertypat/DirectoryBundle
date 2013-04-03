@@ -16,6 +16,13 @@
                 <div class="alert alert-block">
                     <h4>We couldn't find any {{ 'listings'|trans({}, "messages") }}! Try expanding your Search</h4>
                 </div>
+            {% elseif singleListing %}
+                <div class="alert alert-block alert-info">
+                    <h4>
+                        Viewing a Single Listing
+                        <a href="{{ path('listings') }}" class="btn btn-small pull-right"><i class="icon-search"></i> View all</a>
+                    </h4>
+                </div>
             {% else %}
                 <div class="alert alert-block alert-info">
                     <h4>
@@ -77,8 +84,7 @@
                             </div>
                         </td>
                     </tr>
-                {% endif %}
-                <div class="listings-meta">
+                    <div class="listings-meta">
                         <span>{{ listingAdmin.datagrid.pager.nbresults }} {{ 'Listings'|trans({}, "messages") }}</span>
                         <span>Page {{ listingAdmin.datagrid.pager.page }} of {{ listingAdmin.datagrid.pager.lastpage }}</span>
                         <span class="last">
@@ -93,13 +99,8 @@
 
                             Per Page
                         </span>
-                </div>
-                {% if singleListing %}
-                    <div class="alert alert-block alert-info">
-                        <h5>Viewing a Single Listing</h5>
-                        <a href="{{ path('listings') }}" class="btn"><i class="icon-search"></i> View all</a>
                     </div>
-                {% endif %}                
+                {% endif %}
             </div>
             <div class="span5">
                 {% if listings|length > 0 %}            
