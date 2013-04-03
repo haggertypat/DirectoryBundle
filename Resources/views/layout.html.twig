@@ -96,12 +96,10 @@
                         {% if app.user.username is defined %}    
                             <ul class="frontend-admin-menu nav pull-right">
                                 <li>
-                                    <p class="navbar-text">Logged in as {{ app.user.username }}</p>
+                                    <p class="navbar-text">
+                                        Logged in as {{ app.user.username }}, <i>Close your browser to log out</i></p>
                                 </li>
                                 <li><a href="{{ path('sonata_admin_dashboard') }}">Go to Admin <i class="icon-arrow-right"></i></a>
-                                <li>
-                                    <p class="navbar-text"><i>Close your browser to log out</i></p>
-                                </li>
                             </ul>
                         {% endif %}
                     </div>
