@@ -98,10 +98,10 @@
                                 <li>
                                     <p class="navbar-text">Logged in as {{ app.user.username }}</p>
                                 </li>
+                                <li><a href="{{ path('sonata_admin_dashboard') }}">Go to Admin <i class="icon-arrow-right"></i></a>
                                 <li>
                                     <p class="navbar-text"><i>Close your browser to log out</i></p>
                                 </li>
-                                <li><a href="{{ path('sonata_admin_dashboard') }}">Go to Admin <i class="icon-arrow-right"></i></a>
                             </ul>
                         {% endif %}
                     </div>
