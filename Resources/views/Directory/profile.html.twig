@@ -30,7 +30,7 @@
             </div>
             {% if listing.webPath is defined and listing.webPath != "" %}
                 <p>
-                    <img src="{{ asset(listing.webPath) }}" />
+                    <img class="listing-photo" src="{{ asset(listing.webPath) }}" />
                 </p>
             {% endif %}
             <p class="well">
