@@ -66,8 +66,6 @@ class ListingAdmin extends Admin
                 ->add('name')
                 ->add('spam')
                 ->add('approved')
-                ->add('products')
-                ->add('attributes')
             ;
         } else {
             $datagridMapper
@@ -118,10 +116,6 @@ class ListingAdmin extends Admin
                 ->add('primaryPhoneType')
                 ->add('secondaryPhone')
                 ->add('secondaryPhoneType')
-            ->end()
-            ->with('Attributes')
-                ->add('products', null, array('expanded' => true, 'required' => false))
-                ->add('attributes', null, array('expanded' => true, 'required' => false))
             ->end()
             ->with('Status')
                 ->add('spam', null, array('required' => false))
@@ -217,10 +211,6 @@ class ListingAdmin extends Admin
                 ->add('primaryPhoneType')
                 ->add('secondaryPhone')
                 ->add('secondaryPhoneType')
-            ->end()
-            ->with('Attributes')
-                ->add('products')
-                ->add('attributes')
             ->end()
             ->with('Status')
                 ->add('spam')
