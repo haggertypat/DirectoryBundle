@@ -9,3 +9,15 @@
     line-height: 68px;
     margin-left: 10px;
 }
+
+.frontend-admin-menu {
+    margin-top: -10px;
+    font-size: 12px;
+    margin-bottom: 0px;
+    float: right;
+    list-style: none;
+}
+.frontend-admin-menu li {
+    float: left;
+    margin-left: 20px;
+}
