@@ -126,6 +126,9 @@ You need to add services for the admin classes provided that tie them to your en
 
 *Note*: ``ListingAdmin`` should use the custom controller (``CCETCDirectoryBundle:ListingAdmin``) from the bundle.
 
+### Validation
+Copy ``validation.yml.dist`` to your bundle, and customize as needed.
+
 ## Customization
 ### Child Bundle
 To override templates, make your app bundle a child of the DirectoryBundle:

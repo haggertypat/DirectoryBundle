@@ -1,0 +1,13 @@
+CCETC\DirectoryBundle\Entity\BaseListing:
+    properties:
+        name:
+            - NotBlank: ~
+        contactName:
+            - NotBlank: ~            
+        address:
+            - NotBlank: ~            
+        city:
+            - NotBlank: ~            
+        zip:
+            - NotBlank: ~            
+            
