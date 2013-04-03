@@ -13,6 +13,7 @@ namespace CCETC\DirectoryBundle\Form\Handler;
 
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Form\FormError;
 
 class SignupFormHandler
 {
@@ -35,7 +36,10 @@ class SignupFormHandler
             if($this->form->isValid()) {
                 $this->onSuccess();
                 return true;
+            } else {
+                $this->form->addError(new FormError('Please correct the errors below and re-submit'));
             }
+
         }
         return false;
     }
