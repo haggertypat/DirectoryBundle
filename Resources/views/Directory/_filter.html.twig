@@ -13,11 +13,12 @@
             {{ form_widget(form.children[filter.formName].children['value']) }}
         </div>
             {% if filter.isActive %}
-            <div class="btn-group">
-                <button type="submit" class="btn btn-primry btn-small">{{ filter.isActive? '<i class="icon-refresh icon-whit"></i> Update' : '<i class="icon-search icon-whit"></i> Go'}}</button>
-                {% set key = 'filter[' ~ filter.name ~ '][value]' %}
-                <a href="{{ path('listings', listingAdmin.datagridparameters(listingAdmin.datagrid, { (key) : '' })) }}" class="btn btn-small btn-danger"><i class="icon-trash icon-white"></i> Remove</a>
-            </div>
+                <div class="btn-group">
+                    <button type="submit" class="btn btn-small"><i class="icon-refresh icon-whit"></i> Update</button>
+                    {% set key = 'filter[' ~ filter.name ~ '][value]' %}
+                    {# filter-remove has js to clear the value and then submit #}
+                    <button type="submit" class="filter-remove btn btn-small btn-danger"><i class="icon-remove icon-white"></i> Clear</button>
+                </div>
             {% endif %}
         <div style="clear: both; line-height: 0px;">&nbsp;</div>
     </div>

@@ -32,7 +32,7 @@ function listingsMapInit()
         })(marker, listing));
         
         google.maps.event.addListener(map, 'zoom_changed', function() {
-            if (map.getZoom() > 17) map.setZoom(17);
+         //   if (map.getZoom() > 17) map.setZoom(17);
         });        
     }
         
@@ -68,3 +68,39 @@ function profileMapInit()
     })(marker, listing));   
     
 }
+
+$(document).ready(function() {
+    // map needs to be visible when rendered
+    var mapInitialized = false;
+    
+    if($('div#listings-map-container').is(':visible')) {
+        listingsMapInit();
+        mapInitialized = true;
+    }
+
+    $('a#listings-map-toggle').live("click", function(e){
+        e.preventDefault();
+        $(this).addClass('disabled');
+        $('a#listings-list-toggle').removeClass('disabled');
+        
+        $('div#listings-map-container').show();
+        $('div#listings-list-container').hide();
+        
+        if(!mapInitialized) {
+            listingsMapInit();
+            mapInitialized = true;
+        }
+
+        $('#directory-tab-value').val('map');
+    });
+    $('a#listings-list-toggle').live("click", function(e){
+        e.preventDefault();
+        $(this).addClass('disabled');
+        $('a#listings-map-toggle').removeClass('disabled');
+        
+        $('div#listings-list-container').show();
+        $('div#listings-map-container').hide();
+        
+        $('#directory-tab-value').val('list');
+    });
+});

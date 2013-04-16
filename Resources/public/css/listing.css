@@ -81,7 +81,7 @@
 .filter {
     padding: 15px;
     margin: 5px;
-    width: 255px;
+    width: 220px;
     display: inline-block;
     vertical-align: top;
     
@@ -121,4 +121,8 @@
     max-height: 400px;
     margin: 0 auto;
     display: block;
+}
+.more-filters-container,
+.standard-filters-container {
+    margin-bottom: 20px;
 }

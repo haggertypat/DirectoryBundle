@@ -44,10 +44,23 @@ $(document).ready(function() {
     $('.less-filters-btn').live("click", function(e){
         e.preventDefault();
         $('.more-filters-container').hide();
-        $("html, body").animate({ scrollTop: $(".filters-container").offset().top }, "fast");
         $(this).hide();
         $('.more-filters-btn').show();
     });
-
-
+    
+    /*
+     * When removing individual filters, actually clear the value and submit the form, so other fields in the form are included (the tab field)
+     *
+     * from: http://stackoverflow.com/questions/680241/resetting-a-multi-stage-form-with-jquery
+     */
+    $('.filter-remove').live("click", function(e){
+        e.preventDefault();
+        var filter_container = $(this).parent().parent();
+        
+        filter_container.find('input:text, input:password, input:file, select, textarea').val('');
+        filter_container.find('input:radio, input:checkbox')
+             .removeAttr('checked').removeAttr('selected');
+             
+        $('div.filters-container form').submit();     
+    });
 });

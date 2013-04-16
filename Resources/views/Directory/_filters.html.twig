@@ -9,19 +9,27 @@
     {% endif %}
 {% endfor %}
 
-    <div class="filters-container">
-        <h3>Search</h3>
+    <div class="filters-container {{ listingAdmin.datagrid.hasActiveFilters? 'alert-success alert alert-block' : 'well' }}">
+        <h3 id="search-heading">
+            Search
+            {% if listingAdmin.datagrid.hasActiveFilters %}<a class="btn btn-danger pull-right btn-small" style="margin-top: 6px;" href="{{ url('listings', {filters: 'reset'}) }}"><i class="icon-remove icon-white"></i>  Clear Search</a>{% endif %}            
+        </h3>
         <form action="{{ url('listings') }}" method="GET">
-            <div>
+            <div class="standard-filters-container">
                 {% for filter in listingAdmin.datagrid.filters if filter.options.isAdvanced is not defined or not filter.options.isAdvanced %}
                     {% include 'CCETCDirectoryBundle:Directory:_filter.html.twig' %}
                 {% endfor %} 
                 <div style="clear: both; line-height: 0px;">&nbsp;</div>
             </div>
-            <br/>
+            
             {% if hasAdvancedFilters %}
                 <div class="more-filters-container" style="{{ not hasActiveAdvancedFilters? 'display: none;' : '' }}">
-                    <h4>Advanced Search</h4>
+                    <h4>
+                        Advanced Search
+                    {% if hasAdvancedFilters and not hasActiveAdvancedFilters %}
+                        <a class="btn less-filters-btn btn-small pull-right" style="display: none;" href="#"><i class="icon-remove"></i> Close</a>
+                    {% endif %}
+                    </h4>
 
                     {% for filter in listingAdmin.datagrid.filters if filter.options.isAdvanced is defined and filter.options.isAdvanced %}
                         {% include 'CCETCDirectoryBundle:Directory:_filter.html.twig' %}
@@ -32,17 +40,18 @@
 
             <input type="hidden" name="filter[_page]" id="filter__page" value="1" />
 
+            <input type="hidden" name="tab" id="directory-tab-value" value="{{ tab }}" />
+            
             {% set foo = form.children['_page'].setRendered() %}
             {{ form_rest(form) }}
 
-            <div style="clear: both; line-height: 0px;">&nbsp;</div>
-
-            <br/>
-            <button type="submit" class="btn btn-primary"><i class="icon-search icon-white"></i> Go</button>
-            {% if listingAdmin.datagrid.hasActiveFilters %}<a class="btn btn-link" href="{{ url('listings', {filters: 'reset'}) }}"><i class="icon-trash"></i>  Remove All</a>{% endif %}
             {% if hasAdvancedFilters and not hasActiveAdvancedFilters %}
-                <a class="btn less-filters-btn btn-link" style="display: none;" href="#"><i class="icon-remove"></i> Cancel</a>
-                <a class="btn more-filters-btn btn-link" href="#"><i class="icon-cog"></i> Advanced Search</a>
+                <a class="btn more-filters-btn btn-small btn-link pull-right" href="#"><i class="icon-cog"></i> Advanced Search</a>
             {% endif %}
+
+            <button type="submit" class="btn {{ listingAdmin.datagrid.hasActiveFilters? '' : 'btn-primary' }}">
+                <i class="{{ listingAdmin.datagrid.hasActiveFilters? 'icon-refresh' : 'icon-search icon-white' }}"></i>
+                {{ listingAdmin.datagrid.hasActiveFilters? 'Update All' : 'Go' }}
+            </button>
         </form>
     </div>
