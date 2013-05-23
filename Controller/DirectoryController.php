@@ -72,6 +72,8 @@ class DirectoryController extends Controller
             $singleListing = false;
         }
         
+        $this->getRequest()->getSession()->set('lastListingsUri', $this->getRequest()->getUri());
+        
         $templateParameters = array(
             'listingAdmin' => $listingAdmin,
             'listings' => $listings,
