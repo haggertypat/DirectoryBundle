@@ -18,6 +18,10 @@
                 <source>Listings</source>
                 <target>Listings</target>
             </trans-unit>
+            <trans-unit id="Advanced Search">
+                <source>Advanced Search</source>
+                <target>Advanced Search</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

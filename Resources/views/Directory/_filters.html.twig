@@ -25,7 +25,7 @@
             {% if hasAdvancedFilters %}
                 <div class="more-filters-container" style="{{ not hasActiveAdvancedFilters? 'display: none;' : '' }}">
                     <h4>
-                        Advanced Search
+                    {{ 'Advanced Search'|trans({}, "messages") }}
                     {% if hasAdvancedFilters and not hasActiveAdvancedFilters %}
                         <a class="btn less-filters-btn btn-small pull-right" style="display: none;" href="#"><i class="icon-remove"></i> Close</a>
                     {% endif %}
