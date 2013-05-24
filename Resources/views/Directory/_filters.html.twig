@@ -23,10 +23,10 @@
             </div>
             
             {% if hasAdvancedFilters %}
-                <div class="more-filters-container" style="{{ not listingAdmin.datagrid.hasActiveFilters? 'display: none;' : '' }}">
+                <div class="more-filters-container" style="{{ not hasActiveAdvancedFilters? 'display: none;' : '' }}">
                     <h4>
                     {{ 'Advanced Search'|trans({}, "messages") }}
-                    {% if hasAdvancedFilters and not listingAdmin.datagrid.hasActiveFilters %}
+                    {% if hasAdvancedFilters and not hasActiveAdvancedFilters %}
                         <a class="btn less-filters-btn btn-small pull-right" style="display: none;" href="#"><i class="icon-remove"></i> Close</a>
                     {% endif %}
                     </h4>
@@ -45,7 +45,7 @@
             {% set foo = form.children['_page'].setRendered() %}
             {{ form_rest(form) }}
 
-            {% if hasAdvancedFilters and not listingAdmin.datagrid.hasActiveFilters %}
+            {% if hasAdvancedFilters and not hasActiveAdvancedFilters %}
                 <a class="btn more-filters-btn btn-small btn-link pull-right" href="#"><i class="icon-cog"></i> {{ 'Advanced Search'|trans({}, "messages") }}</a>
             {% endif %}
 
