@@ -36,6 +36,7 @@ class Configuration implements ConfigurationInterface
                 ->scalarNode('google_maps_key')->defaultvalue(null)->end()
                 ->scalarNode('google_analytics_account')->defaultvalue(null)->end()
                 ->scalarNode('use_profiles')->defaultvalue(true)->end()
+                ->scalarNode('always_show_advanced_search')->defaultvalue(true)->end()
             ->end()
         ;
 

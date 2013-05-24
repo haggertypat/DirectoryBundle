@@ -23,7 +23,7 @@
             </div>
             
             {% if hasAdvancedFilters %}
-                <div class="more-filters-container" style="{{ not hasActiveAdvancedFilters? 'display: none;' : '' }}">
+                <div class="more-filters-container" style="{{ not hasActiveAdvancedFilters and not alwaysShowAdvancedSearch? 'display: none;' : '' }}">
                     <h4>
                     {{ 'Advanced Search'|trans({}, "messages") }}
                     {% if hasAdvancedFilters and not hasActiveAdvancedFilters %}
@@ -45,7 +45,7 @@
             {% set foo = form.children['_page'].setRendered() %}
             {{ form_rest(form) }}
 
-            {% if hasAdvancedFilters and not hasActiveAdvancedFilters %}
+            {% if hasAdvancedFilters and not hasActiveAdvancedFilters and not alwaysShowAdvancedSearch %}
                 <a class="btn more-filters-btn btn-small btn-link pull-right" href="#"><i class="icon-cog"></i> {{ 'Advanced Search'|trans({}, "messages") }}</a>
             {% endif %}
 

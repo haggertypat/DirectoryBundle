@@ -40,7 +40,8 @@ class CCETCDirectoryExtension extends Extension
             'og_url',
             'google_maps_key',
             'google_analytics_account',
-            'use_profiles'
+            'use_profiles',
+            'always_show_advanced_search'
         );
         
         foreach($keys as $key)

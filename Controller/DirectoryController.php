@@ -22,6 +22,7 @@ class DirectoryController extends Controller
         $listingRepository = $this->getDoctrine()->getRepository($bundleName.':Listing');
         $userLocationRepository = $this->getDoctrine()->getRepository($bundleName.':UserLocation');
         $userLocationAliasRepository = $this->getDoctrine()->getRepository($bundleName.':UserLocationAlias');
+        $alwaysShowAdvancedSearch = $this->container->getParameter('ccetc_directory.always_show_advanced_search');
         
         $request = $this->getRequest();
         $listingAdmin->setRequest($request);        
@@ -80,7 +81,8 @@ class DirectoryController extends Controller
             'form'     => $datagridFormView,
             'datagrid' => $datagrid,
             'singleListing' => $singleListing,
-            'linkBlocks' => $linkBlocks
+            'linkBlocks' => $linkBlocks,
+            'alwaysShowAdvancedSearch' => $alwaysShowAdvancedSearch
         );
                 
                 
