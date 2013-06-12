@@ -108,7 +108,7 @@
                         Show 
                         <select class="per-page" id="{{ listingAdmin.uniqid }}_per_page" style="width: auto; height: auto; margin-bottom: 2px;">
                             {% for per_page in listingAdmin.getperpageoptions %}
-                                <option {% if per_page == listingAdmin.datagrid.pager.maxperpage %}selected="selected"{% endif %} value="{{ path('listings', {'filter': listingAdmin.datagrid.values | merge({'_per_page': per_page })}) }}">
+                                <option {% if per_page == listingAdmin.datagrid.pager.maxperpage %}selected="selected"{% endif %} value="{{ path('listings', {'filter': listingAdmin.datagrid.values | merge({'_per_page': per_page, '_page' : '1' })}) }}">
                                     {{ per_page }}
                                 </option>
                             {% endfor %}
