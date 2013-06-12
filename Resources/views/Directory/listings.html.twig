@@ -60,7 +60,7 @@
                     {% include 'CCETCDirectoryBundle:Directory:_listing_block.html.twig' with {'listing' : listing, 'linkBlock' : linkBlocks } %}
                 {% endfor %}
             </div>
-            <div id="listings-map-container" style="{{ tab == 'map' ? 't' : 'display: none;' }}">
+            <div id="listings-map-container" style="{{ tab == 'map' ? '' : 'display: none;' }}">
                 <div id="map-canvas" class="listings-map"></div>                
             </div>
             {% if listingAdmin.datagrid.pager.haveToPaginate() and not singleListing %}
