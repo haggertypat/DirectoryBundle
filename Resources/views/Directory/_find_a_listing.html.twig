@@ -15,7 +15,7 @@
         <h4>that sells</h4>
         <span>
             <select name="filter[products][value][]" class="products">
-              <option value="0">any Product</option>
+              <option value="">any Product</option>
               {% for product in products %}
                 <option {{ filters.product is defined and filters.product == product.id ? 'selected' : ''}} value="{{ product.id }}">{{ product.name }}</option>
               {% endfor %}
