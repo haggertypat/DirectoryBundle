@@ -100,7 +100,7 @@
                     </td>
                 </tr>
             {% endif %}  
-            {% if listings|length != 0 %}
+            {% if listings|length != 0 and not singleListing %}
                 <div class="listings-meta">
                     <span>{{ listingAdmin.datagrid.pager.nbresults }} {{ 'Listings'|trans({}, "messages") }}</span>
                     <span>Page {{ listingAdmin.datagrid.pager.page }} of {{ listingAdmin.datagrid.pager.lastpage }}</span>
