@@ -10,11 +10,20 @@
 {% endfor %}
 
     <div class="filters-container {{ listingAdmin.datagrid.hasActiveFilters? 'alert-success alert alert-block' : 'well' }}">
-        <h3 id="search-heading">
-            Search
-            {% if listingAdmin.datagrid.hasActiveFilters %}<a class="btn btn-danger pull-right btn-small" style="margin-top: 6px;" href="{{ url('listings', {filters: 'reset'}) }}"><i class="icon-remove icon-white"></i>  Clear Search</a>{% endif %}            
-        </h3>
         <form action="{{ url('listings') }}" method="GET">
+            <h3 id="search-heading">
+                Search
+                <span style="margin-top: 5px;" class="btn-group pull-right">
+                    {% if hasAdvancedFilters %}            
+                        <button type="submit" class="btn-small btn {{ listingAdmin.datagrid.hasActiveFilters? '' : 'btn-primary' }}">
+                            <i class="{{ listingAdmin.datagrid.hasActiveFilters? 'icon-refresh' : 'icon-search icon-white' }}"></i>
+                            {{ listingAdmin.datagrid.hasActiveFilters? 'Search Again' : 'Go' }}
+                        </button>            
+                    {% endif %}
+                    {% if listingAdmin.datagrid.hasActiveFilters %}<a class="btn btn-danger btn-small" href="{{ url('listings', {filters: 'reset'}) }}"><i class="icon-remove icon-white"></i> Clear Search</a>{% endif %}            
+
+                </span>
+            </h3>
             <div class="standard-filters-container">
                 {% for filter in listingAdmin.datagrid.filters if filter.options.isAdvanced is not defined or not filter.options.isAdvanced %}
                     {% include 'CCETCDirectoryBundle:Directory:_filter.html.twig' %}
