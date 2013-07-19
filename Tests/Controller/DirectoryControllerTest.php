@@ -6,6 +6,34 @@ use CCETC\DirectoryBundle\Tests\BaseWebTestCase;
 
 class DirectoryControllerTest extends BaseWebTestCase
 {
+    // just test that the form can be submitted, and that it takes you to a listings search
+    public function testFindAListing()
+    {
+        $client = static::createClient();
+
+        $crawler = $client->request('GET', '/');
+
+        $buttonCrawlerNode = $crawler->selectButton('find-a-listing-submit');
+
+        $form = $buttonCrawlerNode->form();
+
+        $form['filter']['products']['value']->select('1');
+        $form['filter[location][type]'] = 25;
+        $form['filter[location][value]'] = '14850';
+
+        $crawler = $client->submit($form);
+
+
+        $this->assertTrue($client->getResponse()->isSuccessful(), 'filter form cannot be submitted');
+
+        $this->assertEquals(0, $crawler->filter('#browse-all-message')->count(), 'browse all message is visible');  
+
+        $this->assertTrue(
+            $crawler->filter('#search-results-message')->count() == 1 || $crawler->filter('#no-search-results-message')->count() == 1,
+            'search results message is not visible'
+        );          
+    }
+
     public function testListingsLoads()
     {
         $client = static::createClient();
@@ -32,25 +60,33 @@ class DirectoryControllerTest extends BaseWebTestCase
         }
     }
 
-    public function testFilters()
+    public function testFilterFormCanBeSubmitted()
     {
         $client = static::createClient();
 
         $crawler = $client->request('GET', '/listings');
 
-        // TODO: I hate having to select this button by the text - what if I offer i18n support or a client wants to change the text for their installation?
-		$buttonCrawlerNode = $crawler->selectButton('Go');
+        $this->assertEquals(1, $crawler->filter('#browse-all-message')->count(), 'browse all message is not visible');          
+
+		$buttonCrawlerNode = $crawler->selectButton('filter-form-submit');
         $form = $buttonCrawlerNode->form();
 
         $form['filter']['products']['value']->select('1');
         $form['filter']['attributes']['value'][0]->tick();
-
+        $form['filter[location][type]'] = 25;
+        $form['filter[location][value]'] = '14850';
 
 		$crawler = $client->submit($form);
 
-        echo $crawler->filter('.listing-block-container')->count();
-
 		$this->assertTrue($client->getResponse()->isSuccessful(), 'filter form cannot be submitted');
+
+        $this->assertEquals(0, $crawler->filter('#browse-all-message')->count(), 'browse all message is visible');  
+
+        $this->assertTrue(
+            $crawler->filter('#search-results-message')->count() == 1 || $crawler->filter('#no-search-results-message')->count() == 1,
+            'search results message is not visible'
+        );          
+
     }
 
     public function testProfileLoads()
@@ -121,6 +157,15 @@ class DirectoryControllerTest extends BaseWebTestCase
         $crawler = $client->request('GET', '/listings/'.$listing->getId());        
 
         $this->assertTrue($client->getResponse()->isSuccessful());        
+    }
+
+    public function testSignupLoads()
+    {
+        $client = static::createClient();
+
+        $crawler = $client->request('GET', '/signup');
+
+        $this->assertTrue($client->getResponse()->isSuccessful());
     }
 
 }

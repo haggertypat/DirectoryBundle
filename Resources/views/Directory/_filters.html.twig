@@ -58,7 +58,7 @@
                 <a class="btn more-filters-btn btn-small btn-link pull-right" href="#"><i class="icon-cog"></i> {{ 'Advanced Search'|trans({}, "messages") }}</a>
             {% endif %}
 
-            <button type="submit" class="btn {{ listingAdmin.datagrid.hasActiveFilters? '' : 'btn-primary' }}">
+            <button type="submit" id="filter-form-submit" class="btn {{ listingAdmin.datagrid.hasActiveFilters? '' : 'btn-primary' }}">
                 <i class="{{ listingAdmin.datagrid.hasActiveFilters? 'icon-refresh' : 'icon-search icon-white' }}"></i>
                 {{ listingAdmin.datagrid.hasActiveFilters? 'Search Again' : 'Go' }}
             </button>

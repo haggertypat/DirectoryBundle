@@ -14,7 +14,7 @@
     {% if includeProducts %}
         <h4>that sells</h4>
         <span>
-            <select name="filter[products][value][]" class="products">
+            <select name="filter[products][value]" class="products">
               <option value="">any Product</option>
               {% for product in products %}
                 <option {{ filters.product is defined and filters.product == product.id ? 'selected' : ''}} value="{{ product.id }}">{{ product.name }}</option>
@@ -24,10 +24,7 @@
     {% endif %}
 
     <div class="pull-right">
-        <button type="submit" class="btn">{{ filters is defined and filters != "" ? '<i class="icon-refresh"></i> Update' : '<i class="icon-search"></i> Search' }}</button>
-        {% if filters is defined and filters != "" %}
-            <a href="{{ path('listings') }}" class="btn"><i class="icon-remove"></i> Clear Search</a>
-        {% endif %}
+        <button id="find-a-listing-submit" type="submit" class="btn"><i class="icon-search"></i> Search</button>
     </div>
     <div style="clear: both; line-height: 0;">&nbsp;</div>
 </form>

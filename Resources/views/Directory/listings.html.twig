@@ -30,7 +30,7 @@
         </div>
         <div class="span8">
             {% if listings|length == 0 %}
-                <div class="alert alert-block">
+                <div id="no-search-results-message" class="alert alert-block">
                     <h4>We couldn't find any {{ 'listings'|trans({}, "messages") }}! Try expanding your Search</h4>
                 </div>
             {% elseif singleListing %}
@@ -41,13 +41,13 @@
                     </h4>
                 </div>
             {% elseif listingAdmin.datagrid.hasActiveFilters %}
-                <div class="alert alert-block alert-success">
+                <div id="search-results-message" class="alert alert-block alert-success">
                     <h4>
                             Showing {{ listingAdmin.datagrid.pager.nbresults }} Search Results                       
                     </h4>
                 </div>
             {% else %}
-                <div class="alert alert-block alert-info">
+                <div id="browse-all-message" class="alert alert-block alert-info">
                     <h4>
                         Browsing all {{ listingAdmin.datagrid.pager.nbresults }} {{ 'listings'|trans({}, "messages") }}
                     </h4>
