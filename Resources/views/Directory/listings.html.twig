@@ -44,7 +44,6 @@
                 <div class="alert alert-block alert-success">
                     <h4>
                             Showing {{ listingAdmin.datagrid.pager.nbresults }} Search Results                       
-                            <a class="btn btn-small pull-right btn-danger" style="font-weight: normal;" href="{{ url('listings', {filters: 'reset'}) }}"><i class="icon-remove icon-white"></i>  Clear Search</a>     
                     </h4>
                 </div>
             {% else %}
@@ -59,65 +58,65 @@
                 {% for listing in listings %}
                     {% include 'CCETCDirectoryBundle:Directory:_listing_block.html.twig' with {'listing' : listing, 'linkBlock' : linkBlocks } %}
                 {% endfor %}
+                {% if listingAdmin.datagrid.pager.haveToPaginate() and not singleListing %}
+                    <tr>
+                        <td colspan="{{ listingAdmin.list.elements|length }}">
+                            <div class="pagination pagination-centered">
+                                <ul>
+                                    {% if listingAdmin.datagrid.pager.page != 1  %}
+                                        <li><a href="{{ path('listings', listingAdmin.modelmanager.paginationparameters(listingAdmin.datagrid, 1)) }}" title="{{ 'link_first_pager'|trans({}, 'SonataAdminBundle') }}">&laquo;</a></li>
+                                    {% endif %}
+
+                                    {% if listingAdmin.datagrid.pager.page != listingAdmin.datagrid.pager.previouspage %}
+                                        <li><a href="{{ path('listings', listingAdmin.modelmanager.paginationparameters(listingAdmin.datagrid, listingAdmin.datagrid.pager.previouspage)) }}" title="{{ 'link_previous_pager'|trans({}, 'SonataAdminBundle') }}">&lsaquo;</a></li>
+                                    {% endif %}
+
+                                    {# Set the number of pages to display in the pager #}
+                                    {% set firstTile = listingAdmin.datagrid.pager.page - 4 %}
+                                    {% set lastTile = listingAdmin.datagrid.pager.page + 4 %}
+
+                                    {% for page in listingAdmin.datagrid.pager.getLinks() if (page > firstTile and page < lastTile)  %}
+                                        {% if page == listingAdmin.datagrid.pager.page %}
+                                            <li class="active"><a href="{{ path('listings', listingAdmin.modelmanager.paginationparameters(listingAdmin.datagrid, page)) }}">{{ page }}</a></li>
+                                        {% else %}
+                                            <li><a href="{{ path('listings', listingAdmin.modelmanager.paginationparameters(listingAdmin.datagrid, page)) }}">{{ page }}</a></li>
+                                        {% endif %}
+                                    {% endfor %}
+
+                                    {% if listingAdmin.datagrid.pager.page != listingAdmin.datagrid.pager.nextpage %}
+                                        <li><a href="{{ path('listings', listingAdmin.modelmanager.paginationparameters(listingAdmin.datagrid, listingAdmin.datagrid.pager.nextpage)) }}" title="{{ 'link_next_pager'|trans({}, 'SonataAdminBundle') }}">&rsaquo;</a></li>
+                                    {% endif %}
+
+                                    {% if listingAdmin.datagrid.pager.page != listingAdmin.datagrid.pager.lastpage  %}
+                                        <li><a href="{{ path('listings', listingAdmin.modelmanager.paginationparameters(listingAdmin.datagrid, listingAdmin.datagrid.pager.lastpage)) }}" title="{{ 'link_last_pager'|trans({}, 'SonataAdminBundle') }}">&raquo;</a></li>
+                                    {% endif %}
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+                {% endif %}  
+                {% if listings|length != 0 and not singleListing %}
+                    <div class="listings-meta">
+                        <span>{{ listingAdmin.datagrid.pager.nbresults }} {{ 'Listings'|trans({}, "messages") }}</span>
+                        <span>Page {{ listingAdmin.datagrid.pager.page }} of {{ listingAdmin.datagrid.pager.lastpage }}</span>
+                        <span class="last">
+                            Show 
+                            <select class="per-page" id="{{ listingAdmin.uniqid }}_per_page" style="width: auto; height: auto; margin-bottom: 2px;">
+                                {% for per_page in listingAdmin.getperpageoptions %}
+                                    <option {% if per_page == listingAdmin.datagrid.pager.maxperpage %}selected="selected"{% endif %} value="{{ path('listings', {'filter': listingAdmin.datagrid.values | merge({'_per_page': per_page, '_page' : '1' })}) }}">
+                                        {{ per_page }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+
+                            Per Page
+                        </span>
+                    </div>
+                {% endif %}  
             </div>
             <div id="listings-map-container" style="{{ tab == 'map' ? '' : 'display: none;' }}">
                 <div id="map-canvas" class="listings-map"></div>                
             </div>
-            {% if listingAdmin.datagrid.pager.haveToPaginate() and not singleListing %}
-                <tr>
-                    <td colspan="{{ listingAdmin.list.elements|length }}">
-                        <div class="pagination pagination-centered">
-                            <ul>
-                                {% if listingAdmin.datagrid.pager.page != 1  %}
-                                    <li><a href="{{ path('listings', listingAdmin.modelmanager.paginationparameters(listingAdmin.datagrid, 1)) }}" title="{{ 'link_first_pager'|trans({}, 'SonataAdminBundle') }}">&laquo;</a></li>
-                                {% endif %}
-
-                                {% if listingAdmin.datagrid.pager.page != listingAdmin.datagrid.pager.previouspage %}
-                                    <li><a href="{{ path('listings', listingAdmin.modelmanager.paginationparameters(listingAdmin.datagrid, listingAdmin.datagrid.pager.previouspage)) }}" title="{{ 'link_previous_pager'|trans({}, 'SonataAdminBundle') }}">&lsaquo;</a></li>
-                                {% endif %}
-
-                                {# Set the number of pages to display in the pager #}
-                                {% set firstTile = listingAdmin.datagrid.pager.page - 4 %}
-                                {% set lastTile = listingAdmin.datagrid.pager.page + 4 %}
-
-                                {% for page in listingAdmin.datagrid.pager.getLinks() if (page > firstTile and page < lastTile)  %}
-                                    {% if page == listingAdmin.datagrid.pager.page %}
-                                        <li class="active"><a href="{{ path('listings', listingAdmin.modelmanager.paginationparameters(listingAdmin.datagrid, page)) }}">{{ page }}</a></li>
-                                    {% else %}
-                                        <li><a href="{{ path('listings', listingAdmin.modelmanager.paginationparameters(listingAdmin.datagrid, page)) }}">{{ page }}</a></li>
-                                    {% endif %}
-                                {% endfor %}
-
-                                {% if listingAdmin.datagrid.pager.page != listingAdmin.datagrid.pager.nextpage %}
-                                    <li><a href="{{ path('listings', listingAdmin.modelmanager.paginationparameters(listingAdmin.datagrid, listingAdmin.datagrid.pager.nextpage)) }}" title="{{ 'link_next_pager'|trans({}, 'SonataAdminBundle') }}">&rsaquo;</a></li>
-                                {% endif %}
-
-                                {% if listingAdmin.datagrid.pager.page != listingAdmin.datagrid.pager.lastpage  %}
-                                    <li><a href="{{ path('listings', listingAdmin.modelmanager.paginationparameters(listingAdmin.datagrid, listingAdmin.datagrid.pager.lastpage)) }}" title="{{ 'link_last_pager'|trans({}, 'SonataAdminBundle') }}">&raquo;</a></li>
-                                {% endif %}
-                            </ul>
-                        </div>
-                    </td>
-                </tr>
-            {% endif %}  
-            {% if listings|length != 0 and not singleListing %}
-                <div class="listings-meta">
-                    <span>{{ listingAdmin.datagrid.pager.nbresults }} {{ 'Listings'|trans({}, "messages") }}</span>
-                    <span>Page {{ listingAdmin.datagrid.pager.page }} of {{ listingAdmin.datagrid.pager.lastpage }}</span>
-                    <span class="last">
-                        Show 
-                        <select class="per-page" id="{{ listingAdmin.uniqid }}_per_page" style="width: auto; height: auto; margin-bottom: 2px;">
-                            {% for per_page in listingAdmin.getperpageoptions %}
-                                <option {% if per_page == listingAdmin.datagrid.pager.maxperpage %}selected="selected"{% endif %} value="{{ path('listings', {'filter': listingAdmin.datagrid.values | merge({'_per_page': per_page, '_page' : '1' })}) }}">
-                                    {{ per_page }}
-                                </option>
-                            {% endfor %}
-                        </select>
-
-                        Per Page
-                    </span>
-                </div>
-            {% endif %}  
         </div>
     </div>
     

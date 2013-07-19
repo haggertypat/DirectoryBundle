@@ -67,17 +67,24 @@ class DirectoryController extends Controller
             
         if(isset($listingId)) {
             $listings = $listingRepository->findById($listingId);
+            $mapListings = $listings;
             $singleListing = true;
         } else {
             $listings = $datagrid->getResults();
+            
+            // get all the listings for the map
+            $query = $datagrid->getQuery();
+            $query->setMaxResults(10000000);
+            $mapListings = $query->getQuery()->execute();
             $singleListing = false;
         }
-        
+
         $this->getRequest()->getSession()->set('lastListingsUri', $this->getRequest()->getUri());
         
         $templateParameters = array(
             'listingAdmin' => $listingAdmin,
             'listings' => $listings,
+            'mapListings' => $mapListings,
             'form'     => $datagridFormView,
             'datagrid' => $datagrid,
             'singleListing' => $singleListing,

@@ -14,10 +14,10 @@
         </div>
             {% if filter.isActive %}
                 <div class="btn-group">
-                    <button type="submit" class="btn btn-small"><i class="icon-refresh icon-whit"></i> Search Again</button>
+                    <button type="submit" class="btn btn-mini"><i class="icon-refresh"></i> Search Again</button>
                     {% set key = 'filter[' ~ filter.name ~ '][value]' %}
                     {# filter-remove has js to clear the value and then submit #}
-                    <button type="submit" class="filter-remove btn btn-small btn-danger"><i class="icon-remove icon-white"></i> Clear</button>
+                    <button type="submit" class="filter-remove btn btn-mini btn-anger"><i class="icon-remove icon-wite"></i> Clear</button>
                 </div>
             {% endif %}
         <div style="clear: both; line-height: 0px;">&nbsp;</div>
