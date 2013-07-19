@@ -6,12 +6,12 @@
         <div class="btn-group pull-right">
             <a class="btn" href="javascript:if(window.print)window.print()" ><i class="icon-print"></i> Print</a> 
             {% if is_granted("ROLE_ADMIN") %}
-                <a class="btn" href="{{ listingAdmin.generateObjectUrl('edit', listing) }}" ><i class="icon-pencil"></i> Edit</a> 
+                <a class="btn edit-btn" href="{{ listingAdmin.generateObjectUrl('edit', listing) }}" ><i class="icon-pencil"></i> Edit</a> 
             {% endif %}
         </div>
         <div style="clear: both; line-height: 0px;">&nbsp;</div>
     </div>
-    <h1>{{ listing.name }}</h1>
+    <h1 id="profile-heading">{{ listing.name }}</h1>
 {% endblock %}
 
 {% block content %}

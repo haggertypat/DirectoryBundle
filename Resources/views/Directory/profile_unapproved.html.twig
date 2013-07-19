@@ -1,8 +1,0 @@
-{% extends layoutTemplate %}
-
-{% block content %}
-    <div class="alert alert-block alert-error clearfix">
-        <h4>This Listing has not been approved yet.  If you are an admin, <a href="{{ listingAdmin.generateObjectUrl('edit', listing) }}">Log In</a> to approve it.</h4>
-        <a href="{{ listingAdmin.generateObjectUrl('edit', listing) }}" class="btn pull-right"><i class="icon-lock"></i> Log In</a>
-    </div>
-{% endblock %}

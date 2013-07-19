@@ -34,7 +34,7 @@
                     <h4>We couldn't find any {{ 'listings'|trans({}, "messages") }}! Try expanding your Search</h4>
                 </div>
             {% elseif singleListing %}
-                <div class="alert alert-block alert-success">
+                <div class="alert alert-block alert-success" id="single-listing-message">
                     <h4>
                         Viewing a Single Listing
                         <a href="{{ path('listings') }}" class="btn btn-small pull-right"><i class="icon-search"></i> View all</a>

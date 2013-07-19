@@ -91,23 +91,22 @@ class DirectoryController extends Controller
     
     public function profileAction($id)
     {
-        $useProfiles = $this->container->getParameter('ccetc_directory.use_profiles');
-        
-        if(!$useProfiles) {
-            return $this->forward('CCETCDirectoryBundle:Directory:listings', array('listingId' => $id));
-        }
-        
         $bundleName = $this->container->getParameter('ccetc_directory.bundle_name');
         $listingAdmin = $this->get('ccetc.directory.admin.listing');
         $listingRepository = $this->getDoctrine()->getRepository($bundleName.':Listing');
         $listing = $listingRepository->findOneById($id);
 
-        if($listing->getApproved() || $this->get('security.context')->isGranted('ROLE_ADMIN') ) {
-            $template = 'CCETCDirectoryBundle:Directory:profile.html.twig';
-        } else {
-            $template = 'CCETCDirectoryBundle:Directory:profile_unapproved.html.twig';
+        if(!$listing->getApproved() && !$this->get('security.context')->isGranted('ROLE_ADMIN') ) {
+            throw new \Exception("This profile has not been approved yet.  If you are an admin, login to approve this listing.");   
         }
-        return $this->render($template, array(
+
+        $useProfiles = $this->container->getParameter('ccetc_directory.use_profiles');
+        
+        if(!$useProfiles) {
+            return $this->forward('CCETCDirectoryBundle:Directory:listings', array('listingId' => $id));
+        }
+
+        return $this->render('CCETCDirectoryBundle:Directory:profile.html.twig', array(
             'listingAdmin' => $listingAdmin,
             'listing' => $listing
         ));                                    

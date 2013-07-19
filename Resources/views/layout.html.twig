@@ -94,7 +94,7 @@
                         {{ knp_menu_render(directoryMenuBuilder, {'currentClass' : 'active' } ) }}
                             
                         {% if app.user.username is defined %}    
-                            <ul class="frontend-admin-menu nav pull-right">
+                            <ul id="frontend-admin-menu" class="nav pull-right">
                                 <li>
                                     <p class="navbar-text">
                                         Logged in as {{ app.user.username }}, <i>Close your browser to log out</i></p>

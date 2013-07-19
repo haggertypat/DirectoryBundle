@@ -5,12 +5,10 @@ namespace CCETC\DirectoryBundle\Helper;
 class Geocoder
 {
     protected $googleMapsKey;
-    protected $container;
     
-    public function __construct($googleMapsKey, $container)
+    public function __construct($googleMapsKey)
     {
         $this->googleMapsKey = $googleMapsKey;
-        $this->container = $container;
     }
     
     public function geocodeAddress($string)
