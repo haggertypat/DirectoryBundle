@@ -26,7 +26,7 @@
         "sonata-project/admin-bundle": "2.1.*@dev",
         "sonata-project/doctrine-orm-admin-bundle": "2.1.*@dev",
         "doctrine/common": ">=2.2,<3.0",
-        "mopa/bootstrap-bundle": "dev-master"
+        "mopa/bootstrap-bundle": "~2.1"
     },
     "autoload": {
         "psr-0": { "CCETC\\DirectoryBundle": "" }
