@@ -14,9 +14,11 @@ Add to your composer.json:
 
 Run ``php composer.phar install``
 
-### add to ``AppKernel.php->registerBundles`` *before* your bundle
+### add to ``AppKernel.php->registerBundles``
 
     new CCETC\DirectoryBundle\CCETCDirectoryBundle()
+
+*NOTE*: Be sure to add the bundle before your App's bundle, so you can override translations.
 
 ### routes
 You must add ``home`` and ``about`` routes to your bundle.
@@ -149,7 +151,7 @@ If you're using the bundle as a parent bundle, and don't want to override the se
 You can override the main menu using the config options above.
 
 ### Translations
-You can override translations by copying the ``Resources/translations`` to your bundle.
+You can override translations by copying the ``Resources/translations`` to your bundle.  Make sure your app's bundle is added to AppKernel after the directory bundle or your customizations will not be used.
 
 ### Entities
 You can add custom fields or field overrides to the entities you create.  See http://docs.doctrine-project.org/projects/doctrine-orm/en/latest/reference/inheritance-mapping.html
