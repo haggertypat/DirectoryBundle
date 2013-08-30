@@ -37,7 +37,8 @@ You must add ``home`` and ``about`` routes to your bundle.
 * google_maps_key - optional
 * google_analytics_account - optional
 * use_profile - boolean, default: true (if false, profile routes will redirect to the listings page with a single listing)
-* use_maps - boolean, default: true (is false, maps tab will not appear on listings page)
+* use_maps - boolean, default: true (is false, maps tab will not appear on listings page
+)
 
 Full config options:
 
