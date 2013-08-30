@@ -15,6 +15,7 @@ class DirectoryController extends Controller
         $bundleName = $this->container->getParameter('ccetc_directory.bundle_name');
         $bundlePath = $this->container->getParameter('ccetc_directory.bundle_path');
         $useProfiles = $this->container->getParameter('ccetc_directory.use_profiles');
+        $useMaps = $this->container->getParameter('ccetc_directory.use_maps');
         $listingAdmin = $this->container->get('ccetc.directory.admin.listing');
         $userLocationAliasAdmin = $this->container->get('ccetc.directory.admin.userlocationalias');
         $userLocationAdmin = $this->container->get('ccetc.directory.admin.userlocation');
@@ -72,10 +73,13 @@ class DirectoryController extends Controller
         } else {
             $listings = $datagrid->getResults();
             
-            // get all the listings for the map
-            $query = $datagrid->getQuery();
-            $query->setMaxResults(10000000);
-            $mapListings = $query->getQuery()->execute();
+            if($useMaps) {
+                // get all the listings for the map
+                $query = $datagrid->getQuery();
+                $query->setMaxResults(10000000);
+                $mapListings = $query->getQuery()->execute();                
+            }
+            
             $singleListing = false;
         }
 
@@ -84,15 +88,18 @@ class DirectoryController extends Controller
         $templateParameters = array(
             'listingAdmin' => $listingAdmin,
             'listings' => $listings,
-            'mapListings' => $mapListings,
             'form'     => $datagridFormView,
             'datagrid' => $datagrid,
             'singleListing' => $singleListing,
             'linkBlocks' => $linkBlocks,
+            'useMaps' => $useMaps,
             'alwaysShowAdvancedSearch' => $alwaysShowAdvancedSearch
         );
                 
-                
+        if($useMaps) {
+            $templateParameters['mapListings'] = $mapListings;
+        }
+                    
         return $this->render('CCETCDirectoryBundle:Directory:listings.html.twig', $templateParameters);
     }
     

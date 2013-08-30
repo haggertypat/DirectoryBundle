@@ -8,7 +8,7 @@
 
 {% block page_header %}
     <div class="page-btns">
-        {% if listings|length > 0 %}
+        {% if listings|length > 0 and useMaps %}
             <div class="btn-group pull-right" style="margin-left: 5px;">
                 <a href="#" id="listings-list-toggle" class="btn {{ tab == 'list' ? 'disabled' : '' }}"><i class="icon-list"></i> List</a>
                 <a href="#" id="listings-map-toggle" class="btn {{ tab == 'map' ? 'disabled' : '' }}"><i class="icon-map-marker"></i> Map</a>
@@ -22,7 +22,9 @@
 {% endblock %}
 
 {% block content %}
-    {% include 'CCETCDirectoryBundle:Directory:_listings_map.js.twig' %}
+    {% if useMaps %}
+        {% include 'CCETCDirectoryBundle:Directory:_listings_map.js.twig' %}
+    {% endif %}
 
     <div class="row">
         <div class="span4">
@@ -114,9 +116,11 @@
                     </div>
                 {% endif %}  
             </div>
-            <div id="listings-map-container" style="{{ tab == 'map' ? '' : 'display: none;' }}">
-                <div id="map-canvas" class="listings-map"></div>                
-            </div>
+            {% if useMaps %}
+                <div id="listings-map-container" style="{{ tab == 'map' ? '' : 'display: none;' }}">
+                    <div id="map-canvas" class="listings-map"></div>                
+                </div>
+            {% endif %}
         </div>
     </div>
     
