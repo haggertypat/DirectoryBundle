@@ -1,3 +1,11 @@
+home:
+    pattern:  /
+    defaults: { _controller: CCETCDirectoryBundle:Pages:static, template: CCETCDirectoryBundle:Pages:home.html.twig }
+    
+about:
+    pattern:  /about
+    defaults: { _controller: CCETCDirectoryBundle:Pages:static, template: CCETCDirectoryBundle:Pages:about.html.twig }
+    
 listings:
     pattern:  /listings
     defaults: { _controller: CCETCDirectoryBundle:Directory:listings }

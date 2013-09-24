@@ -1,0 +1,43 @@
+{% extends layoutTemplate %}
+
+{% block content %}
+    <div class="hero-unit">
+        <h2>Welcome to the Directory!</h2>
+        <p>
+            All about the directory
+        </p>
+    </div>
+    <div class="row">
+        <div class="span12">
+            <div class="find-a-listing alert alert-block alert-info" style="margin: 0 auto 20px; width: 560px;">
+                {{ render(controller('CCETCDirectoryBundle:Directory:findAListing', {'includeProducts': false } )) }}
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="home-info alert alert-block alert-info">
+            <h4>Add a Listing</h4>
+            <p>
+                Have a listing that should be on the directory?  Add it!
+            </p>
+            
+            <a href="{{ path('signup') }}" class="btn">Add a Room</a>
+        </div>
+        <div class="home-info alert alert-block alert-info">
+            <h4>Learn More</h4>
+            <p>
+                Have questions? Email us at <a href="mailto:contact@template.com">contact@template.com</a> or visit <a href="http://www.template.com/">our website</a>.
+            </p>
+
+            <a href="http://www.template.com/" class="btn">Learn More</a>
+        </div>
+        <div class="home-info home-info-large alert alert-block alert-info">
+            <h4>Browse all Listings</h4>
+            <p>
+                Browse the full list.
+            </p>
+
+            <a href="{{ path('listings') }}" class="btn btn-warning">Browse</a>
+        </div>
+    </div>
+{% endblock %}

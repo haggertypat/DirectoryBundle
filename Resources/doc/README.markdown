@@ -1,11 +1,36 @@
 # CCETC/DirectoryBundle
-*This bundle is a work in progress*.
+**NOTE: The master branch of the bundle is to be used with Symfony 2.2.  The 2.1 branch is tested with Symfony 2.1**
 
-The CCETC/DirectoryBundle is a bundle for building a web-based directory of producers.  It allows users to search/browse listings by category and location.
+The CCETC/DirectoryBundle is a bundle for building a web-based directory of "listings". 
 
 Development is tracked on the [trello board](https://trello.com/board/directorybundle/5127a6c2e117a0f56c004854).
 
+## Features
+The DirectoryBundle contains everything needed to set up a Symfony app with the following features:
+
+* users can browse listings via a paginated list or a google map
+* users can add their own listing pending admin approval
+* admins can create/edit/delete/approve listings
+
+It works out of the box with minimal configuration, but most use cases will require a good deal of developer customization.  Most everything in the bundle is easily extendable by the developer.  Common customizations will include:
+
+* added fields
+* customized fields available to search by
+* added "attributes" (ex: "Attributes" like "Organic" and "Grassfed" for a meat producer directory… Attributes are an Entity with a relationship to Listings)
+* customized templates
+* customized and added pages
+* custom design
+
+
+
 ## Installation
+### Option 1 - Install from Scratch
+#### Install a Symfony App
+Install your Symfony App using the [Symfony installation guide](http://symfony.com/doc/current/book/installation.html)
+
+Be sure to setup your database as well.
+
+#### Install the DirectoryBundle
 Add to your composer.json:
 
     "require": {
@@ -14,33 +39,37 @@ Add to your composer.json:
 
 Run ``php composer.phar install``
 
-### add to ``AppKernel.php->registerBundles``
+This will install the bundle and all of it's dependencies.
 
-    new CCETC\DirectoryBundle\CCETCDirectoryBundle()
+#### Note about Bootstrap and jQuery
+jQuery and Twitter Bootstrap are included in the bundle.  You can include your own copies of either in your bundle, and extend the base layout to include your files instead of the default files.
+
+#### Follow the installation guide for SonataAdmin
+<http://sonata-project.org/bundles/admin/master/doc/reference/installation.html>
+
+#### add DirectoryBundle and dependencies to ``AppKernel.php->registerBundles``
+
+    new Knp\Bundle\MenuBundle\KnpMenuBundle(),
+    new Sonata\BlockBundle\SonataBlockBundle(),
+    new Sonata\jQueryBundle\SonatajQueryBundle(),
+    new Sonata\AdminBundle\SonataAdminBundle(),
+    new Sonata\DoctrineORMAdminBundle\SonataDoctrineORMAdminBundle(),
+    new CCETC\DirectoryBundle\CCETCDirectoryBundle(),
+    new MyDirectory\AppBundle\MyDirectoryAppBundle(),
+    new Mopa\Bundle\BootstrapBundle\MopaBootstrapBundle(),
 
 *NOTE*: Be sure to add the bundle before your App's bundle, so you can override translations.
 
-### routes
-You must add ``home`` and ``about`` routes to your bundle.
+#### Make your bundle a "Child" of the DirectoryBundle
+To override templates, make your app bundle a child of the DirectoryBundle.  In your bundle's Bundle class (ex: MyBundle.php in the bundle's root dir):
 
-### Config
-* bundle_name - name of your bundle - required
-* bundle_path - path of your bundle - required
-* title - used for page title, heading, og tags - required
-* logo - used in header - optional
-* menu_builder - the main menu to use - optional
-* layout_template - the base template used for all pages
-* copyright - used in footer - optional
-* contact_email - used in footer - required
-* admin_email - used for e-mail notifications - required
-* og_* - used for og meta tags
-* google_maps_key - optional
-* google_analytics_account - optional
-* use_profile - boolean, default: true (if false, profile routes will redirect to the listings page with a single listing)
-* use_maps - boolean, default: true (is false, maps tab will not appear on listings page
-)
+    public function getParent()
+    {
+        return 'CCETCDirectoryBundle';
+    }
 
-Full config options:
+#### Config
+Add the following to your ``config.yml`` and fill out the values with your app's info:
 
     ccetc_directory:
         bundle_name: MyBundle
@@ -59,19 +88,22 @@ Full config options:
         use_profile: true
 
     sonata_block:
-        ...
+        default_contexts: [cms]
         blocks:
-            ...
+            sonata.admin.block.admin_list:
+                contexts:   [admin]
             ccetc.directory.block.admin_listing_approval:
                 contexts: [admin]
+
 
     sonata_admin:
         templates:
             layout:  CCETCDirectoryBundle::admin_layout.html.twig
         dashboard:
             blocks:
-                ...
+                # display a dashboard block
                 - { position: left, type: ccetc.directory.block.admin_listing_approval }
+                - { position: left, type: sonata.admin.block.admin_list }
 
 **Note**: The Location Admin classes should not be included on the backend interface.  If using basic HTTP authentication, the easiest way to do this is in your config file, by manually defining which classes *should* appear:
 
@@ -83,13 +115,37 @@ Full config options:
                 label: Data
                 items: [ccetc.directory.admin.attribute, ccetc.directory.admin.product]
 
+##### DirectoryBundle config options
+
+* bundle_name - name of your bundle - required
+* bundle_path - path of your bundle - required
+* title - used for page title, heading, og tags - required
+* logo - used in header - optional
+* menu_builder - the main menu to use - optional
+* layout_template - the base template used for all pages
+* copyright - used in footer - optional
+* contact_email - used in footer - required
+* admin_email - used for e-mail notifications - required
+* og_* - used for og meta tags
+* google_maps_key - optional
+* google_analytics_account - optional
+* use_profile - boolean, default: true (if false, profile routes will redirect to the listings page with a single listing)
+* use_maps - boolean, default: true (is false, maps tab will not appear on listings page
+)
 
 
-### Entities
-Assuming every installation will want to customize the entities, you'll need to create your own and extend the base entities and example ``dist`` files provided. 
+#### Create your Entities
+You'll need to create your own entities and extend the base entities and example ``dist`` files provided.  At the very least you will need a ``Listing`` entity that extends ``Base Listing``.
 
-### Admin Classes
-You need to add services for the admin classes provided that tie them to your entities:
+##### Location Entities
+If you want to let users search by distance between their location and listing locations, you'll need to extend the ``ListingLocation``, ``LocationDistance``, ``UserLocation``, and ``UserLocationAlias`` entities, using the dist files provided.
+
+##### Attribute Entities
+Most installations will have at least one ``Attribute`` related to their ``Listing``.  This could be used to add products (ex: Chicken, Duck, Beef, Pork) and/or actual attributes (ex: Organic, Grass Fed, Hormone Free).  To use this feature, extend ``BaseAttribute`` or use the ``Attribute.php.dist`` file.
+
+
+#### Create your Admin Classes
+You need to add services for the admin classes provided that tie them to your entities.  For each entity that you create, you'll need one of the following, with the path to the entity (argument #2) customized:
 
         <service id="ccetc.directory.admin.listing" class="CCETC\DirectoryBundle\Admin\ListingAdmin">
             <tag name="sonata.admin" manager_type="orm" group="Listings" label="Listings"/>
@@ -130,33 +186,73 @@ You need to add services for the admin classes provided that tie them to your en
 
 *Note*: ``ListingAdmin`` should use the custom controller (``CCETCDirectoryBundle:ListingAdmin``) from the bundle.
 
-### Validation
-Copy ``validation.yml.dist`` to your bundle, and customize as needed.
+#### Routing
+Add the following to your app's ``routing.yml``: 
+
+	ccetc_directory:
+    	resource: "@CCETCDirectoryBundle/Resources/config/routing.yml"
+    	prefix:   /
+
+
+#### Secure your App
+You'll want to secure the admin section of your app.  Something like this in ``security.yml``:
+
+	security:
+	    firewalls:
+	        secured_area:
+	            pattern:    ^/
+	            anonymous: ~
+	            http_basic:
+	                realm: "Secured Admin Area"
+
+	    access_control:
+	        - { path: ^/admin, roles: ROLE_ADMIN }
+
+	    providers:
+	        in_memory:
+	            memory:
+	                users:
+	                    admin: { password: admin, roles: 'ROLE_ADMIN, ROLE_SONATA_ADMIN' }
+
+	    encoders:
+	        Symfony\Component\Security\Core\User\User: plaintext
+
+### Option 2 - Install the DirectoryAppTemplate
+Coming soon...
+
 
 ## Customization
-### Child Bundle
-To override templates, make your app bundle a child of the DirectoryBundle:
+Since your app is a child bundle of the DirectoryBundle, you can customize most anything, and the following links can help determine how different customizations can be made:
 
-    public function getParent()
-    {
-        return 'CCETCDirectoryBundle';
-    }
+* <http://symfony.com/doc/current/cookbook/bundles/inheritance.html>
+* <http://symfony.com/doc/current/cookbook/bundles/override.html>
 
+
+### Templates
+Simply including any of the DirectoryBundle templates in your bundle will override the default templates.
 
 #### Layout
 If you'd like to extend the base layout, you'll need to give it a unique name (``app_layout.html.twig``) and set this template path in your config.
 
-#### Config and Routing
-If you're using the bundle as a parent bundle, and don't want to override the services and routes provided, you should name your routing and config something other than ``routing.yml`` and ``services.xml``.  The alternative is to copy the contents of those files to your own.
+### Config and Routing
+If you don't want to override the services and routes provided, you should name your routing and config something other than ``routing.yml`` and ``services.xml``.  The alternative is to copy the contents of those files to your own.
 
 ### Menu
-You can override the main menu using the config options above.
+You can define your own menu class, and override which is used using the config option documented above.
 
 ### Translations
 You can override translations by copying the ``Resources/translations`` to your bundle.  Make sure your app's bundle is added to AppKernel after the directory bundle or your customizations will not be used.
 
 ### Entities
-You can add custom fields or field overrides to the entities you create.  See http://docs.doctrine-project.org/projects/doctrine-orm/en/latest/reference/inheritance-mapping.html
+You can add custom fields or field overrides to the entities you create.  Be sure to add your custom fields in the following places:
+
+* Entity class
+* Admin class
+* Signup form
+
+Some useful resources:
+
+* <http://docs.doctrine-project.org/projects/doctrine-orm/en/latest/reference/inheritance-mapping.html>
 
 ### Admin Classes
 You can extend the provided admin classes:
@@ -179,6 +275,9 @@ You can extend the provided admin classes:
 
 **Note**: Make sure that any entities or fields not used by your front end do not appear on your signup form or admin classes
 
+### Validation
+Copy ``validation.yml.dist`` to your bundle, and customize as needed.
+
 ### Frontend Filters
 The directory uses ``ListingAdmin.datagrid`` for the filters on the frontend.  Filters with the option ``isAdvanced`` equal to ``true`` will but put into an "advanced search" section.
 
@@ -191,14 +290,17 @@ The signup form and handler exists as services, so you can provide your own form
             <argument type="service" id="service_container" />
         </service>
     
-## Custom Pages
+### Custom Pages
 You can use a default controller for your pages using this code in your routes:
 
     defaults: { _controller: CCETCDirectoryBundle:Pages:static, template: MyBundle:Pages:myPage.html.twig }
 
 The default checks for outdated browsers, including a boolean with the result as it renders your template.
 
-## available Twig Globals from config
+## Other Features
+
+### available Twig Globals
+The following global variables are accessible via any template:
 
     directoryTitle
     directoryLogo
@@ -216,10 +318,5 @@ The default checks for outdated browsers, including a boolean with the result as
 You can include the find a listing block in your pages.  Just make sure to wrap it in a div with the class ``find-a-listing``:
 
     <div class="find-a-listing alert alert-block alert-info">
-        {% render 'CCETCDirectoryBundle:Directory:findAListing' %}    
-    </div>
-
-## Dependencies
-jQuery and Twitter Bootstrap are included in the bundle.
-
-The only other dependencies are ``sonata-project/sonata-admin-bundle`` and ``mopa/bootstrap-bundle``.
+		{{ render(controller('CCETCDirectoryBundle:Directory:findAListing', {'includeProducts': false } )) }}
+	</div>

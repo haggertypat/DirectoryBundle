@@ -7,7 +7,7 @@
             <argument>ccetc.directory.block.admin_listing_approval</argument>
             <argument type="service" id="templating" />
             <argument type="service" id="service_container" strict="false" />
-        </service>        
+        </service>
         <service id="ccetc.directory.helper.geocoder" class="CCETC\DirectoryBundle\Helper\Geocoder">
             <argument>%ccetc_directory.google_maps_key%</argument>
         </service>

@@ -11,6 +11,7 @@
 
 namespace CCETC\DirectoryBundle\Block;
 
+use Sonata\BlockBundle\Block\BlockContextInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 
@@ -20,10 +21,9 @@ use Sonata\AdminBundle\Admin\Pool;
 
 use Sonata\BlockBundle\Model\BlockInterface;
 use Sonata\BlockBundle\Block\BaseBlockService;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-/**
- *
- */
 class AdminListingApprovalBlockService extends BaseBlockService
 {
     protected $container;
@@ -42,15 +42,15 @@ class AdminListingApprovalBlockService extends BaseBlockService
     /**
      * {@inheritdoc}
      */
-    public function execute(BlockInterface $block, Response $response = null)
+    public function execute(BlockContextInterface $blockContext, Response $response = null)
     {
-        $settings = array_merge($this->getDefaultSettings(), $block->getSettings());
+        $settings = array_merge($this->getDefaultSettings(), $blockContext->getSettings());
         $bundleName = $this->container->getParameter('ccetc_directory.bundle_name');
 
         $listingRepository = $this->container->get('doctrine')->getRepository($bundleName.':Listing');
         
         return $this->renderResponse('CCETCDirectoryBundle:Block:_admin_listing_approval.html.twig', array(
-            'block' => $block,
+            'block' => $blockContext->getBlock(),
             'listings' => $listingRepository->findBy(array('approved' => false, 'spam' => false)),
             'listingAdmin' => $this->container->get('ccetc.directory.admin.listing')
         ), $response);
@@ -87,5 +87,13 @@ class AdminListingApprovalBlockService extends BaseBlockService
     {
         return array(
         );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setDefaultSettings(OptionsResolverInterface $resolver)
+    {
+        
     }
 }
