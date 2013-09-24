@@ -71,8 +71,9 @@ Full config options:
             layout:  CCETCDirectoryBundle::admin_layout.html.twig
         dashboard:
             blocks:
-                ...
+                # display a dashboard block
                 - { position: left, type: ccetc.directory.block.admin_listing_approval }
+                - { position: left, type: sonata.admin.block.admin_list }
 
 **Note**: The Location Admin classes should not be included on the backend interface.  If using basic HTTP authentication, the easiest way to do this is in your config file, by manually defining which classes *should* appear:
 
