@@ -218,8 +218,7 @@ You'll want to secure the admin section of your app.  Something like this in ``s
 	        Symfony\Component\Security\Core\User\User: plaintext
 
 ### Option 2 - Install the DirectoryAppTemplate
-Coming soon...
-
+Follow the instructions on the [DirectoryAppTemplate](https://github.com/CCETC/DirectoryAppTemplate).
 
 ## Customization
 Since your app is a child bundle of the DirectoryBundle, you can customize most anything, and the following links can help determine how different customizations can be made:
