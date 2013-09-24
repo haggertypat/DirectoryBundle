@@ -59,9 +59,10 @@ Full config options:
         use_profile: true
 
     sonata_block:
-        ...
+        default_contexts: [cms]
         blocks:
-            ...
+            sonata.admin.block.admin_list:
+                contexts:   [admin]
             ccetc.directory.block.admin_listing_approval:
                 contexts: [admin]
 
