@@ -85,7 +85,7 @@ Add the following to your ``config.yml`` and fill out the values with your app's
         og_url: http://yoururl
         google_maps_key: yourkey
         google_analytics_account: UA-NNNNNNNNN-1
-        use_profile: true
+        use_profiles: true
 
     sonata_block:
         default_contexts: [cms]
