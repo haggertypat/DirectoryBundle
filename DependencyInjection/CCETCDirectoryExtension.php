@@ -42,11 +42,26 @@ class CCETCDirectoryExtension extends Extension
             'google_analytics_account',
             'use_profiles',
             'use_maps',
-            'always_show_advanced_search'
+            'always_show_advanced_search',
+            'listing_types'
         );
         
         foreach($keys as $key)
         {
+            // the default values for the default listing_type depends on the value of bundle_path, so look for our "replaceUsingBundlePath" flag and do so if we find it
+            if($key == 'listing_types') {
+                $listingTypes = array();
+
+                foreach($config[$key] as $listingType)
+                {
+                    if($listingType['entity_path'] == "replaceUsingBundlePath") {
+                        $listingType['entity_path'] = $config['bundle_path'].'\Entity\Listing';
+                    }
+                    $listingTypes[] = $listingType;
+                }
+
+                $config[$key] = $listingTypes;
+            }
             $container->setParameter('ccetc_directory.'.$key, $config[$key]);
         }
         

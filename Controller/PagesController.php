@@ -19,7 +19,8 @@ class PagesController extends Controller
                 $outdatedBrowser = true;
             }        
         }
-
+        $bundleName = $this->container->getParameter('ccetc_directory.listing_types');
+        print_r($bundleName);
 
         return $this->render($template, array(
             'outdatedBrowser' => $outdatedBrowser

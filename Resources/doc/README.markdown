@@ -55,7 +55,7 @@ jQuery and Twitter Bootstrap are included in the bundle.  You can include your o
     new Sonata\AdminBundle\SonataAdminBundle(),
     new Sonata\DoctrineORMAdminBundle\SonataDoctrineORMAdminBundle(),
     new CCETC\DirectoryBundle\CCETCDirectoryBundle(),
-    new MyDirectory\AppBundle\MyDirectoryAppBundle(),
+    new LandLink\AppBundle\LandLinkAppBundle(),
     new Mopa\Bundle\BootstrapBundle\MopaBootstrapBundle(),
 
 *NOTE*: Be sure to add the bundle before your App's bundle, so you can override translations.
