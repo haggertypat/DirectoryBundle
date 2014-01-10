@@ -1,5 +1,5 @@
 <div class="listings-info-window-container">
     <h4>{{ listing.name }}</h4>
     {% if listing.address is defined and listing.address != "" %}{{ listing.address }},{% endif %} {{ listing.city }} {{ listing.state }}<br/><br/>
-    <a class="btn" href="{{ path('profile', {'id' : listing.id }) }}"><i class="icon-search"></i> View</a>
+    <a class="btn" href="{{ path(listingType.profileRouteName, {'id' : listing.id }) }}"><i class="icon-search"></i> View</a>
 </div>

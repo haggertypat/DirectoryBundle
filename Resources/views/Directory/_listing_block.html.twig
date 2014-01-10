@@ -2,7 +2,7 @@
     <div>
         <div class="listing-name">
             <h3>
-                {% if linkBlock %}<a href="{{ path('profile', {'id' : listing.id }) }}">{% endif %}
+                {% if linkBlock %}<a href="{{ path(listingType.profileRouteName, {'id' : listing.id }) }}">{% endif %}
                 {{ listing.name }}
                 {% if linkBlock %}</a>{% endif %}
             </h3>                             

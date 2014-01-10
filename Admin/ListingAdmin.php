@@ -256,10 +256,14 @@ class ListingAdmin extends Admin
         $geocodeResult = $this->geocodeAddress($object);
         $bundlePath = $this->configurationPool->getContainer()->getParameter('ccetc_directory.bundle_path');
         
+        $listingTypeHelper = $this->container->get('ccetc.directory.helper.listingtypehelper');
+        $listingType = $listingTypeHelper->findOneByEntiyClassPath('\\'.get_class($object));
+        $listingLocationAdminService = $listingType->getAdminService().'location';
+        $listingLocationEntityClassPath = $listingType->getEntityClassPath().'Location';
+
         if(isset($geocodeResult['lat']) && isset($geocodeResult['lng'])) {
-            $listingLocationAdmin = $this->configurationPool->getContainer()->get('ccetc.directory.admin.listinglocation');
-            $listingLocationEntityPath = $bundlePath.'\Entity\ListingLocation';
-            $listingLocation = new $listingLocationEntityPath();
+            $listingLocationAdmin = $this->configurationPool->getContainer()->get($listingLocationAdminService);
+            $listingLocation = new $listingLocationEntityClassPath();
             $listingLocation->setListing($object);
             $listingLocation->setLat($geocodeResult['lat']);
             $listingLocation->setLng($geocodeResult['lng']);

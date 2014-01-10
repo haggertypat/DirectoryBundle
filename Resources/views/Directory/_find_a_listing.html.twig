@@ -1,5 +1,5 @@
-<form action="{{ path('listings') }}" method="GET">
-    <h4>Find a {{ 'Listing'|trans }}</h4>
+<form action="{{ path(listingType.listingsRouteName) }}" method="GET">
+    <h4>Find a {{ listingType.translationKey|capitalize|trans }}</h4>
     <h4>within</h4>
     <span>
         <select name="filter[location][type]" class="miles">

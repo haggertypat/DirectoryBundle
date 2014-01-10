@@ -10,17 +10,29 @@ use CCETC\DirectoryBundle\Form\Handler\SignupFormHandler;
 
 class DirectoryController extends Controller
 {
-    public function listingsAction($listingId = null)
+    public function listingsAction($listingId = null, $listingTypeKey = null)
     {
+        $listingTypeHelper = $this->container->get('ccetc.directory.helper.listingtypehelper');
+        if(!isset($listingTypeKey)) $listingType = $listingTypeHelper->getSingleListingType();
+        else $listingType = $listingTypeHelper->findOneByKey($listingTypeKey);
+
+        if(count($listingTypeHelper->getAll()) > 1) {
+            $listingsTemplate = "CCETCDirectoryBundle:Directory:".$listingType->getKey()."_listings.html.twig";
+            $listingBlockTemplate = "CCETCDirectoryBundle:Directory:".$listingType->getKey()."_listing_block.html.twig";
+        } else {
+            $listingsTemplate = "CCETCDirectoryBundle:Directory:listings.html.twig";
+            $listingBlockTemplate = "CCETCDirectoryBundle:Directory:_listing_block.html.twig";
+        }
+
         $bundleName = $this->container->getParameter('ccetc_directory.bundle_name');
         $bundlePath = $this->container->getParameter('ccetc_directory.bundle_path');
         $useProfiles = $this->container->getParameter('ccetc_directory.use_profiles');
         $useMaps = $this->container->getParameter('ccetc_directory.use_maps');
-        $listingAdmin = $this->container->get('ccetc.directory.admin.listing');
+        $listingAdmin = $listingType->getAdminClass();
         $userLocationAliasAdmin = $this->container->get('ccetc.directory.admin.userlocationalias');
         $userLocationAdmin = $this->container->get('ccetc.directory.admin.userlocation');
         $geocoder = $this->container->get('ccetc.directory.helper.geocoder');
-        $listingRepository = $this->getDoctrine()->getRepository($bundleName.':Listing');
+        $listingRepository = $listingType->getRepository();
         $userLocationRepository = $this->getDoctrine()->getRepository($bundleName.':UserLocation');
         $userLocationAliasRepository = $this->getDoctrine()->getRepository($bundleName.':UserLocationAlias');
         $alwaysShowAdvancedSearch = $this->container->getParameter('ccetc_directory.always_show_advanced_search');
@@ -93,21 +105,33 @@ class DirectoryController extends Controller
             'singleListing' => $singleListing,
             'linkBlocks' => $linkBlocks,
             'useMaps' => $useMaps,
-            'alwaysShowAdvancedSearch' => $alwaysShowAdvancedSearch
+            'alwaysShowAdvancedSearch' => $alwaysShowAdvancedSearch,
+            'listingType' => $listingType,
+            'listingBlockTemplate' => $listingBlockTemplate
         );
                 
         if($useMaps) {
             $templateParameters['mapListings'] = $mapListings;
         }
                     
-        return $this->render('CCETCDirectoryBundle:Directory:listings.html.twig', $templateParameters);
+        return $this->render($listingsTemplate, $templateParameters);
     }
     
-    public function profileAction($id)
+    public function profileAction($id, $listingTypeKey = null)
     {
+        $listingTypeHelper = $this->container->get('ccetc.directory.helper.listingtypehelper');
+        if(!isset($listingTypeKey)) $listingType = $listingTypeHelper->getSingleListingType();
+        else $listingType = $listingTypeHelper->findOneByKey($listingTypeKey);
+
+        if(count($listingTypeHelper->getAll()) > 1) {
+            $profileTemplate = "CCETCDirectoryBundle:Directory:".$listingType->getKey()."_profile.html.twig";
+        } else {
+            $profileTemplate = "CCETCDirectoryBundle:Directory:profile.html.twig";
+        }
+
         $bundleName = $this->container->getParameter('ccetc_directory.bundle_name');
-        $listingAdmin = $this->get('ccetc.directory.admin.listing');
-        $listingRepository = $this->getDoctrine()->getRepository($bundleName.':Listing');
+        $listingAdmin = $listingType->getAdminClass();
+        $listingRepository = $listingType->getRepository();
         $listing = $listingRepository->findOneById($id);
 
         if(!$listing->getApproved() && !$this->get('security.context')->isGranted('ROLE_ADMIN') ) {
@@ -117,18 +141,26 @@ class DirectoryController extends Controller
         $useProfiles = $this->container->getParameter('ccetc_directory.use_profiles');
         
         if(!$useProfiles) {
-            return $this->forward('CCETCDirectoryBundle:Directory:listings', array('listingId' => $id));
+            return $this->forward('CCETCDirectoryBundle:Directory:listings', array('listingId' => $id, 'listingTypeKey' => $listingTypeKey));
         }
 
-        return $this->render('CCETCDirectoryBundle:Directory:profile.html.twig', array(
+        return $this->render($profileTemplate, array(
             'listingAdmin' => $listingAdmin,
-            'listing' => $listing
+            'listing' => $listing,
+            'listingType' => $listingType
         ));                                    
         
     }
-    public function findAListingAction($includeProducts = true)
+    public function findAListingAction($includeProducts = true, $listingTypeKey = null)
     {
-        $templateParameters = array('includeProducts' => $includeProducts);
+        $listingTypeHelper = $this->container->get('ccetc.directory.helper.listingtypehelper');
+        if(!isset($listingTypeKey)) $listingType = $listingTypeHelper->getSingleListingType();
+        else $listingType = $listingTypeHelper->findOneByKey($listingTypeKey);
+
+        $templateParameters = array(
+            'includeProducts' => $includeProducts,
+            'listingType' => $listingType
+        );
         
         if($includeProducts) {
             $bundleName = $this->container->getParameter('ccetc_directory.bundle_name');
@@ -145,14 +177,13 @@ class DirectoryController extends Controller
         $bundlePath = $this->container->getParameter('ccetc_directory.bundle_path');
         $session = $this->getRequest()->getSession();
 
-        // determine the listing type
         if(!isset($listingTypeKey)) $listingType = $listingTypeHelper->getSingleListingType();
         else $listingType = $listingTypeHelper->findOneByKey($listingTypeKey);
 
         if(count($listingTypeHelper->getAll()) > 1) {
             $form = $this->container->get('ccetc.directory.form.'.$listingType->getKey().'signup');
             $formHandler = $this->container->get('ccetc.directory.form.handler.'.$listingType->getKey().'signup');
-            $template = 'CCETCDirectoryBundle:Directory:'.$listingType->getKey().'-signup.html.twig';
+            $template = 'CCETCDirectoryBundle:Directory:'.$listingType->getKey().'_signup.html.twig';
         } else {
             $form = $this->container->get('ccetc.directory.form.signup');
             $formHandler = $this->container->get('ccetc.directory.form.handler.signup');
@@ -172,11 +203,14 @@ class DirectoryController extends Controller
         return $this->render($template, $templateParameters);                
     }
     
-    public function generateLocationsAction()
+    public function generateLocationsAction($listingTypeKey = null)
     {
-        $bundleName = $this->container->getParameter('ccetc_directory.bundle_name');
-        $listingRepository = $this->getDoctrine()->getRepository($bundleName.':Listing');
-        $listingAdmin = $this->container->get('ccetc.directory.admin.listing');
+        $listingTypeHelper = $this->container->get('ccetc.directory.helper.listingtypehelper');
+        if(!isset($listingTypeKey)) $listingType = $listingTypeHelper->getSingleListingType();
+        else $listingType = $listingTypeHelper->findOneByKey($listingTypeKey);
+
+        $listingRepository = $listingType->getRepository();
+        $listingAdmin = $listingType->getAdminClass();
         
         foreach($listingRepository->findAll() as $listing)
         {
