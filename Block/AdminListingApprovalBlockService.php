@@ -45,15 +45,24 @@ class AdminListingApprovalBlockService extends BaseBlockService
     public function execute(BlockContextInterface $blockContext, Response $response = null)
     {
         $settings = array_merge($this->getDefaultSettings(), $blockContext->getSettings());
-        $bundleName = $this->container->getParameter('ccetc_directory.bundle_name');
+        $listingTypeHelper = $this->container->get('ccetc.directory.helper.listingtypehelper');
 
-        $listingRepository = $this->container->get('doctrine')->getRepository($bundleName.':Listing');
+        $templating = $this->container->get('templating');
+        $content = "";
+
+        foreach($listingTypeHelper->getListingTypes() as $listingType)
+        {
+            $listingRepository = $listingType->getRepository();
+
+            $content .= $templating->render('CCETCDirectoryBundle:Block:_admin_listing_approval.html.twig', array(
+                'block' => $blockContext->getBlock(),
+                'listings' => $listingRepository->findBy(array('approved' => false, 'spam' => false)),
+                'listingAdmin' => $listingType->getAdminClass(),
+                'listingTranslationKey' => $listingType->getTranslationKey()
+            ));
+        }        
         
-        return $this->renderResponse('CCETCDirectoryBundle:Block:_admin_listing_approval.html.twig', array(
-            'block' => $blockContext->getBlock(),
-            'listings' => $listingRepository->findBy(array('approved' => false, 'spam' => false)),
-            'listingAdmin' => $this->container->get('ccetc.directory.admin.listing')
-        ), $response);
+        return new Response($content);
     }
 
     /**

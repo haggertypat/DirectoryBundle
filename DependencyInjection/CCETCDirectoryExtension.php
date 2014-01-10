@@ -8,6 +8,8 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\DependencyInjection\Loader;
 
+use CCETC\DirectoryBundle\Helper\ListingType;
+
 /**
  * This is the class that loads and manages your bundle configuration
  *
@@ -43,24 +45,19 @@ class CCETCDirectoryExtension extends Extension
             'use_profiles',
             'use_maps',
             'always_show_advanced_search',
-            'listing_types'
+            'listing_type_config'
         );
         
         foreach($keys as $key)
         {
             // the default values for the default listing_type depends on the value of bundle_path, so look for our "replaceUsingBundlePath" flag and do so if we find it
-            if($key == 'listing_types') {
-                $listingTypes = array();
-
-                foreach($config[$key] as $listingType)
+            if($key == 'listing_type_config') {
+                foreach($config['listing_type_config'] as &$singleListingTypeConfig)
                 {
-                    if($listingType['entity_path'] == "replaceUsingBundlePath") {
-                        $listingType['entity_path'] = $config['bundle_path'].'\Entity\Listing';
+                    if($singleListingTypeConfig['entity_class_path'] == "replaceUsingBundlePath") {
+                        $singleListingTypeConfig['entity_class_path'] = $config['bundle_path'].'\Entity\Listing';
                     }
-                    $listingTypes[] = $listingType;
-                }
-
-                $config[$key] = $listingTypes;
+                }                
             }
             $container->setParameter('ccetc_directory.'.$key, $config[$key]);
         }

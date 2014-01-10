@@ -38,19 +38,19 @@ class Configuration implements ConfigurationInterface
                 ->scalarNode('use_profiles')->defaultvalue(true)->end()
                 ->scalarNode('use_maps')->defaultvalue(true)->end()
                 ->scalarNode('always_show_advanced_search')->defaultvalue(true)->end()
-                ->arrayNode('listing_types')
+                ->arrayNode('listing_type_config')
                     ->defaultValue(array(
                         array(
-                            'admin_key' => 'ccetc.directory.admin.listing',
-                            'entity_path' => 'replaceUsingBundlePath', // in the DI extension class, we'll look for this and replace in with the bundle path the user has defined
+                            'admin_service' => 'ccetc.directory.admin.listing',
+                            'entity_class_path' => 'replaceUsingBundlePath', // in the DI extension class, we'll look for this and replace in with the bundle path the user has defined
                             'translation_key' => 'listing'
                         )
                     ))
                     ->prototype('array')
                         ->fixXmlConfig('setting')
                         ->children()
-                            ->scalarNode('admin_key')->cannotBeEmpty()->end()
-                            ->scalarNode('entity_path')->cannotBeEmpty()->end()
+                            ->scalarNode('admin_service')->cannotBeEmpty()->end()
+                            ->scalarNode('entity_class_path')->cannotBeEmpty()->end()
                             ->scalarNode('translation_key')->cannotBeEmpty()->end()
                         ->end()
                     ->end()
