@@ -10,6 +10,7 @@ class CCETCDirectoryExtension extends \Twig_Extension
     public function __construct($container)
     {
         $this->container = $container;
+        $this->listingTypeHelper = $this->container->get('ccetc.directory.helper.listingtypehelper');
     }
 
     public function getGlobals() {
@@ -23,7 +24,8 @@ class CCETCDirectoryExtension extends \Twig_Extension
             'directoryOgDescription' => $this->container->getParameter('ccetc_directory.og_description'),            
             'directoryOgURL' => $this->container->getParameter('ccetc_directory.og_url'),            
             'googleMapsKey' => $this->container->getParameter('ccetc_directory.google_maps_key'),            
-            'googleAnalyticsAccount' => $this->container->getParameter('ccetc_directory.google_analytics_account'),            
+            'googleAnalyticsAccount' => $this->container->getParameter('ccetc_directory.google_analytics_account'), 
+            'singleListingType' => $this->listingTypeHelper->getSingleListingType()           
         );
     }
     

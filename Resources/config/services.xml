@@ -11,14 +11,17 @@
         <service id="ccetc.directory.helper.geocoder" class="CCETC\DirectoryBundle\Helper\Geocoder">
             <argument>%ccetc_directory.google_maps_key%</argument>
         </service>
-        <service id="ccetc.directory.helper.listingtypehelper" class="CCETC\DirectoryBundle\Helper\ListingTypeHelper" scope="request">
+        <service id="ccetc.directory.helper.listingtypehelper" class="CCETC\DirectoryBundle\Helper\ListingTypeHelper">
             <argument type="service" id="service_container" />
         </service>        
         <service id="ccetc.directory.extension.ccetcdirectory" class="CCETC\DirectoryBundle\Twig\Extension\CCETCDirectoryExtension" public="false">
             <tag name="twig.extension" />
             <argument type="service" id="service_container" />
         </service>
-        
+        <service id="ccetc.directory.routing.listingloader" class="CCETC\DirectoryBundle\Routing\ListingLoader">
+            <argument type="service" id="service_container" />
+            <tag name="routing.loader" />
+        </service>
         <service id="ccetc.directory.form.signup" factory-method="createNamed" factory-service="form.factory" class="Symfony\Component\Form\Form">
             <argument>ccetc_directory_signup_name</argument>
             <argument>ccetc_directory_signup</argument>

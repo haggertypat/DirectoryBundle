@@ -64,6 +64,38 @@ class ListingType
         $bundleName = $this->container->getParameter('ccetc_directory.bundle_name');
     	return $this->container->get('doctrine')->getRepository($bundleName.':'.$this->getClassName());
     }
-    
+
+    public function getListingsRouteName()
+    {
+    	return $this->getTranslationKey() . 's';    	
+    }
+    public function getListingsRoutePattern()
+    {
+    	return '/'.$this->getTranslationKey() . 's';
+    }
+    public function getSignupRouteName()
+    {
+    	return $this->getTranslationKey() . 'Signup';
+    }
+    public function getSignupRoutePattern()
+    {
+    	return $this->getListingsRoutePattern() . '/signup';
+    }
+    public function getProfileRouteName()
+    {
+    	return $this->getTranslationKey() . 'Profile';    	
+    }
+    public function getProfileRoutePattern()
+    {
+    	return $this->getListingsRoutePattern() . '/{id}';
+    }
+    public function getGenerateLocationsRouteName()
+    {
+    	return $this->getTranslationKey() . 'GenerateLocations';    	
+    }
+    public function getGenerateLocationsRoutePattern()
+    {
+    	return $this->getListingsRoutePattern() . 'GenerateLocations';
+    }
 
 }

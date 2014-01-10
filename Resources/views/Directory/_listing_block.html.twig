@@ -33,7 +33,7 @@
         {% if is_granted("ROLE_ADMIN") %}
             <a class="btn edit-btn" href="{{ listingAdmin.generateObjectUrl('edit', listing) }}" ><i class="icon-pencil"></i> Edit</a> 
         {% endif %}
-        {% if linkBlock %}<a class="btn view-btn" href="{{ path('profile', {'id' : listing.id }) }}" ><i class="icon-search"></i> View</a>{% endif %}
+        {% if linkBlock %}<a class="btn view-btn" href="{{ path(listingType.profileRouteName, {'id' : listing.id }) }}" ><i class="icon-search"></i> View</a>{% endif %}
     </div>
     <div style="clear: both; line-height: 0;">&nbsp;</div>    
 </div>

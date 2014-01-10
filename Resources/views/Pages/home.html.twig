@@ -21,7 +21,7 @@
                 Have a listing that should be on the directory?  Add it!
             </p>
             
-            <a href="{{ path('signup') }}" class="btn">Add a Listing</a>
+            <a href="{{ path(singleListingType.signupRouteName) }}" class="btn">Add a Listing</a>
         </div>
         <div class="home-info alert alert-block alert-info">
             <h4>Learn More</h4>
@@ -37,7 +37,7 @@
                 Browse the full list.
             </p>
 
-            <a href="{{ path('listings') }}" class="btn btn-warning">Browse</a>
+            <a href="{{ path(singleListingType.listingsRouteName) }}" class="btn btn-warning">Browse</a>
         </div>
     </div>
 {% endblock %}

@@ -13,7 +13,7 @@
                 </div>
             {% endif %}
                 
-            <form novalidate class="form-horizontal" action="{{ path('signup') }}" method="post" {{ form_enctype(form) }}>
+            <form novalidate class="form-horizontal" action="{{ path(listingType.signupRouteName) }}" method="post" {{ form_enctype(form) }}>
                 <fieldset>
                     <legend>Basic Information</legend>
                         {{ form_row(form.name) }}
