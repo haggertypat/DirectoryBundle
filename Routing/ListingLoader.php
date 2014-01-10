@@ -17,7 +17,7 @@ class ListingLoader implements LoaderInterface
     {
         $this->container = $container;
         $listingTypeHelper = $this->container->get('ccetc.directory.helper.listingtypehelper');
-        $this->listingTypes = $listingTypeHelper->getListingTypes();
+        $this->listingTypes = $listingTypeHelper->getAll();
     }
 
     public function load($resource, $type = null)
@@ -35,7 +35,7 @@ class ListingLoader implements LoaderInterface
             foreach($routeActions as $action)
             {
                 $defaults = array(
-                    '_controller' => 'CCETCDirectoryBundle:Directory:'.$action,
+                    '_controller' => 'CCETCDirectoryBundle:Directory:'.$action
                 );
                 
                 // turn the hyphen delimted actions into CamelCase for retrieving the route values
@@ -53,6 +53,10 @@ class ListingLoader implements LoaderInterface
                     );
                 } else {
                     $requirements = array();
+                }
+
+                if($action == "signup") {
+                    $defaults['listingTypeKey'] = $listingType->getKey();
                 }
 
                 $route = new Route($listingType->$patternMethod(), $defaults, $requirements);

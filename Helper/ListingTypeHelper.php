@@ -12,18 +12,13 @@ class ListingTypeHelper
 
         foreach($container->getParameter('ccetc_directory.listing_type_config') as $singleListingTypeConfig)
         {
-        	$listingType = new ListingType(
-        		$container,
-                $singleListingTypeConfig['entity_class_path'],
-                $singleListingTypeConfig['translation_key'],
-                $singleListingTypeConfig['admin_service']
-            );
+        	$listingType = new ListingType($container, $singleListingTypeConfig);
 
             $this->listingTypes[] = $listingType;
         }
     }
 
-    public function getListingTypes()
+    public function getAll()
     {
     	return $this->listingTypes;
     }
@@ -33,9 +28,23 @@ class ListingTypeHelper
      */
     public function getSingleListingType()
     {
-    	return $this->getListingTypes()[0];
+    	return $this->getAll()[0];
     }
 
-    
+    public function findOneByKey($key)
+    {
+    	foreach($this->getAll() as $type)
+    	{
+    		if($key == $type->getKey()) return $type;
+    	}
+    }
 
+    public function findOneByEntityClassPath($entityClassPath)
+    {
+    	foreach($this->getAll() as $type)
+    	{
+    		if($entityClassPath == $type->getEntityClassPath()) return $type;
+    	}    	
+    }
+    
 }

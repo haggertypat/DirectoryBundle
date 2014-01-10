@@ -1,7 +1,7 @@
 {% extends layoutTemplate %}
 
 {% block page_header %}
-    <h2>Add your {{ 'Listing'|trans }}</h2>
+    <h2>Add your {{ listingType.translationKey|capitalize|trans }}</h2>
 {% endblock %}
 
 {% block content %}

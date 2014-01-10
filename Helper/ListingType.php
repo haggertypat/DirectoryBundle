@@ -11,12 +11,12 @@ class ListingType
     protected $translationKey;
     protected $adminService;
     
-    public function __construct($container, $entityClassPath, $translationKey, $adminService)
+    public function __construct($container, $configValues)
     {
         $this->container = $container;
-    	$this->translationKey = $translationKey;
-    	$this->entityClassPath = $entityClassPath;
-    	$this->adminService = $adminService;
+    	$this->adminService = $configValues['admin_service'];
+    	$this->entityClassPath = $configValues['entity_class_path'];
+    	$this->translationKey = $configValues['translation_key'];
     }
 
     public function getEntityClassPath()
@@ -63,6 +63,11 @@ class ListingType
     {
         $bundleName = $this->container->getParameter('ccetc_directory.bundle_name');
     	return $this->container->get('doctrine')->getRepository($bundleName.':'.$this->getClassName());
+    }
+
+    public function getKey()
+    {
+    	return $this->getTranslationKey();
     }
 
     public function getListingsRouteName()

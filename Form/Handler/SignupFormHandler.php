@@ -47,7 +47,10 @@ class SignupFormHandler
     protected function onSuccess()
     {
         $listing = $this->form->getData();
-        $listingAdmin = $this->container->get('ccetc.directory.admin.listing');
+        $listingTypeHelper = $this->container->get('ccetc.directory.helper.listingtypehelper');
+        $listingType = $listingTypeHelper->findOneByEntityClassPath("\\".get_class($listing));
+
+        $listingAdmin = $listingType->getAdminClass();
 
         $listing->setApproved(false);
         

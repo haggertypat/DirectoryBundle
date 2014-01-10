@@ -12,7 +12,7 @@ class Builder extends ContainerAware
     public function mainMenu(FactoryInterface $factory, array $options)
     {
         $listingTypeHelper = $this->container->get('ccetc.directory.helper.listingtypehelper');
-        $listingTypes = $listingTypeHelper->getListingTypes();
+        $listingTypes = $listingTypeHelper->getAll();
 
         $this->path = str_replace($this->container->get('request')->getBaseUrl(), '', $this->container->get('request')->getRequestUri());
         $this->path = str_replace(strstr($this->path, '?'), "", $this->path); // remove anything after the first ?

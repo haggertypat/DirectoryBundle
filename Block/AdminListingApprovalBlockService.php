@@ -50,7 +50,7 @@ class AdminListingApprovalBlockService extends BaseBlockService
         $templating = $this->container->get('templating');
         $content = "";
 
-        foreach($listingTypeHelper->getListingTypes() as $listingType)
+        foreach($listingTypeHelper->getAll() as $listingType)
         {
             $listingRepository = $listingType->getRepository();
 

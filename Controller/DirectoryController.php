@@ -139,13 +139,26 @@ class DirectoryController extends Controller
         return $this->render('CCETCDirectoryBundle:Directory:_find_a_listing.html.twig', $templateParameters);        
     }
     
-    public function signupAction()
+    public function signupAction($listingTypeKey = null)
     {
+        $listingTypeHelper = $this->container->get('ccetc.directory.helper.listingtypehelper');
         $bundlePath = $this->container->getParameter('ccetc_directory.bundle_path');
         $session = $this->getRequest()->getSession();
-        $form = $this->container->get('ccetc.directory.form.signup');
-        $formHandler = $this->container->get('ccetc.directory.form.handler.signup');
-        
+
+        // determine the listing type
+        if(!isset($listingTypeKey)) $listingType = $listingTypeHelper->getSingleListingType();
+        else $listingType = $listingTypeHelper->findOneByKey($listingTypeKey);
+
+        if(count($listingTypeHelper->getAll()) > 1) {
+            $form = $this->container->get('ccetc.directory.form.'.$listingType->getKey().'signup');
+            $formHandler = $this->container->get('ccetc.directory.form.handler.'.$listingType->getKey().'signup');
+            $template = 'CCETCDirectoryBundle:Directory:'.$listingType->getKey().'-signup.html.twig';
+        } else {
+            $form = $this->container->get('ccetc.directory.form.signup');
+            $formHandler = $this->container->get('ccetc.directory.form.handler.signup');
+            $template = 'CCETCDirectoryBundle:Directory:signup.html.twig';
+        }
+
         if ($formHandler->process()) {
             $session->setFlash('template-flash', 'CCETCDirectoryBundle:Directory:_signup_thanks.html.twig');
             return $this->redirect($this->generateUrl('home'));
@@ -153,9 +166,10 @@ class DirectoryController extends Controller
         
         $templateParameters = array(
             'form' => $form->createView(),
+            'listingType' => $listingType
         );
         
-        return $this->render('CCETCDirectoryBundle:Directory:signup.html.twig', $templateParameters);                
+        return $this->render($template, $templateParameters);                
     }
     
     public function generateLocationsAction()
