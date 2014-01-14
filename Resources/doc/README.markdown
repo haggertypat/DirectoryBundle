@@ -296,6 +296,15 @@ You can use a default controller for your pages using this code in your routes:
 
 The default checks for outdated browsers, including a boolean with the result as it renders your template.
 
+### Multiple Listings
+
+- config
+- Locations
+> append Location and location to admin service id and locationclass if used
+>> location field names should still be listing and location
+>> haven't thought through using 2 listinglocaitons
+- forms!
+
 ## Other Features
 
 ### available Twig Globals

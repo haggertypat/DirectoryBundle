@@ -278,11 +278,15 @@ class ListingAdmin extends Admin
     {
         $geocodeResult = $this->geocodeAddress($object);
         
+        $listingTypeHelper = $this->container->get('ccetc.directory.helper.listingtypehelper');
+        $listingType = $listingTypeHelper->findOneByEntiyClassPath('\\'.get_class($object));
+        $listingLocationAdminService = $listingType->getAdminService().'location';
+
         if(!$object->getLocation()) {
             $this->setLocation($object);
         } else if(isset($geocodeResult['lat']) && isset($geocodeResult['lng'])
                 && ($geocodeResult['lat'] != $object->getLocation()->getLat() || $geocodeResult['lng'] != $object->getLocation()->getLng())) {
-            $listingLocationAdmin = $this->configurationPool->getContainer()->get('ccetc.directory.admin.listinglocation');
+            $listingLocationAdmin = $this->configurationPool->getContainer()->get($listingLocationAdminService);
             $object->getLocation()->setLat($geocodeResult['lat']);
             $object->getLocation()->setLng($geocodeResult['lng']);
             $listingLocationAdmin->update($object->getLocation());

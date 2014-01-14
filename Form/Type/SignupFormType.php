@@ -50,6 +50,19 @@ class SignupFormType extends AbstractType
             'data_class' => $this->classPath,
         ));
     }
+
+    public function getFieldsets()
+    {
+        return array(
+            'Basic Information' => array(
+                'name', 'contactName', 'primaryPhone', 'primaryEmail', 'website', 'description', 'photoFile'
+            ),
+            'Address' => array(
+                'address', 'city', 'state', 'zip'
+            )
+        );
+    }
+
     public function getName()
     {
         return 'ccetc_directory_signup';

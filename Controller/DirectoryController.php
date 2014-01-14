@@ -182,10 +182,12 @@ class DirectoryController extends Controller
 
         if(count($listingTypeHelper->getAll()) > 1) {
             $form = $this->container->get('ccetc.directory.form.'.$listingType->getKey().'signup');
+            $formType = $this->container->get('ccetc.directory.form.type.'.$listingType->getKey().'signup');
             $formHandler = $this->container->get('ccetc.directory.form.handler.'.$listingType->getKey().'signup');
             $template = 'CCETCDirectoryBundle:Directory:'.$listingType->getKey().'_signup.html.twig';
         } else {
             $form = $this->container->get('ccetc.directory.form.signup');
+            $formType = $this->container->get('ccetc.directory.form.type.signup');
             $formHandler = $this->container->get('ccetc.directory.form.handler.signup');
             $template = 'CCETCDirectoryBundle:Directory:signup.html.twig';
         }
@@ -194,9 +196,10 @@ class DirectoryController extends Controller
             $session->setFlash('template-flash', 'CCETCDirectoryBundle:Directory:_signup_thanks.html.twig');
             return $this->redirect($this->generateUrl('home'));
         }
-        
+
         $templateParameters = array(
             'form' => $form->createView(),
+            'fieldsets' => $formType->getFieldsets(),
             'listingType' => $listingType
         );
         
