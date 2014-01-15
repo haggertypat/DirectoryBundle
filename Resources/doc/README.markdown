@@ -300,9 +300,7 @@ The default checks for outdated browsers, including a boolean with the result as
 
 - config
 - Locations
-> append Location and location to admin service id and locationclass if used
->> location field names should still be listing and location
->> haven't thought through using 2 listinglocaitons
+>> only one listing can use location right now - keep service, file, relation, field names plz
 - forms!
 
 ## Other Features
