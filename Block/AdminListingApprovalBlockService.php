@@ -58,7 +58,7 @@ class AdminListingApprovalBlockService extends BaseBlockService
                 'block' => $blockContext->getBlock(),
                 'listings' => $listingRepository->findBy(array('approved' => false, 'spam' => false)),
                 'listingAdmin' => $listingType->getAdminClass(),
-                'listingTranslationKey' => $listingType->getTranslationKey()
+                'translationKey' => $listingType->getTranslationKey()
             ));
         }        
         

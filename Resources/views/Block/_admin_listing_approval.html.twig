@@ -14,7 +14,7 @@ file that was distributed with this source code.
 {% block block %}
     {% if listings|length > 0 %}
         <div class="alert alert-block alert-info">
-            <h3>{{ listings|length }} {{ listings|length == 1? listingTranslationKey|capitalize ~ ' needs' : listingTranslationKey|capitalize ~ 's need'}} approval</h3>
+            <h3>{{ listings|length }} {{ listings|length == 1? (translationKey)|capitalize|trans({}, "messages") ~ ' needs' : (translationKey ~ 's')|capitalize|trans({}, "messages") ~ ' need'}} approval</h3>
             <ul>
                 {% for listing in listings %}
                     <li>{{ listing }}</li>

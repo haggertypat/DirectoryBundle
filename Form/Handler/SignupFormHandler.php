@@ -38,6 +38,7 @@ class SignupFormHandler
     protected function onSuccess()
     {
         $listing = $this->form->getData();
+
         $listingTypeHelper = $this->container->get('ccetc.directory.helper.listingtypehelper');
         $listingType = $listingTypeHelper->findOneByEntityClassPath("\\".get_class($listing));
 
