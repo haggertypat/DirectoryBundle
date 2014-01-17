@@ -10,7 +10,7 @@
 {% endfor %}
 
     <div class="filters-container {{ listingAdmin.datagrid.hasActiveFilters? 'alert-success alert alert-block' : 'well' }}">
-        <form action="{{ url('listings') }}" method="GET">
+        <form action="{{ url(listingType.listingsRouteName) }}" method="GET">
             <h3 id="search-heading">
                 Search
                 <span style="margin-top: 5px;" class="btn-group pull-right">
@@ -20,7 +20,7 @@
                             {{ listingAdmin.datagrid.hasActiveFilters? 'Search Again' : 'Go' }}
                         </button>            
                     {% endif %}
-                    {% if listingAdmin.datagrid.hasActiveFilters %}<a class="btn btn-danger btn-small" href="{{ url('listings', {filters: 'reset'}) }}"><i class="icon-remove icon-white"></i> Clear Search</a>{% endif %}            
+                    {% if listingAdmin.datagrid.hasActiveFilters %}<a class="btn btn-danger btn-small" href="{{ url(listingType.listingsRouteName, {filters: 'reset'}) }}"><i class="icon-remove icon-white"></i> Clear Search</a>{% endif %}            
 
                 </span>
             </h3>

@@ -17,10 +17,8 @@ class DirectoryController extends Controller
         else $listingType = $listingTypeHelper->findOneByKey($listingTypeKey);
 
         if(count($listingTypeHelper->getAll()) > 1) {
-            $listingsTemplate = "CCETCDirectoryBundle:Directory:".$listingType->getKey()."_listings.html.twig";
             $listingBlockTemplate = "CCETCDirectoryBundle:Directory:".$listingType->getKey()."_listing_block.html.twig";
         } else {
-            $listingsTemplate = "CCETCDirectoryBundle:Directory:listings.html.twig";
             $listingBlockTemplate = "CCETCDirectoryBundle:Directory:_listing_block.html.twig";
         }
 
@@ -114,7 +112,7 @@ class DirectoryController extends Controller
             $templateParameters['mapListings'] = $mapListings;
         }
                     
-        return $this->render($listingsTemplate, $templateParameters);
+        return $this->render('CCETCDirectoryBundle:Directory:listings.html.twig', $templateParameters);
     }
     
     public function profileAction($id, $listingTypeKey = null)
