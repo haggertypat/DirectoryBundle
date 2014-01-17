@@ -1,0 +1,20 @@
+
+    {% for field, value in fields
+      if attribute(listing, field) is defined and attribute(listing, field) != "" and attribute(listing, field)|length > 0 %}
+        <tr>
+            <th style="text-align: left; {{ loop.first? 'border-top:none;' : '' }}">{{ value != ""? value : field|capitalize }}</th>
+            <td style="{{ loop.first? 'border-top:none;' : '' }}">
+                {% if attribute(listing, field) is iterable and attribute(listing, field)|length > 1 %}
+                    <ul>
+                        {% for option in attribute(listing, field) %}
+                            <li>{{ option|raw }}</li>
+                        {% endfor %}
+                    </ul>
+                {% elseif attribute(listing, field) is iterable and attribute(listing, field)|length == 1 %}
+                    {{ attribute(listing, field)[0]|raw }}
+                {% else %}
+                    {{ attribute(listing, field)|raw }}
+                {% endif %}
+            </td>
+        </tr>
+    {% endfor %}
