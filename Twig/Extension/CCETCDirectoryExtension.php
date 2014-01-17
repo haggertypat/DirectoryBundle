@@ -25,20 +25,26 @@ class CCETCDirectoryExtension extends \Twig_Extension
             'directoryOgURL' => $this->container->getParameter('ccetc_directory.og_url'),            
             'googleMapsKey' => $this->container->getParameter('ccetc_directory.google_maps_key'),            
             'googleAnalyticsAccount' => $this->container->getParameter('ccetc_directory.google_analytics_account'), 
-            'singleListingType' => $this->listingTypeHelper->getSingleListingType(),
+            'singleListingType' => $this->listingTypeHelper->getSingleListingType()
         );
     }
     
     public function getFunctions()
     {
         return array(
-            'getListingTypeForObject' => new \Twig_Function_Method($this, 'getListingTypeForObject')
+            'getListingTypeForObject' => new \Twig_Function_Method($this, 'getListingTypeForObject'),
+            'getListingTypeByKey' => new \Twig_Function_Method($this, 'getListingTypeByKey')
         );
     }
 
     public function getListingTypeForObject($object)
     {
         return $this->listingTypeHelper->findOneByEntityClassPath(get_class($object));
+    }
+
+    public function getListingTypeByKey($key)
+    {
+        return $this->listingTypeHelper->findOneByKey($key);        
     }
 
     /**
