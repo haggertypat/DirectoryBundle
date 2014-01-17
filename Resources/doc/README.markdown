@@ -302,6 +302,7 @@ The default checks for outdated browsers, including a boolean with the result as
 - Locations
 >> only one listing can use location right now - keep service, file, relation, field names plz
 - forms!
+- use_map, use_profiles
 
 ## Other Features
 

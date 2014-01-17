@@ -10,6 +10,8 @@ class ListingType
     protected $entityClassPath;
     protected $translationKey;
     protected $adminService;
+    protected $useMaps;
+    protected $useProfiles;
     
     public function __construct($container, $configValues)
     {
@@ -17,6 +19,8 @@ class ListingType
     	$this->adminService = $configValues['admin_service'];
     	$this->entityClassPath = $configValues['entity_class_path'];
     	$this->translationKey = $configValues['translation_key'];
+        $this->useMaps = $configValues['use_maps'];
+        $this->useProfiles = $configValues['use_profiles'];
     }
 
     public function getEntityClassPath()
@@ -68,6 +72,16 @@ class ListingType
     public function getKey()
     {
     	return $this->getTranslationKey();
+    }
+
+    public function getUseMaps()
+    {
+        return $this->useMaps;
+    }
+
+    public function getUseProfiles()
+    {
+        return $this->useProfiles;
     }
 
     public function getListingsRouteName()

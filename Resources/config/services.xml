@@ -45,6 +45,5 @@
         <service id="ccetc.directory.filter.location" class="CCETC\DirectoryBundle\Filter\LocationFilter">
             <tag name="sonata.admin.filter.type" alias="ccetc_directory_filter_location" />
         </service>        
-        
     </services>
 </container>

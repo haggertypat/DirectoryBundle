@@ -35,15 +35,15 @@ class Configuration implements ConfigurationInterface
                 ->scalarNode('og_url')->defaultvalue(null)->end()
                 ->scalarNode('google_maps_key')->defaultvalue(null)->end()
                 ->scalarNode('google_analytics_account')->defaultvalue(null)->end()
-                ->scalarNode('use_profiles')->defaultvalue(true)->end()
-                ->scalarNode('use_maps')->defaultvalue(true)->end()
                 ->scalarNode('always_show_advanced_search')->defaultvalue(true)->end()
                 ->arrayNode('listing_type_config')
                     ->defaultValue(array(
                         array(
                             'admin_service' => 'ccetc.directory.admin.listing',
                             'entity_class_path' => 'replaceUsingBundlePath', // in the DI extension class, we'll look for this and replace in with the bundle path the user has defined
-                            'translation_key' => 'listing'
+                            'translation_key' => 'listing',
+                            'use_maps' => true,
+                            'use_profiles' => true,
                         )
                     ))
                     ->prototype('array')
@@ -52,6 +52,8 @@ class Configuration implements ConfigurationInterface
                             ->scalarNode('admin_service')->cannotBeEmpty()->end()
                             ->scalarNode('entity_class_path')->cannotBeEmpty()->end()
                             ->scalarNode('translation_key')->cannotBeEmpty()->end()
+                            ->scalarNode('use_maps')->defaultvalue(true)->end()
+                            ->scalarNode('use_profiles')->defaultvalue(true)->end()
                         ->end()
                     ->end()
                 ->end()

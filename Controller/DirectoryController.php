@@ -24,8 +24,6 @@ class DirectoryController extends Controller
 
         $bundleName = $this->container->getParameter('ccetc_directory.bundle_name');
         $bundlePath = $this->container->getParameter('ccetc_directory.bundle_path');
-        $useProfiles = $this->container->getParameter('ccetc_directory.use_profiles');
-        $useMaps = $this->container->getParameter('ccetc_directory.use_maps');
         $listingAdmin = $listingType->getAdminClass();
         $userLocationAliasAdmin = $this->container->get('ccetc.directory.admin.userlocationalias');
         $userLocationAdmin = $this->container->get('ccetc.directory.admin.userlocation');
@@ -39,7 +37,7 @@ class DirectoryController extends Controller
         $listingAdmin->setRequest($request);        
         $filterParameters = $listingAdmin->getFilterParameters();        
         
-        if($useProfiles) $linkBlocks = true;
+        if($listingType->getUseProfiles()) $linkBlocks = true;
         else $linkBlocks = false;
        
         // check for a requested address in the filters and respond accordingly
@@ -83,7 +81,7 @@ class DirectoryController extends Controller
         } else {
             $listings = $datagrid->getResults();
             
-            if($useMaps) {
+            if($listingType->getUseMaps()) {
                 // get all the listings for the map
                 $query = $datagrid->getQuery();
                 $query->setMaxResults(10000000);
@@ -102,13 +100,13 @@ class DirectoryController extends Controller
             'datagrid' => $datagrid,
             'singleListing' => $singleListing,
             'linkBlocks' => $linkBlocks,
-            'useMaps' => $useMaps,
+            'useMaps' => $listingType->getUseMaps(),
             'alwaysShowAdvancedSearch' => $alwaysShowAdvancedSearch,
             'listingType' => $listingType,
             'listingBlockTemplate' => $listingBlockTemplate
         );
                 
-        if($useMaps) {
+        if($listingType->getUseMaps()) {
             $templateParameters['mapListings'] = $mapListings;
         }
                     
@@ -135,10 +133,8 @@ class DirectoryController extends Controller
         if(!$listing->getApproved() && !$this->get('security.context')->isGranted('ROLE_ADMIN') ) {
             throw new \Exception("This profile has not been approved yet.  If you are an admin, login to approve this listing.");   
         }
-
-        $useProfiles = $this->container->getParameter('ccetc_directory.use_profiles');
         
-        if(!$useProfiles) {
+        if(!$listingType->getUseProfiles()) {
             return $this->forward('CCETCDirectoryBundle:Directory:listings', array('listingId' => $id, 'listingTypeKey' => $listingTypeKey));
         }
 

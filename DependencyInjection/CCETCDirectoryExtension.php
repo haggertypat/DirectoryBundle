@@ -42,8 +42,6 @@ class CCETCDirectoryExtension extends Extension
             'og_url',
             'google_maps_key',
             'google_analytics_account',
-            'use_profiles',
-            'use_maps',
             'always_show_advanced_search',
             'listing_type_config'
         );
