@@ -277,13 +277,15 @@ Copy ``validation.yml.dist`` to your bundle, and customize as needed.
 The directory uses ``ListingAdmin.datagrid`` for the filters on the frontend.  Filters with the option ``isAdvanced`` equal to ``true`` will but put into an "advanced search" section.  Filters with the option 'hideValue' set to true will have their value form input hidden.
 
 ### Signup Form
-The signup form and handler exists as services, so you can provide your own form and/or handler and override the services.  Be sure to override the form template as well.
+The signup form, form type, and handler exists as services, so you can provide your own form, form type, and/or handler and override the services.  Be sure to override the form template as well.
 
         <service id="ccetc.directory.form.handler.signup" class="My\AppBundle\Form\Handler\SignupFormHandler" scope="request">
             <argument type="service" id="ccetc.directory.form.signup" />
             <argument type="service" id="request" />
             <argument type="service" id="service_container" />
         </service>
+
+We've implemented a very simple method for automating fieldset/field groups in the form type.  Any customized form type must have a ``getFieldsets`` method that returns an array in the format of ``"Fieldset Label" => array("field1", "field2")``.
     
 ### Custom Pages
 You can use a default controller for your pages using this code in your routes:
@@ -315,6 +317,11 @@ Below are some notes on setting up an app that uses two listing types.  Configur
 #### Locations
 At the moment, using the Location features is only supported for one listing class/type.  It wouldn't be impossible to implement, but it wasn't needed for our projet, and it was too complicated.  When building your classes, service, class name, and relation field names should still use the word "listing" (ex: ListingLocation is the classname, listings is the relation field, etc).
 
+#### Assumptions
+To keep configuration options few, we've made a few assumptions:
+
+- listing_block, profile, and signup templates are required and follow the format of type->translationKey + "_profile"
+- the three signup services are required and follow the foramt of "ccetc.direction.x.x." + type->translationKey + "signup"
 
 ## Other Features
 
