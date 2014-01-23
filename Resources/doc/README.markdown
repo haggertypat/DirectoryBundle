@@ -244,6 +244,7 @@ You can add custom fields or field overrides to the entities you create.  Be sur
 * Entity class
 * Admin class
 * Signup form
+* Frontend templates
 
 Some useful resources:
 
@@ -322,6 +323,14 @@ To keep configuration options few, we've made a few assumptions:
 
 - listing_block, profile, and signup templates are required and follow the format of type->translationKey + "_profile"
 - the three signup services are required and follow the foramt of "ccetc.direction.x.x." + type->translationKey + "signup"
+
+#### Utilities
+There some twig variables and functions available:
+
+- listingListingType - the first listing type available (can use if you only have one and need to get a route for example)
+- getListingTypeForObject(listing) - returns the listing type for an object that's a listing
+- getListingTypeByKey(stringKey) - returns the listing type that matches a translation_key
+
 
 ## Other Features
 
