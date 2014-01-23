@@ -85,7 +85,6 @@ Add the following to your ``config.yml`` and fill out the values with your app's
         og_url: http://yoururl
         google_maps_key: yourkey
         google_analytics_account: UA-NNNNNNNNN-1
-        use_profiles: true
 
     sonata_block:
         default_contexts: [cms]
@@ -129,9 +128,6 @@ Add the following to your ``config.yml`` and fill out the values with your app's
 * og_* - used for og meta tags
 * google_maps_key - optional
 * google_analytics_account - optional
-* use_profile - boolean, default: true (if false, profile routes will redirect to the listings page with a single listing)
-* use_maps - boolean, default: true (is false, maps tab will not appear on listings page
-)
 
 
 #### Create your Entities
@@ -278,7 +274,7 @@ You can extend the provided admin classes:
 Copy ``validation.yml.dist`` to your bundle, and customize as needed.
 
 ### Frontend Filters
-The directory uses ``ListingAdmin.datagrid`` for the filters on the frontend.  Filters with the option ``isAdvanced`` equal to ``true`` will but put into an "advanced search" section.
+The directory uses ``ListingAdmin.datagrid`` for the filters on the frontend.  Filters with the option ``isAdvanced`` equal to ``true`` will but put into an "advanced search" section.  Filters with the option 'hideValue' set to true will have their value form input hidden.
 
 ### Signup Form
 The signup form and handler exists as services, so you can provide your own form and/or handler and override the services.  Be sure to override the form template as well.
@@ -296,13 +292,29 @@ You can use a default controller for your pages using this code in your routes:
 
 The default checks for outdated browsers, including a boolean with the result as it renders your template.
 
-### Multiple Listings
+### Multiple Listing Types
+We after the initial development added the option to define multiple listing types.  This configuration is optional and the bundle should still work out of the box without any new configuration changes, but this has not been fully tested.
 
-- config
-- Locations
->> only one listing can use location right now - keep service, file, relation, field names plz
-- forms!
-- use_map, use_profiles
+Below are some notes on setting up an app that uses two listing types.  Configuration is fairly simply, and for the most part installation and customization works just as it does with one listing type.
+
+#### Config
+
+    cce_directory:
+        listing_type_config:
+            - { admin_service: 'ccetc.directory.admin.listinga', entity_class_path: '\My\AppBundle\Entity\ListingA', translation_key: 'listinga' }
+            - { admin_service: 'ccetc.directory.admin.listingb', entity_class_path: '\My\AppBundle\Entity\ListingB', translation_key: 'listingb', use_maps: false, use_profiles: false }
+
+##### Options
+- admin_service - the service for this type's entity's admin class
+- entity_class_path - the path to this type's entity
+- translation_key - The translation key will be used in templates, with capitalization and pluralization as needed, so any translations you provide should use this key.  **This key is also used to uniquely identify the listing type - so it must be unique.**
+* use_profile - boolean, optional, default: true (if false, profile routes will redirect to the listings page with a single listing)
+* use_maps - boolean, optional, default: true (is false, maps tab will not appear on listings page
+
+
+#### Locations
+At the moment, using the Location features is only supported for one listing class/type.  It wouldn't be impossible to implement, but it wasn't needed for our projet, and it was too complicated.  When building your classes, service, class name, and relation field names should still use the word "listing" (ex: ListingLocation is the classname, listings is the relation field, etc).
+
 
 ## Other Features
 

@@ -41,6 +41,8 @@ class ListingTypeHelper
 
     public function findOneByEntityClassPath($entityClassPath)
     {
+        if($entityClassPath[0] != "\\") $entityClassPath = "\\".$entityClassPath;
+
     	foreach($this->getAll() as $type)
     	{
     		if($entityClassPath == $type->getEntityClassPath()) return $type;

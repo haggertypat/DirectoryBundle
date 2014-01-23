@@ -82,6 +82,10 @@ class ListingAdmin extends Admin
             $photoLabel = "Photo";
         }        
         $formMapper
+            ->with('Status')
+                ->add('spam', null, array('required' => false))
+                ->add('approved', null, array('required' => false))
+            ->end()
             ->with('General')
                 ->add('name')
                 ->add('contactName')
@@ -116,10 +120,6 @@ class ListingAdmin extends Admin
                 ->add('primaryPhoneType')
                 ->add('secondaryPhone')
                 ->add('secondaryPhoneType')
-            ->end()
-            ->with('Status')
-                ->add('spam', null, array('required' => false))
-                ->add('approved', null, array('required' => false))
             ->end()
             ->setHelps(array(
                 'addressLabel' => 'Example: Office, Mailing, etc.',
@@ -176,6 +176,12 @@ class ListingAdmin extends Admin
     protected function configureShowFields(ShowMapper $showMapper)
     {
         $showMapper
+            ->with('Status')
+                ->add('spam')
+                ->add('approved')
+                ->add('datetimeCreated')
+                ->add('datetimeLastUpdated')
+            ->end()  
             ->with('General')
                 ->add('name', null, array('template' => 'CCETCDirectoryBundle:Admin:_listing_show_name.html.twig'))
                 ->add('contactName')
@@ -211,13 +217,7 @@ class ListingAdmin extends Admin
                 ->add('primaryPhoneType')
                 ->add('secondaryPhone')
                 ->add('secondaryPhoneType')
-            ->end()
-            ->with('Status')
-                ->add('spam')
-                ->add('approved')
-                ->add('datetimeCreated')
-                ->add('datetimeLastUpdated')
-            ->end()      
+            ->end()    
         ;
         
     }
