@@ -85,6 +85,7 @@ Add the following to your ``config.yml`` and fill out the values with your app's
         og_url: http://yoururl
         google_maps_key: yourkey
         google_analytics_account: UA-NNNNNNNNN-1
+        always_show_advanced_search: false
 
     sonata_block:
         default_contexts: [cms]
@@ -128,6 +129,7 @@ Add the following to your ``config.yml`` and fill out the values with your app's
 * og_* - used for og meta tags
 * google_maps_key - optional
 * google_analytics_account - optional
+* always_show_advanced_search - optional, default false
 
 
 #### Create your Entities
