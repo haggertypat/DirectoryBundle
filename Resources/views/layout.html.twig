@@ -75,16 +75,6 @@
                         </div>
                     {% endif %}
                 {% endfor %}
-
-                {% for notice_level in ['success','error','info', 'warning'] %}
-                    {% set session_var = 'sonata_flash_' ~ notice_level %}
-                    {% for flash in app.session.flashbag.get(session_var) %}
-                        <div class="alert {{ 'alert-' ~ notice_level }}">
-                            {{ flash|trans([], 'SonataAdminBundle') }}
-                        </div>
-                    {% endfor %}
-                {% endfor %}
-
                 {% if app.session.hasFlash('fos_user_success') %}
                     <div class="alert alert-success">
                         {{ app.session.flash('fos_user_success')|trans({}, 'FOSUserBundle') }}
