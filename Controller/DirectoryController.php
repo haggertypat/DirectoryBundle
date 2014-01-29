@@ -130,9 +130,11 @@ class DirectoryController extends Controller
         $listingAdmin = $listingType->getAdminClass();
         $listingRepository = $listingType->getRepository();
         $listing = $listingRepository->findOneById($id);
-
-        if(!$listing->getApproved() && !$this->get('security.context')->isGranted('ROLE_ADMIN') ) {
-            throw new \Exception("This profile has not been approved yet.  If you are an admin, login to approve this listing.");   
+        $user = $this->container->get('security.context')->getToken()->getUser();
+        
+        if(!$listing->getApproved() && !$this->get('security.context')->isGranted('ROLE_ADMIN')
+            && (!is_object($user) || !$user->getListing() || $user->getListing() != $listing)  ) {
+            throw new \Exception("This profile has not been approved yet.  If you are an admin, login to approve this listing.  If you own this listing, login to view or edit it.");   
         }
         
         if(!$listingType->getUseProfiles()) {

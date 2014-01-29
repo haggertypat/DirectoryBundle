@@ -28,6 +28,17 @@
         </script>
     {% endif %}
 
+    {% if not listing.approved %}
+        <div class="alert alert-notice">
+            {% if listing.user is defined and listing.user == app.user %}
+                <h3>Note: your listing has not been approved yet.</h3>
+            {% else %}
+                <h3>Note: this listing has not been approved yet.</h3>
+                <a class="btn edit-btn" href="{{ listingType.adminClass.generateUrl('approve', {'id' : listing.id}) }}" ><i class="icon-check"></i> Approve</a> 
+            {% endif %}
+        </div>
+    {% endif %}
+
     <div class="row">
         <div class="span7">
             <div class="profile-meta">

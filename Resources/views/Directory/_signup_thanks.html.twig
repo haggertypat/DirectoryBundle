@@ -14,8 +14,6 @@
                 {% set listingType = getListingTypeForObject(app.user.listing) %}
                 <a href="{{ path(listingType.editRouteName, {'id' : app.user.listing.id}) }}" class="btn"><i class="icon-pencil"></i> Edit your Listing</a>
             {% endif %}
-
-            <a href="{{ path('fos_user_security_logout') }}" class="btn">Logout</a>
         {% endif %}
         <a href="#" class="btn" data-dismiss="modal">Close</a>
     </div>

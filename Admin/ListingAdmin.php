@@ -9,9 +9,17 @@ use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Doctrine\ORM\Query\Expr\Join;
 use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
+use Sonata\AdminBundle\Route\RouteCollection;
 
 class ListingAdmin extends Admin
 {
+    protected function configureRoutes(RouteCollection $collection)
+    {
+
+        $collection->add('approve', 'approve/{id}');
+        $collection->add('unapprove', 'unapprove/{id}');
+    }
+
     public function getFilterParameters()
     {
         if($this->isAdmin()) {
