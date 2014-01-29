@@ -4,6 +4,7 @@ namespace CCETC\DirectoryBundle\Controller;
 
 use Symfony\Component\Form\FormError;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 use CCETC\DirectoryBundle\Form\Type\SignupFormType;
 use CCETC\DirectoryBundle\Form\Handler\SignupFormHandler;
@@ -179,6 +180,10 @@ class DirectoryController extends Controller
             $formType = $this->container->get('ccetc.directory.form.type.'.$listingType->getKey().'signup');
             $formHandler = $this->container->get('ccetc.directory.form.handler.'.$listingType->getKey().'signup');
             $template = 'CCETCDirectoryBundle:Directory:'.$listingType->getKey().'_signup.html.twig';
+
+            if (!$this->container->get('templating')->exists($template) ) {
+                $template = 'CCETCDirectoryBundle:Directory:signup.html.twig';
+            }
         } else {
             $form = $this->container->get('ccetc.directory.form.signup');
             $formType = $this->container->get('ccetc.directory.form.type.signup');
@@ -199,6 +204,62 @@ class DirectoryController extends Controller
         
         return $this->render($template, $templateParameters);                
     }
+
+    public function editAction($id, $listingTypeKey = null)
+    {
+        $listingTypeHelper = $this->container->get('ccetc.directory.helper.listingtypehelper');
+        $bundlePath = $this->container->getParameter('ccetc_directory.bundle_path');
+        $session = $this->getRequest()->getSession();
+
+        if(!isset($listingTypeKey)) $listingType = $listingTypeHelper->getSingleListingType();
+        else $listingType = $listingTypeHelper->findOneByKey($listingTypeKey);
+
+        $listingRepository = $listingType->getRepository();
+        $listing = $listingRepository->findOneById($id);
+
+        $user = $this->container->get('security.context')->getToken()->getUser();
+        
+        if(!is_object($user) && !$this->container->get('security.context')->isGranted('ROLE_ADMIN')) {
+            $session->setFlash('alert-warning', 'You must login to edit this Listing');
+            throw new AccessDeniedException('You must login to edit this Listing');
+        } else if ((!$user->getListing() || $user->getListing() != $listing)  && !$this->container->get('security.context')->isGranted('ROLE_ADMIN')) {
+            throw new AccessDeniedException('You do not have permission to edit this Listing');
+        }
+
+        if(count($listingTypeHelper->getAll()) > 1) {
+            $form = $this->container->get('ccetc.directory.form.'.$listingType->getKey());
+            $formType = $this->container->get('ccetc.directory.form.type.'.$listingType->getKey());
+            $formHandler = $this->container->get('ccetc.directory.form.handler.'.$listingType->getKey().'edit');
+            $template = 'CCETCDirectoryBundle:Directory:'.$listingType->getKey().'_edit.html.twig';
+
+            if (!$this->container->get('templating')->exists($template) ) {
+                $template = 'CCETCDirectoryBundle:Directory:edit.html.twig';
+            }
+        } else {
+            $form = $this->container->get('ccetc.directory.form.edit');
+            $formType = $this->container->get('ccetc.directory.form.type.edit');
+            $formHandler = $this->container->get('ccetc.directory.form.handler.edit');
+            $template = 'CCETCDirectoryBundle:Directory:edit.html.twig';
+        }
+
+        $form->setData($listing);
+
+        if ($formHandler->process()) {
+            $session->setFlash('alert-success', 'Your listing has been updated.');
+            return $this->redirect($this->generateUrl($listingType->getProfileRouteName(), array('id' => $id)));
+        }
+
+        $templateParameters = array(
+            'form' => $form->createView(),
+            'fieldsets' => $formType->getFieldsets(),
+            'listingType' => $listingType,
+            'listing' => $listing
+        );
+        
+        return $this->render($template, $templateParameters);                
+    }
+
+
     
     public function generateLocationsAction($listingTypeKey = null)
     {

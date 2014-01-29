@@ -247,7 +247,7 @@ class ListingAdmin extends Admin
         }
         
         $this->updateLocation($object);
-        
+
         parent::preUpdate($object);        
     }
     

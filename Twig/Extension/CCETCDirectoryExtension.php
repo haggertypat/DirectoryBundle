@@ -25,7 +25,9 @@ class CCETCDirectoryExtension extends \Twig_Extension
             'directoryOgURL' => $this->container->getParameter('ccetc_directory.og_url'),            
             'googleMapsKey' => $this->container->getParameter('ccetc_directory.google_maps_key'),            
             'googleAnalyticsAccount' => $this->container->getParameter('ccetc_directory.google_analytics_account'), 
-            'singleListingType' => $this->listingTypeHelper->getSingleListingType()
+            'singleListingType' => $this->listingTypeHelper->getSingleListingType(),
+            'registrationSetting' => $this->container->getParameter('ccetc_directory.registration_setting'),
+            'allListingTypes' => $this->listingTypeHelper->getAll()
         );
     }
     

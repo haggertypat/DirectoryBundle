@@ -16,8 +16,16 @@
                 <i class="icon-arrow-left"></i> View Site
             </a>
         </li>
+
         <li>
-            <p class="navbar-text"><i>Close your browser to log out</i></p>
+            <p class="navbar-text">
+                Logged in as {{ app.user.username }}, 
+
+                {% if registrationSetting != 'none' %}
+                    <a href="{{ path('fos_user_security_logout') }}">Log out</a>
+                {% else %}
+                    <i>Close your browser to log out</i></p>
+                {% endif %}
         </li>
     </ul>
 {% endblock %}

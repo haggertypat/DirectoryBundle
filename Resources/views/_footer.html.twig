@@ -6,8 +6,12 @@
                         &copy; {{ directoryCopyright }}<br/>
                     {% endif %}
                     <a href="{{ path('about') }}">About</a> |
-                    <a href="mailto:{{ directoryContactEmail }}">Contact</a> |
+                    <a href="mailto:{{ directoryContactEmail }}">Contact</a>
+
+                    {% if registrationSetting == 'none' %}
+                     |
                     <a href="{{ path('sonata_admin_dashboard') }}">Admin</a>
+                    {% endif %}
                 </p>   
             </div>
             <div style="clear: both;">&nbsp;</div>                    

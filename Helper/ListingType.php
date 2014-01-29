@@ -116,5 +116,13 @@ class ListingType
     {
     	return $this->getListingsRoutePattern() . 'GenerateLocations';
     }
+    public function getEditRouteName()
+    {
+        return $this->getTranslationKey() . 'Edit';        
+    }
+    public function getEditRoutePattern()
+    {
+        return $this->getListingsRoutePattern() . '/{id}/edit';
+    }
 
 }
