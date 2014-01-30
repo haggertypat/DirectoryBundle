@@ -6,7 +6,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class SignupFormType extends AbstractType
+class SignupFormType extends ListingFormType
 {
     private $classPath;
 
@@ -20,38 +20,22 @@ class SignupFormType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder
-            ->add('name', 'text', array('label' => 'Listing Name'))
-            ->add('address', 'text')
-            ->add('city', 'text')
-            ->add('state', 'choice', array('choices' => array('NY' => 'New York')))
-            ->add('zip', 'text')
-            ->add('website', 'text', array('required' => false))
-            ->add('contactName', 'text', array('label' => 'Contact Name'))
-            ->add('primaryEmail', 'text', array('label' => 'E-mail', 'required' => false))
-            ->add('primaryPhone', 'text', array('label' => 'Phone', 'required' => false))
-            ->add('description', 'textarea', array('label' => 'Listing Description', 'attr' => array('rows' => '5'), 'required' => false))
-            ->add('photoFile', 'file', array('required' => false, 'label' => 'Profile Photo', 'required' => false))
-        ;
-    }
+        $builder = parent::buildForm($builder, $options);
 
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
-    {
-        $resolver->setDefaults(array(
-            'data_class' => $this->classPath,
-        ));
+        $builder
+            ->add('password1', 'password', array('label' => 'Password', 'property_path' => false))
+            ->add('password2', 'password', array('label' => 'Verify Password', 'property_path' => false))
+        ;
     }
 
     public function getFieldsets()
     {
-        return array(
-            'Basic Information' => array(
-                'name', 'contactName', 'primaryPhone', 'primaryEmail', 'website', 'description', 'photoFile'
-            ),
-            'Address' => array(
-                'address', 'city', 'state', 'zip'
-            )
-        );
+        $fieldsets = parent::getFieldsets();
+
+        $fieldsets['Contact Information'][] = 'password1';
+        $fieldsets['Contact Information'][] = 'password2';
+
+        return $fieldsets;
     }
 
     public function getName()

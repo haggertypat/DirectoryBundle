@@ -7,6 +7,8 @@
             <a class="btn" href="javascript:if(window.print)window.print()" ><i class="icon-print"></i> Print</a> 
             {% if is_granted("ROLE_ADMIN") %}
                 <a class="btn edit-btn" href="{{ listingAdmin.generateObjectUrl('edit', listing) }}" ><i class="icon-pencil"></i> Edit</a> 
+            {% elseif app.user.listing.id is defined and app.user.listing.id == listing.id %}
+                <a class="btn edit-btn" href="{{ path(listingType.editRouteName, {'id' : listing.id}) }}" ><i class="icon-pencil"></i> Edit</a> 
             {% endif %}
         </div>
         <div style="clear: both; line-height: 0px;">&nbsp;</div>
@@ -24,6 +26,17 @@
                 profileMapInit();
             });
         </script>
+    {% endif %}
+
+    {% if not listing.approved %}
+        <div class="alert alert-notice">
+            {% if listing.user is defined and listing.user == app.user %}
+                <h3>Note: your listing has not been approved yet.</h3>
+            {% else %}
+                <h3>Note: this listing has not been approved yet.</h3>
+                <a class="btn edit-btn" href="{{ listingType.adminClass.generateUrl('approve', {'id' : listing.id}) }}" ><i class="icon-check"></i> Approve</a> 
+            {% endif %}
+        </div>
     {% endif %}
 
     <div class="row">

@@ -1,7 +1,8 @@
 {% extends layoutTemplate %}
 
 {% block page_header %}
-    <h2>{{ 'Add your'|trans }} {{ listingType.translationKey|capitalize|trans }}</h2>
+    <h2 class="pull-left">Edit your Listing</h2>
+    <a href="{{ path(listingType.profileRouteName, {'id': listing.id}) }}" class="btn pull-left" style="margin: 25px 0 0 15px;">Cancel</a>    
 {% endblock %}
 
 {% block content %}
@@ -12,20 +13,21 @@
                     {{ form_errors(form) }}
                 </div>
             {% endif %}
-                
-            <form novalidate class="signup-form form-horizontal" action="{{ path(listingType.signupRouteName) }}" method="post" {{ form_enctype(form) }}>
+
+            <form novalidate class="signup-form form-horizontal" action="{{ path(listingType.editRouteName, {'id': listing.id}) }}" method="post" {{ form_enctype(form) }}>
                 {% for label, fields in fieldsets %}
                     <fieldset>
                         <legend>{{ label }}</legend>
                         {% for field in fields %}
                             {{ form_row(attribute(form, field)) }}
                         {% endfor %}
-                    </fieldset><br/>
+                    </fieldset>
                 {% endfor %}
                 {{ form_rest(form) }}
                 
                 <div class="form-actions">
-                    <button type="submit" class="btn btn-large btn-primary" id="signup-submit" data-loading-text="Submitting...">Sign Up</button>
+                    <button type="submit" class="btn btn-large btn-primary" id="signup-submit" data-loading-text="Submitting...">Save</button>
+                    <a href="{{ path(listingType.profileRouteName, {'id': listing.id}) }}" class="btn btn-large">Cancel</a>
                 </div>
             </form>                
         </div>

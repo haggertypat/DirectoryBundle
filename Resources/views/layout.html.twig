@@ -64,12 +64,22 @@
             <div class="content">
                 {% for notice_level in ['success','error','info', 'warning'] %}
                     {% set notice_var = 'alert-' ~ notice_level %}
+                    {% set sonata_var = 'sonata_flash_' ~ notice_level %}
                     {% if app.session.hasFlash(notice_var) %}
                         <div class="alert alert-{{ notice_level }}">
                             {{ app.session.flash(notice_var)|raw }}
                         </div>
+                    {% elseif app.session.hasFlash(sonata_var) %}
+                        <div class="alert alert-{{ notice_level }}">
+                            {{ app.session.flash(sonata_var)|raw }}
+                        </div>
                     {% endif %}
                 {% endfor %}
+                {% if app.session.hasFlash('fos_user_success') %}
+                    <div class="alert alert-success">
+                        {{ app.session.flash('fos_user_success')|trans({}, 'FOSUserBundle') }}
+                    </div>
+                {% endif %}
                 {% if app.session.hasFlash('template-flash') %}
                     {% include app.session.getFlash('template-flash') %}
                 {% endif %}
@@ -88,22 +98,6 @@
                 {% endif %}
 
                 {% include 'CCETCDirectoryBundle::_header.html.twig' %}    
-                    
-                <div class="navbar">
-                    <div class="navbar-inner">
-                        {{ knp_menu_render(directoryMenuBuilder, {'currentClass' : 'active' } ) }}
-                            
-                        {% if app.user.username is defined %}    
-                            <ul id="frontend-admin-menu" class="nav pull-right">
-                                <li>
-                                    <p class="navbar-text">
-                                        Logged in as {{ app.user.username }}, <i>Close your browser to log out</i></p>
-                                </li>
-                                <li><a href="{{ path('sonata_admin_dashboard') }}">Go to Admin <i class="icon-arrow-right"></i></a>
-                            </ul>
-                        {% endif %}
-                    </div>
-                </div>
 
                 <div class="row">
                     <div class="span12">

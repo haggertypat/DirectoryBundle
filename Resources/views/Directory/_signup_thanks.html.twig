@@ -3,8 +3,18 @@
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
         <h3>Thanks for Signing Up!</h3>
         Your listing will appear on the site once our staff reviews it.
+
+        {% if app.user.email is defined %}
+            <h4>You are now logged in.</h4>
+        {% endif %}
     </div>
     <div class="modal-footer">
+        {% if app.user.email is defined %}
+            {% if app.user.listing.id is defined %}
+                {% set listingType = getListingTypeForObject(app.user.listing) %}
+                <a href="{{ path(listingType.editRouteName, {'id' : app.user.listing.id}) }}" class="btn"><i class="icon-pencil"></i> Edit your Listing</a>
+            {% endif %}
+        {% endif %}
         <a href="#" class="btn" data-dismiss="modal">Close</a>
     </div>
 </div>

@@ -30,7 +30,7 @@ class ListingLoader implements LoaderInterface
 
         foreach($this->listingTypes as $listingType)
         {
-            $routeActions = array('listings', 'profile', 'signup', 'generate-locations');
+            $routeActions = array('listings', 'profile', 'signup', 'generate-locations', 'edit');
 
             foreach($routeActions as $action)
             {
@@ -48,7 +48,7 @@ class ListingLoader implements LoaderInterface
                 $nameMethod = 'get'.$methodSegment.'RouteName';
 
 
-                if($action == "profile") {
+                if($action == "profile" || $action == "edit") {
                     $requirements = array(
                         'id' => '\d+',
                     );

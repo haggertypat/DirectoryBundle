@@ -66,11 +66,11 @@
                             <div class="pagination pagination-centered">
                                 <ul>
                                     {% if listingAdmin.datagrid.pager.page != 1  %}
-                                        <li><a href="{{ path('listings', listingAdmin.modelmanager.paginationparameters(listingAdmin.datagrid, 1)) }}" title="{{ 'link_first_pager'|trans({}, 'SonataAdminBundle') }}">&laquo;</a></li>
+                                        <li><a href="{{ path(listingType.listingsRouteName, listingAdmin.modelmanager.paginationparameters(listingAdmin.datagrid, 1)) }}" title="{{ 'link_first_pager'|trans({}, 'SonataAdminBundle') }}">&laquo;</a></li>
                                     {% endif %}
 
                                     {% if listingAdmin.datagrid.pager.page != listingAdmin.datagrid.pager.previouspage %}
-                                        <li><a href="{{ path('listings', listingAdmin.modelmanager.paginationparameters(listingAdmin.datagrid, listingAdmin.datagrid.pager.previouspage)) }}" title="{{ 'link_previous_pager'|trans({}, 'SonataAdminBundle') }}">&lsaquo;</a></li>
+                                        <li><a href="{{ path(listingType.listingsRouteName, listingAdmin.modelmanager.paginationparameters(listingAdmin.datagrid, listingAdmin.datagrid.pager.previouspage)) }}" title="{{ 'link_previous_pager'|trans({}, 'SonataAdminBundle') }}">&lsaquo;</a></li>
                                     {% endif %}
 
                                     {# Set the number of pages to display in the pager #}
@@ -79,18 +79,18 @@
 
                                     {% for page in listingAdmin.datagrid.pager.getLinks() if (page > firstTile and page < lastTile)  %}
                                         {% if page == listingAdmin.datagrid.pager.page %}
-                                            <li class="active"><a href="{{ path('listings', listingAdmin.modelmanager.paginationparameters(listingAdmin.datagrid, page)) }}">{{ page }}</a></li>
+                                            <li class="active"><a href="{{ path(listingType.listingsRouteName, listingAdmin.modelmanager.paginationparameters(listingAdmin.datagrid, page)) }}">{{ page }}</a></li>
                                         {% else %}
-                                            <li><a href="{{ path('listings', listingAdmin.modelmanager.paginationparameters(listingAdmin.datagrid, page)) }}">{{ page }}</a></li>
+                                            <li><a href="{{ path(listingType.listingsRouteName, listingAdmin.modelmanager.paginationparameters(listingAdmin.datagrid, page)) }}">{{ page }}</a></li>
                                         {% endif %}
                                     {% endfor %}
 
                                     {% if listingAdmin.datagrid.pager.page != listingAdmin.datagrid.pager.nextpage %}
-                                        <li><a href="{{ path('listings', listingAdmin.modelmanager.paginationparameters(listingAdmin.datagrid, listingAdmin.datagrid.pager.nextpage)) }}" title="{{ 'link_next_pager'|trans({}, 'SonataAdminBundle') }}">&rsaquo;</a></li>
+                                        <li><a href="{{ path(listingType.listingsRouteName, listingAdmin.modelmanager.paginationparameters(listingAdmin.datagrid, listingAdmin.datagrid.pager.nextpage)) }}" title="{{ 'link_next_pager'|trans({}, 'SonataAdminBundle') }}">&rsaquo;</a></li>
                                     {% endif %}
 
                                     {% if listingAdmin.datagrid.pager.page != listingAdmin.datagrid.pager.lastpage  %}
-                                        <li><a href="{{ path('listings', listingAdmin.modelmanager.paginationparameters(listingAdmin.datagrid, listingAdmin.datagrid.pager.lastpage)) }}" title="{{ 'link_last_pager'|trans({}, 'SonataAdminBundle') }}">&raquo;</a></li>
+                                        <li><a href="{{ path(listingType.listingsRouteName, listingAdmin.modelmanager.paginationparameters(listingAdmin.datagrid, listingAdmin.datagrid.pager.lastpage)) }}" title="{{ 'link_last_pager'|trans({}, 'SonataAdminBundle') }}">&raquo;</a></li>
                                     {% endif %}
                                 </ul>
                             </div>

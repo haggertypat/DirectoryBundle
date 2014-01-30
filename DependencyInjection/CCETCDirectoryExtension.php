@@ -43,7 +43,8 @@ class CCETCDirectoryExtension extends Extension
             'google_maps_key',
             'google_analytics_account',
             'always_show_advanced_search',
-            'listing_type_config'
+            'listing_type_config',
+            'registration_setting'
         );
         
         foreach($keys as $key)

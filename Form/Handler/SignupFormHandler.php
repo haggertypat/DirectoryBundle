@@ -24,7 +24,7 @@ class SignupFormHandler
         if('POST' === $this->request->getMethod()) {
             $this->form->bindRequest($this->request);
 
-            if($this->form->isValid()) {
+            if($this->validateUser() && $this->form->isValid()) {
                 $this->onSuccess();
                 return true;
             } else {
@@ -35,9 +35,53 @@ class SignupFormHandler
         return false;
     }
 
+    protected function validateUser()
+    {
+        $listing = $this->form->getData();
+        $userManager = $this->container->get('fos_user.user_manager');
+        $valid = true;
+        $password1 = $this->form->get('password1')->getData();
+        $password2 = $this->form->get('password2')->getData();
+
+        if($userManager->findUserByEmail($listing->getPrimaryEmail())) {
+            $this->form->get('primaryEmail')->addError(new FormError('This e-mail address is already used'));
+            $valid = false;
+        }
+        if($password1 != $password2) {
+            $this->form->get('password1')->addError(new FormError('Passwords do not match'));
+            $this->form->get('password2')->addError(new FormError('Passwords do not match'));
+            $valid = false;                
+        }    
+        if(!isset($password1) || $password1 == "") {
+            $this->form->get('password1')->addError(new FormError('Please enter a password'));
+            $valid = false;                                
+        }
+
+        return $valid;
+    }
+
+    protected function processUser($email)
+    {
+        $userManager = $this->container->get('fos_user.user_manager');
+        $user = $userManager->createUser();
+        $user->setEmail($email);
+        $user->setUsername($email);
+        $user->setEnabled(true);
+        $plainPassword = $this->form->get('password1')->getData();
+        $user->setPlainPassword($plainPassword);
+        $userManager->updateUser($user);
+
+        $this->container->get('fos_user.security.login_manager')->loginUser(
+                $this->container->getParameter('fos_user.firewall_name'),
+                $user);
+
+        return $user;
+    }
+
     protected function onSuccess()
     {
         $listing = $this->form->getData();
+        $userManager = $this->container->get('fos_user.user_manager');
 
         $listingTypeHelper = $this->container->get('ccetc.directory.helper.listingtypehelper');
         $listingType = $listingTypeHelper->findOneByEntityClassPath("\\".get_class($listing));
@@ -45,12 +89,18 @@ class SignupFormHandler
         $listingAdmin = $listingType->getAdminClass();
 
         $listing->setApproved(false);
-        
+
+        $user = $this->processUser($listing->getPrimaryEmail());
+        $listing->setUser($user);
+
         if($listing->getPhotoFile() && $this->form->get('photoFile')->getData()) {
             $listingAdmin->saveFile($listing);
         }
 
         $listingAdmin->create($listing);
+
+        $user->setListing($listing);
+        $userManager->updateUser($user);        
 
         $this->sendSignupNotificationEmail($listing, $this->container->getParameter('ccetc_directory.admin_email'), $this->getPageLink().$listingAdmin->generateObjectUrl('edit', $listing));
     }

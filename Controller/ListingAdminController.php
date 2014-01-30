@@ -22,8 +22,8 @@ class ListingAdminController extends Controller
         $em->clear();
 
         $this->getRequest()->getSession()->setFlash('sonata_flash_success', 'Item has been approved');
-
-        return new RedirectResponse($this->admin->generateUrl('list', $this->admin->getFilterParameters()));
+        $url = $this->getRequest()->headers->get("referer");
+        return new RedirectResponse($url);
     }
 
     public function unapproveAction($id)
@@ -39,8 +39,8 @@ class ListingAdminController extends Controller
         $em->clear();
 
         $this->getRequest()->getSession()->setFlash('sonata_flash_success', 'Item has been un-approved');
-
-        return new RedirectResponse($this->admin->generateUrl('list', $this->admin->getFilterParameters()));
+        $url = $this->getRequest()->headers->get("referer");
+        return new RedirectResponse($url);
     }
 
     public function batchActionApprove($query)
