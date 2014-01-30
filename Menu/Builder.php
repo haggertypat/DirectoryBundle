@@ -30,8 +30,6 @@ class Builder extends ContainerAware
 
         $menu->addChild('About', array('route' => 'about'));
 
-        $menu->setCurrentUri($this->container->get('request')->getRequestUri());
-
         $this->mainMenu = $menu;
         
         $this->mainMenuCorrectCurrent();
