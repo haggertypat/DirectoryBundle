@@ -55,7 +55,7 @@ jQuery and Twitter Bootstrap are included in the bundle.  You can include your o
     new Sonata\AdminBundle\SonataAdminBundle(),
     new Sonata\DoctrineORMAdminBundle\SonataDoctrineORMAdminBundle(),
     new CCETC\DirectoryBundle\CCETCDirectoryBundle(),
-    new LandLink\AppBundle\LandLinkAppBundle(),
+    new MyDirectory\AppBundle\MyDirectoryAppBundle(),
     new Mopa\Bundle\BootstrapBundle\MopaBootstrapBundle(),
 
 *NOTE*: Be sure to add the bundle before your App's bundle, so you can override translations.
@@ -277,6 +277,19 @@ There are optional features that create user accounts from the "signup" page, le
 	        <argument>CCETCDirectoryUserBundle:UserAdmin</argument>
 	    </service>
 
+8. add admin class to config.yml:
+
+        sonata_admin:
+            ...
+            dashboard:
+                ...
+                groups:
+                  ...
+                  users:
+                    label: Users
+                    items: [ccetc.directoryuser.admin.user]
+
+9. update DB and clear cache!
 
 #### Customizations
 - there is an edit form type and handler that can be customized in the same way the Signup form is

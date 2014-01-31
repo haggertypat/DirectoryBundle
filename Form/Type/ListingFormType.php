@@ -5,6 +5,7 @@ namespace CCETC\DirectoryBundle\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 class ListingFormType extends AbstractType
 {
@@ -22,6 +23,16 @@ class ListingFormType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        if($this->container->getParameter('ccetc_directory.registration_setting') == 'required') {
+            $constraints =  array(
+               new NotBlank(),
+           );
+            $emailRequired = true;
+        } else {
+            $emailRequired = false;
+            $constraints = null;
+        }
+
         $builder
             ->add('name', 'text', array('label' => 'Listing Name'))
             ->add('address', 'text')
@@ -30,7 +41,7 @@ class ListingFormType extends AbstractType
             ->add('zip', 'text')
             ->add('website', 'text', array('required' => false))
             ->add('contactName', 'text', array('label' => 'Contact Name'))
-            ->add('primaryEmail', 'text', array('label' => 'E-mail', 'required' => false))
+            ->add('primaryEmail', 'text', array('label' => 'E-mail', 'required' => $emailRequired, 'constraints' => $constraints))
             ->add('primaryPhone', 'text', array('label' => 'Phone', 'required' => false))
             ->add('description', 'textarea', array('label' => 'Listing Description', 'attr' => array('rows' => '5'), 'required' => false))
             ->add('photoFile', 'file', array('required' => false, 'label' => 'Profile Photo', 'required' => false))

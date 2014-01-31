@@ -34,9 +34,6 @@ class ListingLoader implements LoaderInterface
 
             if($this->container->getParameter('ccetc_directory.registration_setting') != 'none') {
                 $routeActions[] = 'edit';
-                echo 'if';
-            } else {
-                echo 'else';
             }
 
             foreach($routeActions as $action)

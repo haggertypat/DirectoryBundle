@@ -19,7 +19,7 @@ class SignupFormType extends ListingFormType
     {
         $this->classPath = $classPath;
         $this->container = $container;
-        $registrationSetting = $this->container->getParameter('ccetc_directory.registration_setting');
+        $this->registrationSetting = $this->container->getParameter('ccetc_directory.registration_setting');
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -47,8 +47,8 @@ class SignupFormType extends ListingFormType
         $fieldsets = parent::getFieldsets();
 
         if($this->registrationSetting == "required") {
-            $fieldsets['Contact Information'][] = 'password1';
-            $fieldsets['Contact Information'][] = 'password2';
+            $fieldsets['Basic Information'][] = 'password1';
+            $fieldsets['Basic Information'][] = 'password2';
         }
 
         return $fieldsets;

@@ -243,8 +243,8 @@ class DirectoryController extends Controller
                 $template = 'CCETCDirectoryBundle:Directory:edit.html.twig';
             }
         } else {
-            $form = $this->container->get('ccetc.directory.form.edit');
-            $formType = $this->container->get('ccetc.directory.form.type.edit');
+            $form = $this->container->get('ccetc.directory.form.listing');
+            $formType = $this->container->get('ccetc.directory.form.type.listing');
             $formHandler = $this->container->get('ccetc.directory.form.handler.edit');
             $template = 'CCETCDirectoryBundle:Directory:edit.html.twig';
         }
