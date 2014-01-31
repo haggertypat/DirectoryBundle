@@ -130,6 +130,7 @@ Add the following to your ``config.yml`` and fill out the values with your app's
 * google_maps_key - optional
 * google_analytics_account - optional
 * always_show_advanced_search - optional, default false
+* registration_setting - optional - default none (required|optional|none)
 
 
 #### Create your Entities
@@ -229,61 +230,53 @@ There are optional features that create user accounts from the "signup" page, le
 
 #### Setup
 1. FOSUserBundle and CCETCDirectoryUserBundle are already installed
-- follow FOSUserBundle installation instructions (create User entity in your app bundle, changes to routing.yml, config.yml, security.yml)
-- add CCETCDirectoryUserBundle to the end of AppKernel.  Order matters here for translation customizations:
+2. follow FOSUserBundle installation instructions (create User entity in your app bundle, changes to routing.yml, config.yml, security.yml)
+3. add CCETCDirectoryUserBundle to the end of AppKernel.  Order matters here for translation customizations:
 
         new My\AppBundle\MyAppBundle(),
         new FOS\UserBundle\FOSUserBundle(),
         new CCETC\DirectoryBundle\CCETCDirectoryBundle(),
         new CCETC\DirectoryUserBundle\CCETCDirectoryUserBundle(),
 
-- edit config.yml:
+4. edit config.yml:
 
-    ccetc_directory:
-        registration_setting: required
+		ccetc_directory:
+			registration_setting: required
 
+5. add ROLE_SONATA_ADMIN to ROLE_ADMIN roles in security.yml:
 
-    registration_setting options:
-    - required (users must create an account when adding a listing)
-    - optional (NOT YET IMPLEMENTED: users can optionally create an account when additing a listing, can request one later, or edit via a link)
-    - none (default - no user accounts create)
+	    security:
+	        role_hierarchy:
+	            ROLE_ADMIN:       [ROLE_USER, ROLE_SONATA_ADMIN]
+	            ROLE_SUPER_ADMIN: ROLE_ADMIN
 
-- add ROLE_SONATA_ADMIN to ROLE_ADMIN roles in security.yml:
-
-    security:
-        role_hierarchy:
-            ROLE_ADMIN:       [ROLE_USER, ROLE_SONATA_ADMIN]
-            ROLE_SUPER_ADMIN: ROLE_ADMIN
-
-- add User/Listing relation:
+6. add User/Listing relation:
     
-    In Listing.php:
-
-    /**
-     * @ORM\OneToOne(targetEntity="User", inversedBy="listing")
-     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
-     **/
-    private $user;
-
-    In User.php:
-
-    /**
-     * @ORM\OneToOne(targetEntity="BaseListing", mappedBy="user", cascade={"persist", "remove"})
-     **/
-    private $listing; 
-
-
-- add admin service:
-
-    <service id="ccetc.directoryuser.admin.user" class="CCETC\DirectoryUserBundle\Admin\UserAdmin">
-        <tag name="sonata.admin" manager_type="orm" group="Users" label="Users"/>
-        <argument />
-        <argument>My\AppBundle\Entity\User</argument>
-        <argument>CCETCDirectoryUserBundle:UserAdmin</argument>
-    </service>
+	    In Listing.php:
+	
+	    /**
+	     * @ORM\OneToOne(targetEntity="User", inversedBy="listing")
+	     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
+	     **/
+	    private $user;
+	
+	    In User.php:
+	
+	    /**
+	     * @ORM\OneToOne(targetEntity="BaseListing", mappedBy="user", cascade={"persist", "remove"})
+	     **/
+	    private $listing; 
 
 
-- add form services:
+7. add admin service:
+
+	    <service id="ccetc.directoryuser.admin.user" class="CCETC\DirectoryUserBundle\Admin\UserAdmin">
+	        <tag name="sonata.admin" manager_type="orm" group="Users" label="Users"/>
+	        <argument />
+	        <argument>My\AppBundle\Entity\User</argument>
+	        <argument>CCETCDirectoryUserBundle:UserAdmin</argument>
+	    </service>
+
 
 #### Customizations
 - there is an edit form type and handler that can be customized in the same way the Signup form is
