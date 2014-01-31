@@ -132,6 +132,9 @@ class DirectoryController extends Controller
         $listing = $listingRepository->findOneById($id);
         $user = $this->container->get('security.context')->getToken()->getUser();
         
+        // the user condition here is confusing - the inverse would make more sense - we're just checking if the current user owners the listing
+        // NOTE: throw a regular Exception... AccessDenied will just forward to login page or http login dialog
+        // see https://trello.com/c/BM3QhXR4
         if(!$listing->getApproved() && !$this->get('security.context')->isGranted('ROLE_ADMIN')
             && (!is_object($user) || !$user->getListing() || $user->getListing() != $listing)  ) {
             throw new \Exception("This profile has not been approved yet.  If you are an admin, login to approve this listing.  If you own this listing, login to view or edit it.");   
@@ -221,11 +224,13 @@ class DirectoryController extends Controller
 
         $user = $this->container->get('security.context')->getToken()->getUser();
         
+        // NOTE: throw a regular Exception... AccessDenied will just forward to login page or http login dialog
+        // see https://trello.com/c/BM3QhXR4
         if(!is_object($user) && !$this->container->get('security.context')->isGranted('ROLE_ADMIN')) {
             $session->setFlash('alert-warning', 'You must login to edit this Listing');
-            throw new AccessDeniedException('You must login to edit this Listing');
+            throw new \Exception('You must login to edit this Listing');
         } else if ((!$user->getListing() || $user->getListing() != $listing)  && !$this->container->get('security.context')->isGranted('ROLE_ADMIN')) {
-            throw new AccessDeniedException('You do not have permission to edit this Listing');
+            throw new \Exception('You do not have permission to edit this Listing');
         }
 
         if(count($listingTypeHelper->getAll()) > 1) {

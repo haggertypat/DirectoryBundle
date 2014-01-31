@@ -9,13 +9,15 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 class ListingFormType extends AbstractType
 {
     private $classPath;
+    protected $container;   
 
     /**
      * @param string $classPath The Listing class name
      */
-    public function __construct($classPath)
+    public function __construct($classPath, $container)
     {
         $this->classPath = $classPath;
+        $this->container = $container;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)

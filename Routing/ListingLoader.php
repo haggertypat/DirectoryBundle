@@ -30,7 +30,14 @@ class ListingLoader implements LoaderInterface
 
         foreach($this->listingTypes as $listingType)
         {
-            $routeActions = array('listings', 'profile', 'signup', 'generate-locations', 'edit');
+            $routeActions = array('listings', 'profile', 'signup', 'generate-locations');
+
+            if($this->container->getParameter('ccetc_directory.registration_setting') != 'none') {
+                $routeActions[] = 'edit';
+                echo 'if';
+            } else {
+                echo 'else';
+            }
 
             foreach($routeActions as $action)
             {
