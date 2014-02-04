@@ -185,19 +185,24 @@ class DirectoryController extends Controller
             $formType = $this->container->get('ccetc.directory.form.type.'.$listingType->getKey().'signup');
             $formHandler = $this->container->get('ccetc.directory.form.handler.'.$listingType->getKey().'signup');
             $template = 'CCETCDirectoryBundle:Directory:'.$listingType->getKey().'_signup.html.twig';
+            $thanksTemplate = 'CCETCDirectoryBundle:Directory:_'.$listingType->getKey().'_signup_thanks.html.twig';
 
             if (!$this->container->get('templating')->exists($template) ) {
                 $template = 'CCETCDirectoryBundle:Directory:signup.html.twig';
+            }
+            if (!$this->container->get('templating')->exists($thanksTemplate) ) {
+                $thanksTemplate = 'CCETCDirectoryBundle:Directory:_signup_thanks.html.twig';
             }
         } else {
             $form = $this->container->get('ccetc.directory.form.signup');
             $formType = $this->container->get('ccetc.directory.form.type.signup');
             $formHandler = $this->container->get('ccetc.directory.form.handler.signup');
             $template = 'CCETCDirectoryBundle:Directory:signup.html.twig';
+            $thanksTemplate = 'CCETCDirectoryBundle:Directory:_signup_thanks.html.twig';
         }
 
         if ($formHandler->process()) {
-            $session->setFlash('template-flash', 'CCETCDirectoryBundle:Directory:_signup_thanks.html.twig');
+            $session->setFlash('template-flash', $thanksTemplate);
             return $this->redirect($this->generateUrl('home'));
         }
 
