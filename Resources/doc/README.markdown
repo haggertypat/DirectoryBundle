@@ -55,7 +55,7 @@ jQuery and Twitter Bootstrap are included in the bundle.  You can include your o
     new Sonata\AdminBundle\SonataAdminBundle(),
     new Sonata\DoctrineORMAdminBundle\SonataDoctrineORMAdminBundle(),
     new CCETC\DirectoryBundle\CCETCDirectoryBundle(),
-    new LandLink\AppBundle\LandLinkAppBundle(),
+    new MyDirectory\AppBundle\MyDirectoryAppBundle(),
     new Mopa\Bundle\BootstrapBundle\MopaBootstrapBundle(),
 
 *NOTE*: Be sure to add the bundle before your App's bundle, so you can override translations.
@@ -130,6 +130,7 @@ Add the following to your ``config.yml`` and fill out the values with your app's
 * google_maps_key - optional
 * google_analytics_account - optional
 * always_show_advanced_search - optional, default false
+* registration_setting - optional - default none (required|optional|none)
 
 
 #### Create your Entities
@@ -224,6 +225,75 @@ Since your app is a child bundle of the DirectoryBundle, you can customize most 
 * <http://symfony.com/doc/current/cookbook/bundles/inheritance.html>
 * <http://symfony.com/doc/current/cookbook/bundles/override.html>
 
+### User logins and listing editing
+There are optional features that create user accounts from the "signup" page, let users edit listings, and let admins manage users.
+
+#### Setup
+1. FOSUserBundle and CCETCDirectoryUserBundle are already installed
+2. follow FOSUserBundle installation instructions (create User entity in your app bundle, changes to routing.yml, config.yml, security.yml)
+3. add CCETCDirectoryUserBundle to the end of AppKernel.  Order matters here for translation customizations:
+
+        new My\AppBundle\MyAppBundle(),
+        new FOS\UserBundle\FOSUserBundle(),
+        new CCETC\DirectoryBundle\CCETCDirectoryBundle(),
+        new CCETC\DirectoryUserBundle\CCETCDirectoryUserBundle(),
+
+4. edit config.yml:
+
+		ccetc_directory:
+			registration_setting: required
+
+5. add ROLE_SONATA_ADMIN to ROLE_ADMIN roles in security.yml:
+
+	    security:
+	        role_hierarchy:
+	            ROLE_ADMIN:       [ROLE_USER, ROLE_SONATA_ADMIN]
+	            ROLE_SUPER_ADMIN: ROLE_ADMIN
+
+6. add User/Listing relation:
+    
+	    In Listing.php:
+	
+	    /**
+	     * @ORM\OneToOne(targetEntity="User", inversedBy="listing")
+	     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
+	     **/
+	    private $user;
+	
+	    In User.php:
+	
+	    /**
+	     * @ORM\OneToOne(targetEntity="BaseListing", mappedBy="user", cascade={"persist", "remove"})
+	     **/
+	    private $listing; 
+
+
+7. add admin service:
+
+	    <service id="ccetc.directoryuser.admin.user" class="CCETC\DirectoryUserBundle\Admin\UserAdmin">
+	        <tag name="sonata.admin" manager_type="orm" group="Users" label="Users"/>
+	        <argument />
+	        <argument>My\AppBundle\Entity\User</argument>
+	        <argument>CCETCDirectoryUserBundle:UserAdmin</argument>
+	    </service>
+
+8. add admin class to config.yml:
+
+        sonata_admin:
+            ...
+            dashboard:
+                ...
+                groups:
+                  ...
+                  users:
+                    label: Users
+                    items: [ccetc.directoryuser.admin.user]
+
+9. update DB and clear cache!
+
+#### Customizations
+- there is an edit form type and handler that can be customized in the same way the Signup form is
+- there are edit templates that can be cuomstized in the same way the signup template can be
 
 ### User logins and listing editing
 There are optional features that create user accounts from the "signup" page, let users edit listings, and let admins manage users.
@@ -393,7 +463,7 @@ At the moment, using the Location features is only supported for one listing cla
 #### Assumptions
 To keep configuration options few, we've made a few assumptions:
 
-- listing_block, profile, and signup templates are required and follow the format of type->translationKey + "_profile"
+- If the listing_block, profile, and signup templates need to be customized between types, their names should follow the format of type->translationKey + "_profile".  If you want to customize a template, but all your types share it, the usual name is fine.
 - the three signup services are required and follow the foramt of "ccetc.direction.x.x." + type->translationKey + "signup"
 
 #### Utilities

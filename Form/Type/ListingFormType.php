@@ -5,21 +5,34 @@ namespace CCETC\DirectoryBundle\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 class ListingFormType extends AbstractType
 {
     private $classPath;
+    protected $container;   
 
     /**
      * @param string $classPath The Listing class name
      */
-    public function __construct($classPath)
+    public function __construct($classPath, $container)
     {
         $this->classPath = $classPath;
+        $this->container = $container;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        if($this->container->getParameter('ccetc_directory.registration_setting') == 'required') {
+            $constraints =  array(
+               new NotBlank(),
+           );
+            $emailRequired = true;
+        } else {
+            $emailRequired = false;
+            $constraints = null;
+        }
+
         $builder
             ->add('name', 'text', array('label' => 'Listing Name'))
             ->add('address', 'text')

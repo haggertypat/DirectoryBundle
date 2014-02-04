@@ -2,5 +2,5 @@
 
 {% block field%}
     {{ object.name }}
-    <a class="btn btn-primary btn-large pull-right" target="_blank" href="{{ path('profile', {'id' : object.id } ) }}"><i class="icon-search icon-white"></i> View on Site</a>
+    <a class="btn btn-primary btn-large pull-right" target="_blank" href="{{ path(singleListingType.profileRouteName, {'id' : object.id } ) }}"><i class="icon-search icon-white"></i> View on Site</a>
 {% endblock %}

@@ -11,12 +11,15 @@ class SignupFormHandler
     protected $request;
     protected $form;
     protected $container;
-    
+    protected $registrationSetting;
+
     public function __construct($form, Request $request, $container)
     {
         $this->form = $form;
         $this->request = $request;
         $this->container = $container;
+        $this->registrationSetting = $this->container->getParameter('ccetc_directory.registration_setting');
+
     }
 
     public function process()
@@ -24,7 +27,7 @@ class SignupFormHandler
         if('POST' === $this->request->getMethod()) {
             $this->form->bindRequest($this->request);
 
-            if($this->validateUser() && $this->form->isValid()) {
+            if(($this->registrationSetting !="required" || $this->validateUser()) && $this->form->isValid()) {
                 $this->onSuccess();
                 return true;
             } else {
@@ -90,8 +93,11 @@ class SignupFormHandler
 
         $listing->setApproved(false);
 
-        $user = $this->processUser($listing->getPrimaryEmail());
-        $listing->setUser($user);
+        if($this->registrationSetting == "required") {
+            $userManager = $this->container->get('fos_user.user_manager');
+            $user = $this->processUser($listing->getPrimaryEmail());
+            $listing->setUser($user);
+        }
 
         if($listing->getPhotoFile() && $this->form->get('photoFile')->getData()) {
             $listingAdmin->saveFile($listing);
@@ -99,8 +105,10 @@ class SignupFormHandler
 
         $listingAdmin->create($listing);
 
-        $user->setListing($listing);
-        $userManager->updateUser($user);        
+        if($this->registrationSetting == "required") {
+            $user->setListing($listing);
+            $userManager->updateUser($user);        
+        }
 
         $this->sendSignupNotificationEmail($listing, $this->container->getParameter('ccetc_directory.admin_email'), $this->getPageLink().$listingAdmin->generateObjectUrl('edit', $listing));
     }
