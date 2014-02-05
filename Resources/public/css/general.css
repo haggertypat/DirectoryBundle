@@ -62,6 +62,7 @@ h5 .btn
     font-weight: normal;
 }
 
-form.fos_user_change_password legend {
+form.fos_user_change_password legend,
+form.fos_user_registration_register legend {
     display: none;
 }
