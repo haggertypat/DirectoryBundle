@@ -24,4 +24,17 @@ class PagesController extends Controller
             'outdatedBrowser' => $outdatedBrowser
         ));
     }
+
+    public function pageAction($route)
+    {
+        $pageRepository = $this->getDoctrine()->getRepository('CCETCDirectoryBundle:Page');
+        $page = $pageRepository->findOneByRoute($route);
+        
+        return $this->render('CCETCDirectoryBundle:Pages:page.html.twig', array(
+            'page' => $page,
+            'pageAdmin' => $this->container->get('ccetc.directory.admin.page'),
+            'userIsAdmin' => $this->get('security.context')->isGranted('ROLE_ADMIN')
+        ));
+
+    }
 }

@@ -99,6 +99,8 @@ Add the following to your ``config.yml`` and fill out the values with your app's
     sonata_admin:
         templates:
             layout:  CCETCDirectoryBundle::admin_layout.html.twig
+            show: CCETCDirectoryBundle:Admin:show.html.twig
+            edit: CCETCDirectoryBundle:Admin:edit.html.twig
         dashboard:
             blocks:
                 # display a dashboard block
@@ -405,6 +407,13 @@ There some twig variables and functions available:
 
 
 ## Other Features
+### Admin Show/Edit Hooks
+If you need to include custom templates before or after an admin form or show page, just define the template path as follows:
+
+        public $showPreHook = array(
+            'template' => 'MyBundle:Admin:_my_template.html.twig'
+        );
+
 
 ### available Twig Globals
 The following global variables are accessible via any template:
@@ -421,7 +430,7 @@ The following global variables are accessible via any template:
     googleAnalyticsAccount
 
 
-## Find a Listing Block
+### Find a Listing Block
 You can include the find a listing block in your pages.  Just make sure to wrap it in a div with the class ``find-a-listing``:
 
     <div class="find-a-listing alert alert-block alert-info">

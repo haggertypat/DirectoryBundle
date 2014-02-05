@@ -10,7 +10,8 @@
 
     <div class="navbar">
         <div class="navbar-inner">
-            {{ knp_menu_render(directoryMenuBuilder, {'currentClass' : 'active' } ) }}
+            {{ knp_menu_render(directoryMenuBuilder, {'currentClass' : 'active', 'depth' : 1 } ) }}
+
                 <ul class="nav pull-right" id="frontend-admin-menu">
                     {% if app.user.username is defined %}    
                         <li class="dropdown">

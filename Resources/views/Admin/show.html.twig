@@ -1,0 +1,24 @@
+{% extends 'SonataAdminBundle:CRUD:base_show.html.twig' %}
+
+{% block show %}
+
+    {% if admin.showPreHook is defined and admin.showPreHook != "" %}
+        {% if admin.showPreHook.parameters is defined %}
+            {% include admin.showPreHook.template with admin.showPreHook.parameters %}
+        {% else %}
+            {% include admin.showPreHook.template %}
+        {% endif %}
+    {% endif %}
+
+    {{ parent() }}
+
+    {% if admin.showPostHook is defined and admin.showPostHook != "" %}
+        {% if admin.showPostHook.parameters is defined %}
+            {% include admin.showPostHook.template with admin.showPostHook.parameters %}
+        {% else %}
+            {% include admin.showPostHook.template %}
+        {% endif %}
+    {% endif %}
+
+{% endblock %}
+

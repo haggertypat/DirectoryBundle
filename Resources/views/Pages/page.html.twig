@@ -1,0 +1,35 @@
+{% extends layoutTemplate %}
+
+{% block page_header %}
+	<h1>{{ page.parent.title is defined? page.parent.title : page.title }}</h1>
+{% endblock %}
+
+{% block content %}
+    {% if userIsAdmin %}
+        <a href="{{ pageAdmin.generateObjectUrl('edit', page ) }}" class="btn large pull-right"><i class="icon-pencil"></i> Edit Page</a>
+    {% endif %}
+
+    <div class="row">
+
+    {% if page.isChild or page.isParent %}
+    	<div class="span3">
+    		{% if page.parent.title is defined %}
+    			{% set parentMenuItem = page.parent.title %}
+			{% else %}
+				{% set parentMenuItem = page.title %}
+			{% endif %}
+
+			{% set menuItem = knp_menu_get(directoryMenuBuilder, [parentMenuItem]) %}
+
+			{{ knp_menu_render([directoryMenuBuilder, parentMenuItem], {'currentClass' : 'active'} ) }}
+
+		</div>
+	{% endif %}
+
+	<div class="span{{ page.isChild or page.isParent  ? '9' : '12' }}">
+		{% if page.isChild %}<h3>{{ page.title }}</h3>{% endif %}
+		{{ page.content|raw }}
+	</div>
+
+	</div>
+{% endblock content %}

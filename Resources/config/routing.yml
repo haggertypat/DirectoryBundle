@@ -2,9 +2,10 @@ home:
     pattern:  /
     defaults: { _controller: CCETCDirectoryBundle:Pages:static, template: CCETCDirectoryBundle:Pages:home.html.twig }
     
-about:
-    pattern:  /about
-    defaults: { _controller: CCETCDirectoryBundle:Pages:static, template: CCETCDirectoryBundle:Pages:about.html.twig }
+page:
+  pattern: /page/{route}
+  defaults: { _controller: CCETCDirectoryBundle:Pages:page }
+
 
 CCETDirectoryBundle_Listing:
     resource: .

@@ -1,0 +1,24 @@
+{% extends 'SonataAdminBundle:CRUD:base_edit.html.twig' %}
+
+{% block form %}
+
+    {% if admin.formPreHook is defined and admin.formPreHook != "" %}
+        {% if admin.formPreHook.parameters is defined %}
+            {% include admin.formPreHook.template with admin.formPreHook.parameters %}
+        {% else %}
+            {% include admin.formPreHook.template %}
+        {% endif %}
+    {% endif %}
+
+    {{ parent() }}
+
+    {% if admin.formPostHook is defined and admin.formPostHook != "" %}
+        {% if admin.formPostHook.parameters is defined %}
+            {% include admin.formPostHook.template with admin.formPostHook.parameters %}
+        {% else %}
+            {% include admin.formPostHook.template %}
+        {% endif %}
+    {% endif %}
+
+{% endblock %}
+

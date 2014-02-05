@@ -58,6 +58,13 @@
         
         <service id="ccetc.directory.filter.location" class="CCETC\DirectoryBundle\Filter\LocationFilter">
             <tag name="sonata.admin.filter.type" alias="ccetc_directory_filter_location" />
-        </service>        
+        </service>  
+        <service id="ccetc.directory.admin.page" class="CCETC\DirectoryBundle\Admin\PageAdmin">
+            <tag name="sonata.admin" manager_type="orm" group="Content" label="Pages"/>
+            <argument />
+            <argument>CCETC\DirectoryBundle\Entity\Page</argument>
+            <argument>SonataAdminBundle:CRUD</argument>
+        </service>    
+      
     </services>
 </container>
