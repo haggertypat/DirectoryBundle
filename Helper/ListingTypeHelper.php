@@ -28,7 +28,8 @@ class ListingTypeHelper
      */
     public function getSingleListingType()
     {
-    	return $this->getAll()[0];
+        $all = $this->getAll();
+    	return $all[0];
     }
 
     public function findOneByKey($key)

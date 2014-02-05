@@ -19,7 +19,6 @@ class SignupFormHandler
         $this->request = $request;
         $this->container = $container;
         $this->registrationSetting = $this->container->getParameter('ccetc_directory.registration_setting');
-
     }
 
     public function process()
@@ -84,10 +83,9 @@ class SignupFormHandler
     protected function onSuccess()
     {
         $listing = $this->form->getData();
-
+        $userManager = $this->container->get('fos_user.user_manager');
         $listingTypeHelper = $this->container->get('ccetc.directory.helper.listingtypehelper');
         $listingType = $listingTypeHelper->findOneByEntityClassPath("\\".get_class($listing));
-
         $listingAdmin = $listingType->getAdminClass();
 
         $listing->setApproved(false);
@@ -110,6 +108,7 @@ class SignupFormHandler
         }
 
         $this->sendSignupNotificationEmail($listing, $this->container->getParameter('ccetc_directory.admin_email'), $this->getPageLink().$listingAdmin->generateObjectUrl('edit', $listing));
+        if($listing->getPrimaryEmail()) $this->sendWelcomeEmail($listing);
     }
     
     protected function sendSignupNotificationEmail($listing, $to, $link)
@@ -126,6 +125,39 @@ class SignupFormHandler
                 ->setSubject($directoryTitle.' - Sign Up')
                 ->setFrom('noreply@ccetompkins.org')
                 ->setTo($to)
+                ->setContentType('text/html')
+                ->setBody($content)
+        ;
+        $this->container->get('mailer')->send($message);
+    }
+
+    protected function sendWelcomeEmail($listing)
+    {
+        $directoryTitle = $this->container->getParameter('ccetc_directory.title');
+        $contactEmail = $this->container->getParameter('ccetc_directory.contact_email');
+
+        $listingTypeHelper = $this->container->get('ccetc.directory.helper.listingtypehelper');
+        $listingType = $listingTypeHelper->findOneByEntityClassPath("\\".get_class($listing));
+
+        if(count($listingTypeHelper->getAll()) > 1) {
+            $template = 'CCETCDirectoryBundle:Directory:_'.$listingType->getKey().'_welcome_email.html.twig';
+        }
+        if(!isset($template) || !$this->container->get('templating')->exists($template) ) {
+            $template = 'CCETCDirectoryBundle:Directory:_welcome_email.html.twig';
+        }
+
+        $content = $this->container->get('templating')->render($template, array(
+            'listing' => $listing,
+            'directoryTitle' => $directoryTitle,
+            'contactEmail' => $contactEmail,
+            'loginLink' => $this->getPageLink().$this->container->get('router')->generate('fos_user_security_login'),
+            'editLink' => $this->getPageLink().$this->container->get('router')->generate($listingType->getEditRouteName(), array('id' => $listing->getId()))
+        ));
+        
+        $message = \Swift_Message::newInstance()
+                ->setSubject('Welcome to '.$directoryTitle."!")
+                ->setFrom('noreply@ccetompkins.org')
+                ->setTo($listing->getPrimaryEmail())
                 ->setContentType('text/html')
                 ->setBody($content)
         ;
