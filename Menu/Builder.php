@@ -13,13 +13,11 @@ class Builder extends ContainerAware
     {
         $listingTypeHelper = $this->container->get('ccetc.directory.helper.listingtypehelper');
         $listingTypes = $listingTypeHelper->getAll();
-        $pageRepository = $this->container->get('doctrine')->getRepository('CCETCDirectoryBundle:Page');
-        $pages = $pageRepository->findBy(array('parent' => NULL), array('menuWeight' => 'DESC'));
-
+        
         $this->path = str_replace($this->container->get('request')->getBaseUrl(), '', $this->container->get('request')->getRequestUri());
         $this->path = str_replace(strstr($this->path, '?'), "", $this->path); // remove anything after the first ?
         $this->path = explode('/', $this->path);
-        
+
         $menu = $factory->createItem('root');
         $menu->setChildrenAttribute('class', 'nav');
 
@@ -30,62 +28,14 @@ class Builder extends ContainerAware
             $menu->addChild($label, array('route' => $listingType->getListingsRouteName(), 'label' => $label));
         }
 
-        foreach($pages as $page)
-        {
-            if($page->isParent()) {
-                if($page->getContent()) { // parents with content get included in both menus
-                    $menu->addChild($page->getTitle(), array(
-                        'route' => 'page',
-                        'routeParameters' => array(
-                            'route' => $page->getRoute()
-                        )
-                    ));   
-                    $menu[$page->getTitle()]->addChild($page->getTitle(), array(
-                        'route' => 'page',
-                        'routeParameters' => array(
-                            'route' => $page->getRoute()
-                        )
-                    ));                    
-                } else { // parents without content just link to the first child
-                    $children = $page->getChildren();
-                    $firstChild = $children[0];
-
-                    $menu->addChild($page->getTitle(), array(
-                        'route' => 'page',
-                        'routeParameters' => array(
-                            'route' => $firstChild->getRoute()
-                        )
-                    )); 
-                }
-                $menu[$page->getTitle()]->setChildrenAttribute('class', 'nav nav-pills nav-stacked');
-                foreach($page->getChildren() as $child)
-                {
-                    $menu[$page->getTitle()]->addChild($child->getTitle(), array(
-                        'route' => 'page',
-                        'routeParameters' => array(
-                            'route' => $child->getRoute()
-                        )
-                    ));
-                }
-
-            } else {
-                $menu->addChild($page->getTitle(), array(
-                    'route' => 'page',
-                    'routeParameters' => array(
-                        'route' => $page->getRoute()
-                    )
-                ));
-            }
-        }
-
         $this->mainMenu = $menu;
                 
-        $this->mainMenuCorrectCurrent();
+        $this->addPageItems();
         
         return $menu;
     }
 
-    public function mainMenuCorrectCurrent()
+    public function correctSubMenuCurrent()
     {
         if(isset($this->path[1]) && $this->path[1] == 'page' && isset($this->path[2])) {
             $route = $this->path[2];
@@ -97,4 +47,60 @@ class Builder extends ContainerAware
             }
         }
     }    
+
+    public function addPageItems()
+    {
+        $pageRepository = $this->container->get('doctrine')->getRepository('CCETCDirectoryBundle:Page');
+        $pages = $pageRepository->findBy(array('parent' => NULL), array('menuWeight' => 'DESC'));
+        
+        foreach($pages as $page)
+        {
+            if($page->isParent()) {
+                if($page->getContent()) { // parents with content get included in both menus
+                    $this->mainMenu->addChild($page->getTitle(), array(
+                        'route' => 'page',
+                        'routeParameters' => array(
+                            'route' => $page->getRoute()
+                        )
+                    ));   
+                    $this->mainMenu[$page->getTitle()]->addChild($page->getTitle(), array(
+                        'route' => 'page',
+                        'routeParameters' => array(
+                            'route' => $page->getRoute()
+                        )
+                    ));                    
+                } else { // parents without content just link to the first child
+                    $children = $page->getChildren();
+                    $firstChild = $children[0];
+
+                    $this->mainMenu->addChild($page->getTitle(), array(
+                        'route' => 'page',
+                        'routeParameters' => array(
+                            'route' => $firstChild->getRoute()
+                        )
+                    )); 
+                }
+                $this->mainMenu[$page->getTitle()]->setChildrenAttribute('class', 'nav nav-pills nav-stacked');
+                foreach($page->getChildren() as $child)
+                {
+                    $this->mainMenu[$page->getTitle()]->addChild($child->getTitle(), array(
+                        'route' => 'page',
+                        'routeParameters' => array(
+                            'route' => $child->getRoute()
+                        )
+                    ));
+                }
+
+            } else {
+                $this->mainMenu->addChild($page->getTitle(), array(
+                    'route' => 'page',
+                    'routeParameters' => array(
+                        'route' => $page->getRoute()
+                    )
+                ));
+            }
+        }
+
+        $this->correctSubMenuCurrent();
+    }
 }

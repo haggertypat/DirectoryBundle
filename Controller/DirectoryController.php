@@ -18,7 +18,7 @@ class DirectoryController extends Controller
         else $listingType = $listingTypeHelper->findOneByKey($listingTypeKey);
 
         if(count($listingTypeHelper->getAll()) > 1) {
-            $listingBlockTemplate = "CCETCDirectoryBundle:Directory:".$listingType->getKey()."_listing_block.html.twig";
+            $listingBlockTemplate = "CCETCDirectoryBundle:Directory:_".$listingType->getKey()."_listing_block.html.twig";
         } else {
             $listingBlockTemplate = "CCETCDirectoryBundle:Directory:_listing_block.html.twig";
         }
