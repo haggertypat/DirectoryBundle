@@ -117,6 +117,14 @@ Add the following to your ``config.yml`` and fill out the values with your app's
                 label: Data
                 items: [ccetc.directory.admin.attribute, ccetc.directory.admin.product]
 
+You should also include the "Pages" admin class if using the CMS features:
+
+            groups:
+              ...
+              content:
+                label: Content
+                items: [ccetc.directory.admin.page]
+
 ##### DirectoryBundle config options
 
 * bundle_name - name of your bundle - required
