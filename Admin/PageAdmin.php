@@ -53,6 +53,7 @@ class PageAdmin extends Admin
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
+            ->add('title')
             ->add('menuWeight', null, array('label' => 'Menu Weight'))
             ->add('parent', null, array('label' => 'Parent Page'))
             ->add('_action', 'actions', array(
