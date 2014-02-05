@@ -1,0 +1,12 @@
+<html>
+	Hello{{ listing.name is defined? ' ' ~ listing.name : '' }},<br/>
+    Welcome to {{ directoryTitle }}, and thanks for signing up.<br/><br/>
+
+
+    Your listing will appear on the site once our staff reviews it.<br/><br/>
+
+    {% if app.user.email is defined %}
+        Log in: <a href="{{ loginLink }}">{{ loginLink }}</a><br/>
+        Edit your listing: <a href="{{ editLink }}">{{ editLink }}</a><br/>
+    {% endif %}
+</html>
