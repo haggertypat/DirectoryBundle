@@ -26,10 +26,13 @@ class SignupFormType extends ListingFormType
     {
         $builder = parent::buildForm($builder, $options);
 
-        if($this->registrationSetting == "required") {
+        if($this->registrationSetting != "none") {
+            if($this->registrationSetting == "optional") $passwordRequired = false;
+            else $passwordRequired = true;
+
             $builder
-                ->add('password1', 'password', array('label' => 'Password', 'property_path' => false))
-                ->add('password2', 'password', array('label' => 'Verify Password', 'property_path' => false))
+                ->add('password1', 'password', array('required' => $passwordRequired, 'label' => 'Account Password', 'property_path' => false))
+                ->add('password2', 'password', array('required' => $passwordRequired, 'label' => 'Verify Password', 'property_path' => false))
             ;            
         }
     }
@@ -46,7 +49,7 @@ class SignupFormType extends ListingFormType
     {
         $fieldsets = parent::getFieldsets();
 
-        if($this->registrationSetting == "required") {
+        if($this->registrationSetting != "none") {
             $fieldsets['Basic Information'][] = 'password1';
             $fieldsets['Basic Information'][] = 'password2';
         }

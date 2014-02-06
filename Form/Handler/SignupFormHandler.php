@@ -26,7 +26,7 @@ class SignupFormHandler
         if('POST' === $this->request->getMethod()) {
             $this->form->bindRequest($this->request);
 
-            if(($this->registrationSetting !="required" || $this->validateUser()) && $this->form->isValid()) {
+            if($this->validateUser() && $this->form->isValid()) {
                 $this->onSuccess();
                 return true;
             } else {
@@ -39,6 +39,8 @@ class SignupFormHandler
 
     protected function validateUser()
     {
+        if($this->registrationSetting == "none") return true;
+
         $listing = $this->form->getData();
         $userManager = $this->container->get('fos_user.user_manager');
         $valid = true;
@@ -54,7 +56,7 @@ class SignupFormHandler
             $this->form->get('password2')->addError(new FormError('Passwords do not match'));
             $valid = false;                
         }    
-        if(!isset($password1) || $password1 == "") {
+        if($this->registrationSetting =="required" && (!isset($password1) || $password1 == "")) {
             $this->form->get('password1')->addError(new FormError('Please enter a password'));
             $valid = false;                                
         }
@@ -90,7 +92,7 @@ class SignupFormHandler
 
         $listing->setApproved(false);
 
-        if($this->registrationSetting == "required") {
+        if($this->registrationSetting != "none") {
             $userManager = $this->container->get('fos_user.user_manager');
             $user = $this->processUser($listing->getPrimaryEmail());
             $listing->setUser($user);
@@ -102,7 +104,7 @@ class SignupFormHandler
 
         $listingAdmin->create($listing);
 
-        if($this->registrationSetting == "required") {
+        if($this->registrationSetting != "none") {
             $user->setListing($listing);
             $userManager->updateUser($user);        
         }
