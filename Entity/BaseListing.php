@@ -143,20 +143,6 @@ class BaseListing extends BaseEntity
      * @ORM\Column(name="website", type="string", length=500, nullable=true)
      */
     private $website;
-
-    /**
-     * @var boolean $spam
-     *
-     * @ORM\Column(name="spam", type="boolean", nullable=true)
-     */
-    private $spam = false;
-    
-    /**
-     * @var boolean $approved
-     *
-     * @ORM\Column(name="approved", type="boolean", nullable=true)
-     */
-    private $approved = true;   
     
     /**
      * @var string
@@ -235,12 +221,45 @@ class BaseListing extends BaseEntity
      */
     private $photoFilename;
     protected $photoFile;        
+
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="savedProfileContentHtml", type="text", nullable=true)
+     */
+    private $savedProfileContentHtml;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="savedListingBlockContentHtml", type="text", nullable=true)
+     */
+    private $savedListingBlockContentHtml;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="status", type="string", length=255)
+     */
+    private $status = 'new';
+    public static $statusChoices = array(
+        'new' => 'Approval Needed',
+        'active' => 'Approved',
+        'edited' => 'Re-Approval Needed',
+        'spam' => 'Spam'
+    );
     
     public function __toString()
     {
         return $this->getName()."";
     }
     
+    public function isOwnedByUser($user)
+    {
+        return isset($this->user) && $this->user == $user;
+    }
+
     /**
      * Get id
      *
@@ -777,49 +796,32 @@ class BaseListing extends BaseEntity
     }    
 
     /**
-     * Set spam
+     * Set status
      *
-     * @param boolean $spam
+     * @param string $status
      * @return Listing
      */
-    public function setSpam($spam)
+    public function setStatus($status)
     {
-        $this->spam = $spam;
+        $this->status = $status;
     
         return $this;
     }
 
     /**
-     * Get spam
+     * Get status
      *
-     * @return boolean 
+     * @return string 
      */
-    public function getSpam()
+    public function getStatus()
     {
-        return $this->spam;
+        return $this->status;
     }
 
-    /**
-     * Set approved
-     *
-     * @param boolean $approved
-     * @return Listing
-     */
-    public function setApproved($approved)
+    public function getStatusTranslated()
     {
-        $this->approved = $approved;
-    
-        return $this;
-    }
-
-    /**
-     * Get approved
-     *
-     * @return boolean 
-     */
-    public function getApproved()
-    {
-        return $this->approved;
+        if($this->getStatus() && array_key_exists($this->getStatus(), self::$statusChoices)) return self::$statusChoices[$this->getStatus()];
+        else return '';
     }
 
     /**
@@ -1050,5 +1052,49 @@ class BaseListing extends BaseEntity
     public function getPreferredMethodOfContact()
     {
         return $this->preferredMethodOfContact;
+    }
+
+     /**
+     * Set savedProfileContentHtml
+     *
+     * @param string $savedProfileContentHtml
+     */
+    public function setSavedProfileContentHtml($savedProfileContentHtml)
+    {
+        $this->savedProfileContentHtml = $savedProfileContentHtml;
+    
+        return $this;
+    }
+
+    /**
+     * Get savedProfileContentHtml
+     *
+     * @return string 
+     */
+    public function getSavedProfileContentHtml()
+    {
+        return $this->savedProfileContentHtml;
+    }
+
+     /**
+     * Set savedListingBlockContentHtml
+     *
+     * @param string $savedListingBlockContentHtml
+     */
+    public function setSavedListingBlockContentHtml($savedListingBlockContentHtml)
+    {
+        $this->savedListingBlockContentHtml = $savedListingBlockContentHtml;
+    
+        return $this;
+    }
+
+    /**
+     * Get savedListingBlockContentHtml
+     *
+     * @return string 
+     */
+    public function getSavedListingBlockContentHtml()
+    {
+        return $this->savedListingBlockContentHtml;
     }
 }

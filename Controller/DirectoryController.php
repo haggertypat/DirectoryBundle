@@ -19,8 +19,14 @@ class DirectoryController extends Controller
 
         if(count($listingTypeHelper->getAll()) > 1) {
             $listingBlockTemplate = "CCETCDirectoryBundle:Directory:_".$listingType->getKey()."_listing_block.html.twig";
-        } else {
+            $listingBlockContentTemplate = "CCETCDirectoryBundle:Directory:".$listingType->getKey()."_listing_block_content.html.twig";
+        }
+
+        if(!isset($listingBlockTemplate) || !$this->container->get('templating')->exists($listingBlockTemplate) ) {
             $listingBlockTemplate = "CCETCDirectoryBundle:Directory:_listing_block.html.twig";
+        }
+        if(!isset($listingBlockContentTemplate) || !$this->container->get('templating')->exists($listingBlockContentTemplate) ) {
+            $listingBlockContentTemplate = "CCETCDirectoryBundle:Directory:_listing_block_content.html.twig";
         }
 
         $bundleName = $this->container->getParameter('ccetc_directory.bundle_name');
@@ -104,7 +110,8 @@ class DirectoryController extends Controller
             'useMaps' => $listingType->getUseMaps(),
             'alwaysShowAdvancedSearch' => $alwaysShowAdvancedSearch,
             'listingType' => $listingType,
-            'listingBlockTemplate' => $listingBlockTemplate
+            'listingBlockTemplate' => $listingBlockTemplate,
+            'listingBlockContentTemplate' => $listingBlockContentTemplate
         );
                 
         if($listingType->getUseMaps()) {
@@ -122,8 +129,14 @@ class DirectoryController extends Controller
 
         if(count($listingTypeHelper->getAll()) > 1) {
             $profileTemplate = "CCETCDirectoryBundle:Directory:".$listingType->getKey()."_profile.html.twig";
-        } else {
+            $profileContentTemplate = "CCETCDirectoryBundle:Directory:".$listingType->getKey()."_profile_content.html.twig";
+        }
+
+        if(!isset($profileTemplate) || !$this->container->get('templating')->exists($profileTemplate) ) {
             $profileTemplate = "CCETCDirectoryBundle:Directory:profile.html.twig";
+        }
+        if(!isset($profileContentTemplate) || !$this->container->get('templating')->exists($profileContentTemplate) ) {
+            $profileContentTemplate = "CCETCDirectoryBundle:Directory:_profile_content.html.twig";
         }
 
         $bundleName = $this->container->getParameter('ccetc_directory.bundle_name');
@@ -132,14 +145,14 @@ class DirectoryController extends Controller
         $listing = $listingRepository->findOneById($id);
         $user = $this->container->get('security.context')->getToken()->getUser();
         
-        // the user condition here is confusing - the inverse would make more sense - we're just checking if the current user owners the listing
+        $userOwnsListing = is_object($user) && $user->getListing() && $user->getListing() == $listing;
+
         // NOTE: throw a regular Exception... AccessDenied will just forward to login page or http login dialog
         // see https://trello.com/c/BM3QhXR4
-        if(!$listing->getApproved() && !$this->get('security.context')->isGranted('ROLE_ADMIN')
-            && (!is_object($user) || !$user->getListing() || $user->getListing() != $listing)  ) {
+        if($listing->getStatus() == "new" && !$this->get('security.context')->isGranted('ROLE_ADMIN') && !$userOwnsListing  ) {
             throw new \Exception("This profile has not been approved yet.  If you are an admin, login to approve this listing.  If you own this listing, login to view or edit it.");   
         }
-        
+
         if(!$listingType->getUseProfiles()) {
             return $this->forward('CCETCDirectoryBundle:Directory:listings', array('listingId' => $id, 'listingTypeKey' => $listingTypeKey));
         }
@@ -147,7 +160,9 @@ class DirectoryController extends Controller
         return $this->render($profileTemplate, array(
             'listingAdmin' => $listingAdmin,
             'listing' => $listing,
-            'listingType' => $listingType
+            'listingType' => $listingType,
+            'profileContentTemplate' => $profileContentTemplate,
+            'userOwnsListing' => $userOwnsListing
         ));                                    
         
     }
@@ -225,6 +240,7 @@ class DirectoryController extends Controller
         else $listingType = $listingTypeHelper->findOneByKey($listingTypeKey);
 
         $listingRepository = $listingType->getRepository();
+        $listingAdmin = $listingType->getAdminClass();
         $listing = $listingRepository->findOneById($id);
 
         $user = $this->container->get('security.context')->getToken()->getUser();
@@ -243,6 +259,8 @@ class DirectoryController extends Controller
             $formType = $this->container->get('ccetc.directory.form.type.'.$listingType->getKey());
             $formHandler = $this->container->get('ccetc.directory.form.handler.'.$listingType->getKey().'edit');
             $template = 'CCETCDirectoryBundle:Directory:'.$listingType->getKey().'_edit.html.twig';
+            $listingBlockContentTemplate = "CCETCDirectoryBundle:Directory:".$listingType->getKey()."_listing_block_content.html.twig";
+            $profileContentTemplate = "CCETCDirectoryBundle:Directory:".$listingType->getKey()."_profile_content.html.twig";
 
             if (!$this->container->get('templating')->exists($template) ) {
                 $template = 'CCETCDirectoryBundle:Directory:edit.html.twig';
@@ -254,10 +272,31 @@ class DirectoryController extends Controller
             $template = 'CCETCDirectoryBundle:Directory:edit.html.twig';
         }
 
+        if(!isset($listingBlockContentTemplate) || !$this->container->get('templating')->exists($listingBlockContentTemplate) ) {
+            $listingBlockContentTemplate = "CCETCDirectoryBundle:Directory:_listing_block_content.html.twig";
+        }       
+        if(!isset($profileContentTemplate) || !$this->container->get('templating')->exists($profileContentTemplate) ) {
+            $profileContentTemplate = "CCETCDirectoryBundle:Directory:_profile_content.html.twig";
+        }
+
+        // save data for displaying old content before re-approval, but only if listing is currently approved
+        if($listing->getStatus() != "edited") {
+            $savedTemplateParameters = array(
+                'listing' => $listing,
+                'listingType' => $listingType,
+                'linkBlock' => $listingType->getUseProfiles()
+            );
+            $profileContentHtml = $this->container->get('templating')->render($profileContentTemplate, $savedTemplateParameters);
+            $listingBlockContentHtml = $this->container->get('templating')->render($listingBlockContentTemplate, $savedTemplateParameters);
+            $listing->setSavedProfileContentHtml($profileContentHtml);
+            $listing->setSavedListingBlockContentHtml($listingBlockContentHtml);
+            $listingAdmin->update($listing);
+        }
+
         $form->setData($listing);
 
         if ($formHandler->process()) {
-            $session->setFlash('alert-success', 'Your listing has been updated.');
+            $session->setFlash('alert-success', 'Your changes have been submitted for Approval.');
             return $this->redirect($this->generateUrl($listingType->getProfileRouteName(), array('id' => $id)));
         }
 

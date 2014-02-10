@@ -42,6 +42,11 @@ class EditFormHandler
         $listingType = $listingTypeHelper->findOneByEntityClassPath("\\".get_class($listing));
         $listingAdmin = $listingType->getAdminClass();
 
+        // don't make "new" listings "edited", they should remain "new" until approved
+        if($listing->getStatus() == "active") {
+            $listing->setStatus('edited');
+        }
+
         $listingAdmin->update($listing);
         $em = $this->container->get('doctrine')->getEntityManager();
         $em->flush();

@@ -11,27 +11,18 @@ use Doctrine\ORM\Query\Expr\Join;
 use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
 use Sonata\AdminBundle\Route\RouteCollection;
 
+use CCETC\DirectoryBundle\Entity\BaseListing;
+
 class ListingAdmin extends Admin
 {
     protected function configureRoutes(RouteCollection $collection)
     {
-
-        $collection->add('approve', 'approve/{id}');
-        $collection->add('unapprove', 'unapprove/{id}');
+        $collection->add('update-status', 'update-status/{id}/{status}');
     }
 
     public function getFilterParameters()
     {
-        if($this->isAdmin()) {
-            $this->datagridValues = array_merge(array(
-                    'spam' => array(
-                        'value' => 2,
-                    )
-                ),
-                $this->datagridValues
-            );            
-        } else {
-            
+        if(!$this->isAdmin()) {
             $this->datagridValues = array_merge(array(
                     '_sort_order' => 'ASC', 
                     '_sort_by' => 'name',
@@ -59,7 +50,9 @@ class ListingAdmin extends Admin
         $queryBuilder->select('e')->from($this->getClass(), 'e');
 
         if(!$this->isAdmin()) {
-            $queryBuilder->andWhere('e.approved=1');
+            $queryBuilder->andWhere("(e.status='active' OR e.status='edited')");
+        } else {
+
         }
 
         $proxyQuery = new ProxyQuery($queryBuilder);
@@ -72,8 +65,13 @@ class ListingAdmin extends Admin
         if($this->isAdmin()) {
             $datagridMapper
                 ->add('name')
-                ->add('spam')
-                ->add('approved')
+                ->add('status', 'doctrine_orm_choice', array(
+                    'field_type' => 'choice',
+                    'field_options' => array(
+                        'required' => false,
+                        'choices' => BaseListing::$statusChoices
+                    )
+                ))
             ;
         } else {
             $datagridMapper
@@ -91,8 +89,7 @@ class ListingAdmin extends Admin
         }        
         $formMapper
             ->with('Status')
-                ->add('spam', null, array('required' => false))
-                ->add('approved', null, array('required' => false))
+                ->add('status', 'choice', array('label' => 'Status', 'choices' => BaseListing::$statusChoices))
             ->end()
             ->with('General')
                 ->add('name')
@@ -170,8 +167,7 @@ class ListingAdmin extends Admin
             ->addIdentifier('name')
             ->add('address', null, array('template' => 'CCETCDirectoryBundle:Admin:_listing_list_address.html.twig'))
             ->add('contactName', null, array('label' => 'Contact', 'template' => 'CCETCDirectoryBundle:Admin:_listing_list_contact.html.twig'))
-            ->add('spam', null, array('editable' => true))
-            ->add('approved', null, array('editable' => true))
+            ->add('status', null, array('template' => 'CCETCDirectoryBundle:Admin:_list_status_actions.html.twig'))
             ->add('_action', 'actions', array(
                 'actions' => array(
                     'view' => array(),
@@ -185,8 +181,7 @@ class ListingAdmin extends Admin
     {
         $showMapper
             ->with('Status')
-                ->add('spam')
-                ->add('approved')
+                ->add('statusTranslated', null, array('label' => 'Status'))
                 ->add('datetimeCreated')
                 ->add('datetimeLastUpdated')
             ->end()  

@@ -13,7 +13,6 @@
         </div>
         <div style="clear: both; line-height: 0px;">&nbsp;</div>
     </div>
-    <h1 id="profile-heading">{{ listing.name }}</h1>
 {% endblock %}
 
 {% block content %}
@@ -28,45 +27,34 @@
         </script>
     {% endif %}
 
-    {% if not listing.approved %}
+    {% if listing.status == "new" and (userOwnsListing or is_granted('ROLE_ADMIN')) %}
         <div class="alert alert-notice">
             {% if listing.user is defined and listing.user == app.user %}
                 <h3>Note: your listing has not been approved yet.</h3>
             {% else %}
                 <h3>Note: this listing has not been approved yet.</h3>
-                <a class="btn edit-btn" href="{{ listingType.adminClass.generateUrl('approve', {'id' : listing.id}) }}" ><i class="icon-check"></i> Approve</a> 
+                <a class="btn btn-success" href="{{ listingType.adminClass.generateUrl('update-status', {'id' : listing.id, 'status' : 'active'}) }}" ><i class="icon-check icon-white"></i> Approve</a> 
+                <a class="btn btn-danger" href="{{ listingType.adminClass.generateUrl('update-status', {'id' : listing.id, 'status' : 'spam'}) }}" ><i class="icon-remove icon-white"></i> Spam</a> 
+            {% endif %}
+        </div>
+    {% endif %}
+    {% if listing.status == "edited" and (userOwnsListing or is_granted('ROLE_ADMIN')) %}
+        <div class="alert alert-notice">
+            {% if listing.user is defined and listing.user == app.user %}
+                <h3>Note: your recent changes have not been approved yet.</h3>
+                <h4>You can view them below, but others will see the old version until your changes are approved.</h4>
+            {% else %}
+                <h3>Note: this listing has changes that have not been approved yet.</h3>
+                <h4>The updated version is displayed below.</h4><br/>
+                <a class="btn btn-success" href="{{ listingType.adminClass.generateUrl('update-status', {'id' : listing.id, 'status' : 'active'}) }}" ><i class="icon-check icon-white"></i> Approve</a>  
             {% endif %}
         </div>
     {% endif %}
 
-    <div class="row">
-        <div class="span7">
-            <div class="profile-meta">
-                {# {% include 'CCETCDirectoryBundle:Directory:_listing_attribute_labels.html.twig' %} #}
-            </div>
-            {% if listing.webPath is defined and listing.webPath != "" %}
-                <p>
-                    <img class="listing-photo" src="{{ asset(listing.webPath) }}" />
-                </p>
-            {% endif %}
-            <p class="well">
-                {{ listing.description? listing.description|nl2br : 'No Description Available' }}
-            </p>
-            
-        </div>       
-        <div class="span5">
-            {% if listing.location.lat is defined and listing.location.lat != "" and listing.location.lng is defined and listing.location.lng != "" %}
-                <div id="map-canvas" class="profile-map"></div>
-            {% endif %}
+    {% if listing.status == "edited" and not userOwnsListing and not is_granted('ROLE_ADMIN') %}
+        {{ listing.savedProfileContentHtml|raw }}
+    {% else %}
+        {% include profileContentTemplate %}
+    {% endif %}
 
-            <div class="well">
-                <h4><i class="icon-map-marker"></i> Location</h4>
-                {% include 'CCETCDirectoryBundle:Directory:_listing_address.html.twig' %}
-            </div>
-            <div class="well">
-                <h4><i class="icon-envelope"></i> Contact</h4>
-                {% include 'CCETCDirectoryBundle:Directory:_listing_contact.html.twig' %}    
-            </div>
-        </div>
-    </div>
 {% endblock %}

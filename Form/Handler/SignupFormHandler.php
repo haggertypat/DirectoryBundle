@@ -90,7 +90,7 @@ class SignupFormHandler
         $listingType = $listingTypeHelper->findOneByEntityClassPath("\\".get_class($listing));
         $listingAdmin = $listingType->getAdminClass();
 
-        $listing->setApproved(false);
+        $listing->setStatus('new');
 
         if($this->registrationSetting != "none") {
             $userManager = $this->container->get('fos_user.user_manager');

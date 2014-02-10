@@ -21,7 +21,19 @@ file that was distributed with this source code.
                 {% endfor %}
             </ul>
             <br/>
-            <a href="{{ listingAdmin.generateUrl('list') ~ '?filter%5Bspam%5D%5Btype%5D=&filter%5Bspam%5D%5Bvalue%5D=2&filter%5Bapproved%5D%5Btype%5D=&filter%5Bapproved%5D%5Bvalue%5D=2' }}" class="btn btn-large"><i class="icon-search"></i> View and Approve</a>
+            <a href="{{ listingAdmin.generateUrl('list') ~ '?filter%5Bstatus%5D%5Btype%5D=&filter%5Bstatus%5D%5Bvalue%5D=new' }}" class="btn btn-large"><i class="icon-search"></i> View and Approve</a>
+        </div>
+    {% endif %}
+    {% if reapprovalListings|length > 0 %}
+        <div class="alert alert-block alert-info">
+            <h3>{{ reapprovalListings|length }} {{ reapprovalListings|length == 1? (translationKey)|capitalize|trans({}, "messages") ~ ' has been edited and needs' : (translationKey ~ 's')|capitalize|trans({}, "messages") ~ ' have been edited and need'}} re-approval</h3>
+            <ul>
+                {% for listing in reapprovalListings %}
+                    <li>{{ listing }}</li>
+                {% endfor %}
+            </ul>
+            <br/>
+            <a href="{{ listingAdmin.generateUrl('list') ~ '?filter%5Bstatus%5D%5Btype%5D=&filter%5Bstatus%5D%5Bvalue%5D=edited' }}" class="btn btn-large"><i class="icon-search"></i> View and Re-Approve</a>
         </div>
     {% endif %}
 {% endblock %}

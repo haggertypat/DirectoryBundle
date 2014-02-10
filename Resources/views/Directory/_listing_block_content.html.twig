@@ -1,0 +1,27 @@
+    <div>
+        <div class="listing-name">
+            <h3>
+                {% if linkBlock %}<a href="{{ path(listingType.profileRouteName, {'id' : listing.id }) }}">{% endif %}
+                {{ listing.name }}
+                {% if linkBlock %}</a>{% endif %}
+            </h3>                             
+        </div>
+        <div style="clear: both; line-height: 0;">&nbsp;</div>    
+    </div>
+
+    <div>
+        <span class="listing-location">
+            <i class="icon-map-marker"></i>
+            {{ listing.address }},
+            {{ listing.city }} {{ listing.state }}
+        </span>
+    </div>
+        
+    {% if listing.descriptionPreview is defined and listing.descriptionPreview != ""%}    
+        <div>    
+            {{ listing.descriptionPreview }}
+        </div>
+        <br/>
+    {% endif %}
+        
+{#    {% include 'CCETCDirectoryBundle:Directory:_listing_attribute_labels.html.twig' %} #}

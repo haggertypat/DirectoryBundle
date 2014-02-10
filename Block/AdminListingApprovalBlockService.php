@@ -56,7 +56,8 @@ class AdminListingApprovalBlockService extends BaseBlockService
 
             $content .= $templating->render('CCETCDirectoryBundle:Block:_admin_listing_approval.html.twig', array(
                 'block' => $blockContext->getBlock(),
-                'listings' => $listingRepository->findBy(array('approved' => false, 'spam' => false)),
+                'listings' => $listingRepository->findByStatus('new'),
+                'reapprovalListings' => $listingRepository->findByStatus('edited'),
                 'listingAdmin' => $listingType->getAdminClass(),
                 'translationKey' => $listingType->getTranslationKey()
             ));

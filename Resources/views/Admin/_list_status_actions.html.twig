@@ -1,0 +1,31 @@
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+
+{% block field%}
+	<span>{{ object.statusTranslated }}</span>
+	<span class="btn-group">
+		{% if object.status == "new" or object.status == "edited" %}
+		    <a href="{{ admin.generateObjectUrl('update-status', object, {'status' : 'active'}) }}" class="btn edit_link btn-small">
+		        <i class="icon-check"></i>
+		        Approve
+		    </a>
+		{% endif %}
+		{% if object.status == "new" %}
+		    <a href="{{ admin.generateObjectUrl('update-status', object, {'status' : 'spam'}) }}" class="btn edit_link btn-small">
+		        <i class="icon-remove"></i>
+		        Spam
+		    </a>
+		{% endif %}
+		{% if object.status == "active" %}
+		    <a href="{{ admin.generateObjectUrl('update-status', object, {'status' : 'new'}) }}" class="btn edit_link btn-small">
+		        <i class="icon-remove"></i>
+		        Un-Approve
+		    </a>
+		{% endif %}
+		{% if object.status == "spam" %}
+		    <a href="{{ admin.generateObjectUrl('update-status', object, {'status' : 'new'}) }}" class="btn edit_link btn-small">
+		        <i class="icon-remove"></i>
+		        Not Spam
+		    </a>
+		{% endif %}
+	</span>
+{% endblock %}
