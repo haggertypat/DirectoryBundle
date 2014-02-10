@@ -129,7 +129,7 @@ class DirectoryController extends Controller
 
         if(count($listingTypeHelper->getAll()) > 1) {
             $profileTemplate = "CCETCDirectoryBundle:Directory:".$listingType->getKey()."_profile.html.twig";
-            $profileContentTemplate = "CCETCDirectoryBundle:Directory:".$listingType->getKey()."_profile_content.html.twig";
+            $profileContentTemplate = "CCETCDirectoryBundle:Directory:_".$listingType->getKey()."_profile_content.html.twig";
         }
 
         if(!isset($profileTemplate) || !$this->container->get('templating')->exists($profileTemplate) ) {
@@ -145,7 +145,8 @@ class DirectoryController extends Controller
         $listing = $listingRepository->findOneById($id);
         $user = $this->container->get('security.context')->getToken()->getUser();
         
-        $userOwnsListing = is_object($user) && $user->getListing() && $user->getListing() == $listing;
+        // comparing listing objects gets stuck is some recursive loop, just go by ids
+        $userOwnsListing = is_object($user) && $user->getListing() && $user->getListing()->getId() == $listing->getId();
 
         // NOTE: throw a regular Exception... AccessDenied will just forward to login page or http login dialog
         // see https://trello.com/c/BM3QhXR4
@@ -259,8 +260,8 @@ class DirectoryController extends Controller
             $formType = $this->container->get('ccetc.directory.form.type.'.$listingType->getKey());
             $formHandler = $this->container->get('ccetc.directory.form.handler.'.$listingType->getKey().'edit');
             $template = 'CCETCDirectoryBundle:Directory:'.$listingType->getKey().'_edit.html.twig';
-            $listingBlockContentTemplate = "CCETCDirectoryBundle:Directory:".$listingType->getKey()."_listing_block_content.html.twig";
-            $profileContentTemplate = "CCETCDirectoryBundle:Directory:".$listingType->getKey()."_profile_content.html.twig";
+            $listingBlockContentTemplate = "CCETCDirectoryBundle:Directory:_".$listingType->getKey()."_listing_block_content.html.twig";
+            $profileContentTemplate = "CCETCDirectoryBundle:Directory:_".$listingType->getKey()."_profile_content.html.twig";
 
             if (!$this->container->get('templating')->exists($template) ) {
                 $template = 'CCETCDirectoryBundle:Directory:edit.html.twig';
