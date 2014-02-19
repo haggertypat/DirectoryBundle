@@ -39,14 +39,14 @@ class CCETCDirectoryExtension extends \Twig_Extension
         );
     }
 
-    public function getListingTypeForObject($object)
-    {
-        return $this->listingTypeHelper->findOneByEntityClassPath(get_class($object));
-    }
-
     public function getListingTypeByKey($key)
     {
         return $this->listingTypeHelper->findOneByKey($key);        
+    }
+
+    public function getListingTypeForObject($object)
+    {
+        return $this->listingTypeHelper->findByListing($object);        
     }
 
     /**

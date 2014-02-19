@@ -64,6 +64,37 @@ class SignupFormHandler
         return $valid;
     }
 
+    protected function onSuccess()
+    {
+        $listing = $this->form->getData();
+        $userManager = $this->container->get('fos_user.user_manager');
+        $listingTypeHelper = $this->container->get('ccetc.directory.helper.listingtypehelper');
+        $listingType = $listingTypeHelper->findOneByEntityClassPath("\\".get_class($listing));
+        $listingAdmin = $listingType->getAdminClass();
+
+        $listing->setStatus('new');
+
+        if($this->registrationSetting != "none" && trim($this->form->get('password1')->getData()) != ""  ) {
+            $userManager = $this->container->get('fos_user.user_manager');
+            $user = $this->processUser($listing->getPrimaryEmail());
+            $listing->setUser($user);
+        }
+
+        if($listing->getPhotoFile() && $this->form->get('photoFile')->getData()) {
+            $listingAdmin->saveFile($listing);
+        }
+
+        $listingAdmin->create($listing);
+
+        if($this->registrationSetting != "none" && isset($user)) {
+            $user->setListing($listing);
+            $userManager->updateUser($user);        
+        }
+
+        $this->sendSignupNotificationEmail($listing, $this->container->getParameter('ccetc_directory.admin_email'), $this->getPageLink().$listingAdmin->generateObjectUrl('edit', $listing));
+        if($listing->getPrimaryEmail()) $this->sendWelcomeEmail($listing);
+    }
+    
     protected function processUser($email)
     {
         $userManager = $this->container->get('fos_user.user_manager');
@@ -82,37 +113,6 @@ class SignupFormHandler
         return $user;
     }
 
-    protected function onSuccess()
-    {
-        $listing = $this->form->getData();
-        $userManager = $this->container->get('fos_user.user_manager');
-        $listingTypeHelper = $this->container->get('ccetc.directory.helper.listingtypehelper');
-        $listingType = $listingTypeHelper->findOneByEntityClassPath("\\".get_class($listing));
-        $listingAdmin = $listingType->getAdminClass();
-
-        $listing->setStatus('new');
-
-        if($this->registrationSetting != "none") {
-            $userManager = $this->container->get('fos_user.user_manager');
-            $user = $this->processUser($listing->getPrimaryEmail());
-            $listing->setUser($user);
-        }
-
-        if($listing->getPhotoFile() && $this->form->get('photoFile')->getData()) {
-            $listingAdmin->saveFile($listing);
-        }
-
-        $listingAdmin->create($listing);
-
-        if($this->registrationSetting != "none") {
-            $user->setListing($listing);
-            $userManager->updateUser($user);        
-        }
-
-        $this->sendSignupNotificationEmail($listing, $this->container->getParameter('ccetc_directory.admin_email'), $this->getPageLink().$listingAdmin->generateObjectUrl('edit', $listing));
-        if($listing->getPrimaryEmail()) $this->sendWelcomeEmail($listing);
-    }
-    
     protected function sendSignupNotificationEmail($listing, $to, $link)
     {
         $directoryTitle = $this->container->getParameter('ccetc_directory.title');

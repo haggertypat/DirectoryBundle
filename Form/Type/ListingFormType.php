@@ -11,6 +11,7 @@ class ListingFormType extends AbstractType
 {
     private $classPath;
     protected $container;   
+    protected $registrationSetting;
 
     /**
      * @param string $classPath The Listing class name
@@ -19,6 +20,7 @@ class ListingFormType extends AbstractType
     {
         $this->classPath = $classPath;
         $this->container = $container;
+        $this->registrationSetting = $this->container->getParameter('ccetc_directory.registration_setting');        
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -33,6 +35,13 @@ class ListingFormType extends AbstractType
             $constraints = null;
         }
 
+        if($this->registrationSetting != "none") {
+            $emailRequired = true;
+        } else {
+            $emailRequired = false;
+        }
+
+
         $builder
             ->add('name', 'text', array('label' => 'Listing Name'))
             ->add('address', 'text')
@@ -41,7 +50,7 @@ class ListingFormType extends AbstractType
             ->add('zip', 'text')
             ->add('website', 'text', array('required' => false))
             ->add('contactName', 'text', array('label' => 'Contact Name'))
-            ->add('primaryEmail', 'text', array('label' => 'E-mail', 'required' => false))
+            ->add('primaryEmail', 'text', array('label' => 'E-mail', 'required' => $emailRequired))
             ->add('primaryPhone', 'text', array('label' => 'Phone', 'required' => false))
             ->add('description', 'textarea', array('label' => 'Listing Description', 'attr' => array('rows' => '5'), 'required' => false))
             ->add('photoFile', 'file', array('required' => false, 'label' => 'Profile Photo', 'required' => false))

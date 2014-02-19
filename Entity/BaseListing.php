@@ -147,7 +147,7 @@ class BaseListing extends BaseEntity
     /**
      * @var string
      *
-     * @ORM\Column(name="primaryEmail", type="string", length=255, nullable=true)
+     * @ORM\Column(name="primaryEmail", type="string", length=255, nullable=true, unique=true)
      */
     private $primaryEmail;
 

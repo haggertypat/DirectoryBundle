@@ -49,5 +49,10 @@ class ListingTypeHelper
     		if($entityClassPath == $type->getEntityClassPath()) return $type;
     	}    	
     }
+
+    public function findByListing($listing)
+    {
+        return $this->findOneByEntityClassPath(get_class($listing));
+    }
     
 }
