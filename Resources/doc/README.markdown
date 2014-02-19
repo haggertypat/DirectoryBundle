@@ -242,7 +242,7 @@ There are optional features that create user accounts from the "signup" page, le
 1. FOSUserBundle and CCETCDirectoryUserBundle are already installed
 2. follow FOSUserBundle installation instructions (create User entity in your app bundle, changes to routing.yml, config.yml, security.yml)
 
-**Note**: Your User class should extend ``CCETCDirectoryUserBundle\Entity\BaseUser``
+        **Note**: Your User class should extend ``CCETCDirectoryUserBundle\Entity\BaseUser``
 
 3. add CCETCDirectoryUserBundle to the end of AppKernel.  Order matters here for translation customizations:
 
@@ -257,7 +257,7 @@ There are optional features that create user accounts from the "signup" page, le
 			registration_setting: required
 
 
-If using optional registration:
+        If using optional registration:
 
         fos_user:
             registration:
