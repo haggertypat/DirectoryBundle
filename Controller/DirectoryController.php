@@ -151,15 +151,17 @@ class DirectoryController extends Controller
         // NOTE: throw a regular Exception... AccessDenied will just forward to login page or http login dialog
         // see https://trello.com/c/BM3QhXR4
         if($listing->getStatus() == "new" && !$this->get('security.context')->isGranted('ROLE_ADMIN') && !$userOwnsListing  ) {
-            throw new \Exception("This profile has not been approved yet.  If you are an admin, login to approve this listing.  If you own this listing, login to view or edit it.");   
+            $message = "This profile has not been approved yet.  If you are an admin, login to approve this listing.";
+            if($this->container->getParameter('ccetc_directory.registration_setting') != "none") $message .= "  If you own this listing, login to view or edit it.";
+            throw new \Exception($message);
         } else if($listing->getStatus() == "expired" && !$this->get('security.context')->isGranted('ROLE_ADMIN') && !$userOwnsListing  ) {
             throw new \Exception("This profile has expired.  If you are an admin, login to renew this listing.  If you own this listing, login to find out how to renew it .");   
         } else if($listing->getStatus() == "upForRenewal" && !$this->get('security.context')->isGranted('ROLE_ADMIN') && !$userOwnsListing  ) {
             throw new \Exception("This profile is expired but up for renewal.  If you are an admin, login to renew this listing.");   
         } else if($listing->getStatus() == "spam") {
             throw new \Exception("This profile has been marked as spam.  If you feel this is a mistake, please contact us.");   
-        }
 
+        }
         if(!$listingType->getUseProfiles()) {
             return $this->forward('CCETCDirectoryBundle:Directory:listings', array('listingId' => $id, 'listingTypeKey' => $listingTypeKey));
         }

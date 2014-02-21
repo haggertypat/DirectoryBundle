@@ -241,6 +241,9 @@ There are optional features that create user accounts from the "signup" page, le
 #### Setup
 1. FOSUserBundle and CCETCDirectoryUserBundle are already installed
 2. follow FOSUserBundle installation instructions (create User entity in your app bundle, changes to routing.yml, config.yml, security.yml)
+
+        **Note**: Your User class should extend ``CCETCDirectoryUserBundle\Entity\BaseUser``
+
 3. add CCETCDirectoryUserBundle to the end of AppKernel.  Order matters here for translation customizations:
 
         new My\AppBundle\MyAppBundle(),
@@ -252,6 +255,16 @@ There are optional features that create user accounts from the "signup" page, le
 
 		ccetc_directory:
 			registration_setting: required
+
+
+        If using optional registration:
+
+        fos_user:
+            registration:
+                form:
+                    type: ccetc_directory_user_registration
+                confirmation:
+                    enabled:    true            
 
 5. add ROLE_SONATA_ADMIN to ROLE_ADMIN roles in security.yml:
 
@@ -285,6 +298,9 @@ There are optional features that create user accounts from the "signup" page, le
 	        <argument />
 	        <argument>My\AppBundle\Entity\User</argument>
 	        <argument>CCETCDirectoryUserBundle:UserAdmin</argument>
+            <call method="setUserManager">
+                 <argument type="service" id="fos_user.user_manager" />
+            </call>
 	    </service>
 
 8. add admin class to config.yml:
