@@ -37,6 +37,9 @@ class Configuration implements ConfigurationInterface
                 ->scalarNode('google_analytics_account')->defaultvalue(null)->end()
                 ->scalarNode('always_show_advanced_search')->defaultvalue(false)->end()
                 ->scalarNode('registration_setting')->defaultvalue('none')->end()
+                ->scalarNode('use_expiration')->defaultvalue(true)->end()
+                ->scalarNode('listing_lifetime')->defaultvalue(365)->end()
+                ->scalarNode('renew_listing_on_update')->defaultvalue(true)->end()                
                 ->arrayNode('listing_type_config')
                     ->defaultValue(array(
                         array(

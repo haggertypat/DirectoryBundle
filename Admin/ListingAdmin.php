@@ -69,7 +69,8 @@ class ListingAdmin extends Admin
                     'field_type' => 'choice',
                     'field_options' => array(
                         'required' => false,
-                        'choices' => BaseListing::$statusChoices
+                        'choices' =>  BaseListing::getStatusChoices($this->configurationPool->getContainer()->getParameter('ccetc_directory.use_expiration'))
+
                     )
                 ))
             ;
@@ -89,7 +90,8 @@ class ListingAdmin extends Admin
         }        
         $formMapper
             ->with('Status')
-                ->add('status', 'choice', array('label' => 'Status', 'choices' => BaseListing::$statusChoices))
+                ->add('status', 'choice', array('label' => 'Status', 'choices' => BaseListing::getStatusChoices($this->configurationPool->getContainer()->getParameter('ccetc_directory.use_expiration'))))
+                ->add('dateOfExpiration')                
             ->end()
             ->with('General')
                 ->add('name')
@@ -184,6 +186,8 @@ class ListingAdmin extends Admin
                 ->add('statusTranslated', null, array('label' => 'Status'))
                 ->add('datetimeCreated')
                 ->add('datetimeLastUpdated')
+                ->add('dateOfExpiration')
+                ->add('dateRenewed')
             ->end()  
             ->with('General')
                 ->add('name', null, array('template' => 'CCETCDirectoryBundle:Admin:_listing_show_name.html.twig'))
@@ -248,10 +252,44 @@ class ListingAdmin extends Admin
         if($object->getPhotoFile()) {
             $this->saveFile($object);
         }
-        
         $this->updateLocation($object);
 
+        $useExpiration = $this->configurationPool->getContainer()->getParameter('ccetc_directory.use_expiration');
+        if($useExpiration) $this->updateExpirationStatusAndDates($object);
+        
         parent::preUpdate($object);        
+    }
+
+    public function updateExpirationStatusAndDates($object)
+    {
+        $uow = $this->configurationPool->getContainer()->get('doctrine')->getEntityManager()->getUnitOfWork();
+        $original = $uow->getOriginalEntityData($object);
+        $originalStatus = $original['status'];
+        $newStatus = $object->getStatus();
+
+        $renewOnUpdate = $this->configurationPool->getContainer()->getParameter('ccetc_directory.renew_listing_on_update');
+        $listingLifetime = $this->configurationPool->getContainer()->getParameter('ccetc_directory.listing_lifetime');
+
+        // init: set expirationDate on first approval
+        if($originalStatus == "new" && $newStatus == "active") {
+            $today = new \DateTime();
+            $interval = new \DateInterval('P'.$listingLifetime.'D');
+            $dateOfExpiration = $today->add($interval);
+            $object->setDateOfExpiration($dateOfExpiration);
+        }
+        // renew listings (update dateRenewed and expirationDate)
+        //      on update (if config option is set)
+        //      or when manually renewed 
+        if($renewOnUpdate
+                || (($originalStatus == "expired" || $originalStatus == "upForRenewal") && $newStatus == "active")
+            ) {
+            $today = new \DateTime();
+            $interval = new \DateInterval('P'.$listingLifetime.'D');
+            $dateOfExpiration = clone $today;
+            $dateOfExpiration->add($interval);
+            $object->setDateOfExpiration($dateOfExpiration);
+            $object->setDateRenewed($today);     
+        }
     }
     
     public function setLocation($object)

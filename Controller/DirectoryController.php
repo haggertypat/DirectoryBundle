@@ -152,6 +152,12 @@ class DirectoryController extends Controller
         // see https://trello.com/c/BM3QhXR4
         if($listing->getStatus() == "new" && !$this->get('security.context')->isGranted('ROLE_ADMIN') && !$userOwnsListing  ) {
             throw new \Exception("This profile has not been approved yet.  If you are an admin, login to approve this listing.  If you own this listing, login to view or edit it.");   
+        } else if($listing->getStatus() == "expired" && !$this->get('security.context')->isGranted('ROLE_ADMIN') && !$userOwnsListing  ) {
+            throw new \Exception("This profile has expired.  If you are an admin, login to renew this listing.  If you own this listing, login to find out how to renew it .");   
+        } else if($listing->getStatus() == "upForRenewal" && !$this->get('security.context')->isGranted('ROLE_ADMIN') && !$userOwnsListing  ) {
+            throw new \Exception("This profile is expired but up for renewal.  If you are an admin, login to renew this listing.");   
+        } else if($listing->getStatus() == "spam") {
+            throw new \Exception("This profile has been marked as spam.  If you feel this is a mistake, please contact us.");   
         }
 
         if(!$listingType->getUseProfiles()) {
@@ -163,7 +169,8 @@ class DirectoryController extends Controller
             'listing' => $listing,
             'listingType' => $listingType,
             'profileContentTemplate' => $profileContentTemplate,
-            'userOwnsListing' => $userOwnsListing
+            'userOwnsListing' => $userOwnsListing,
+            'renewListingOnUpdate' => $this->container->getParameter('ccetc_directory.renew_listing_on_update')
         ));                                    
         
     }

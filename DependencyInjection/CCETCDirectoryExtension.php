@@ -44,7 +44,10 @@ class CCETCDirectoryExtension extends Extension
             'google_analytics_account',
             'always_show_advanced_search',
             'listing_type_config',
-            'registration_setting'
+            'registration_setting',
+            'use_expiration',
+            'listing_lifetime',
+            'renew_listing_on_update'
         );
         
         foreach($keys as $key)

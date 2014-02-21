@@ -13,31 +13,23 @@ class ListingAdminController extends Controller
 {
     public function updateStatusAction($id, $status)
     {
-        $em = $this->getDoctrine()->getEntityManager();
-
         $object = $this->admin->getObject($id);
 
         $object->setStatus($status);
 
-        $em->persist($object);
-        $em->flush();
-        $em->clear();
+        $this->admin->update($object);
 
-        $this->getRequest()->getSession()->setFlash('sonata_flash_success', 'Listing has been marked as "'.BaseListing::$statusChoices[$status].'"');
+        $this->getRequest()->getSession()->setFlash('sonata_flash_success', 'Listing has been marked as "'.BaseListing::getStatusChoices($this->container)[$status].'"');
         $url = $this->getRequest()->headers->get("referer");
         return new RedirectResponse($url);
     }
 
     public function batchActionApprove($query)
     {
-        $em = $this->getDoctrine()->getEntityManager();
-
         foreach($query->getQuery()->iterate() as $pos => $object) {
             $object[0]->setStatus('approved');
+            $this->admin->update($object[0]);
         }
-
-        $em->flush();
-        $em->clear();
 
         $this->getRequest()->getSession()->setFlash('sonata_flash_success', 'The selected Listings have been marked as "Approved"');
 
@@ -46,14 +38,10 @@ class ListingAdminController extends Controller
 
     public function batchActionUnapprove($query)
     {
-        $em = $this->getDoctrine()->getEntityManager();
-
         foreach($query->getQuery()->iterate() as $pos => $object) {
             $object[0]->setStatus('new');
+            $this->admin->update($object[0]);
         }
-
-        $em->flush();
-        $em->clear();
 
         $this->getRequest()->getSession()->setFlash('sonata_flash_success', 'The selected Listings have been "Needs Approval"');
 
@@ -62,14 +50,10 @@ class ListingAdminController extends Controller
     
     public function batchActionSpam($query)
     {
-        $em = $this->getDoctrine()->getEntityManager();
-
         foreach($query->getQuery()->iterate() as $pos => $object) {
             $object[0]->setStatus('spam');
+            $this->admin->update($object[0]);
         }
-
-        $em->flush();
-        $em->clear();
 
         $this->getRequest()->getSession()->setFlash('sonata_flash_success', 'The selected Listings have been marked as spam');
 
@@ -78,14 +62,10 @@ class ListingAdminController extends Controller
 
     public function batchActionUnSpam($query)
     {
-        $em = $this->getDoctrine()->getEntityManager();
-
         foreach($query->getQuery()->iterate() as $pos => $object) {
             $object[0]->setStatus('new');
+            $this->admin->update($object[0]);
         }
-
-        $em->flush();
-        $em->clear();
 
         $this->getRequest()->getSession()->setFlash('sonata_flash_success', 'The selected Listings have been marked as "Needs Approval"');
 

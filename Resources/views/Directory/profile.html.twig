@@ -38,6 +38,58 @@
             {% endif %}
         </div>
     {% endif %}
+    {% if listing.status == "expired" and (userOwnsListing or is_granted('ROLE_ADMIN')) %}
+        <div class="alert alert-notice">
+            {% if listing.user is defined and listing.user == app.user %}
+                <h3>
+                    Note: your listing has expired.
+                </h3>
+                <h4>
+                    {% if renewListingOnUpdate %}
+                        If you <a href="{{ path(listingType.editRouteName, {'id' : listing.id}) }}">edit your listing</a> it will be renewed.
+                    {% else %}
+                        <a href="mailto:{{ directoryContactEmail }}">Contact us</a> to renew your listing.
+                    {% endif %}
+                </h4>
+            {% else %}
+                <h3>Note: this listing is expired.</h3>
+                <h4>It has not been updated since {{ listing.dateRenewed? listing.dateRenewed|date("M d, Y") : listing.datetimeCreated|date("M d, Y") }}</h4>
+                <a class="btn btn-success" href="{{ listingType.adminClass.generateUrl('update-status', {'id' : listing.id, 'status' : 'active'}) }}" ><i class="icon-check icon-white"></i> Renew</a> 
+            {% endif %}
+        </div>
+    {% endif %}
+    {% if listing.expiringWithinTwoWeeks and (userOwnsListing or is_granted('ROLE_ADMIN')) %}
+        <div class="alert alert-notice">
+            {% if listing.user is defined  %}
+                <h3>
+                    Note: your listing will expire on {{ listing.dateOfExpiration|date('M d, Y') }}.
+                </h3>
+                <h4>
+                    {% if renewListingOnUpdate %}
+                        If you <a href="{{ path(listingType.editRouteName, {'id' : listing.id}) }}">edit your listing</a> it will be automatically renewed.
+                    {% else %}
+                        <a href="mailto:{{ directoryContactEmail }}">Contact us</a> to renew your listing.
+                    {% endif %}
+                </h4>
+            {% else %}
+                <h3>Note: this listing will expire on {{ listing.dateOfExpiration|date('M d, Y') }}.</h4>
+                <h4>It has not been updated since {{ listing.dateRenewed? listing.dateRenewed|date("M d, Y") : listing.datetimeCreated|date("M d, Y") }}</h4>
+                <a class="btn btn-success" href="{{ listingType.adminClass.generateUrl('update-status', {'id' : listing.id, 'status' : 'active'}) }}" ><i class="icon-check icon-white"></i> Renew Now</a> 
+            {% endif %}
+        </div>
+    {% endif %}
+    {% if listing.status == "upForRenewal" and (userOwnsListing or is_granted('ROLE_ADMIN')) %}
+        <div class="alert alert-notice">
+            {% if listing.user is defined and listing.user == app.user %}
+                <h3>Note: our staff have not renewed your listing yet.</h3>
+                <h4>You can view your profile below, but others will not see your listing until our staff renews it.</h4>
+            {% else %}
+                <h3>Note: this listing is expired, but the owner has updated it and requested renewal.</h3>
+                <h4>The updated version is displayed below.</h4><br/>
+                <a class="btn btn-success" href="{{ listingType.adminClass.generateUrl('update-status', {'id' : listing.id, 'status' : 'active'}) }}" ><i class="icon-check icon-white"></i> Renew</a>  
+            {% endif %}
+        </div>
+    {% endif %}
     {% if listing.status == "edited" and (userOwnsListing or is_granted('ROLE_ADMIN')) %}
         <div class="alert alert-notice">
             {% if listing.user is defined and listing.user == app.user %}

@@ -36,4 +36,28 @@ file that was distributed with this source code.
             <a href="{{ listingAdmin.generateUrl('list') ~ '?filter%5Bstatus%5D%5Btype%5D=&filter%5Bstatus%5D%5Bvalue%5D=edited' }}" class="btn btn-large"><i class="icon-search"></i> View and Re-Approve</a>
         </div>
     {% endif %}
+    {% if expiredListings|length > 0 %}
+        <div class="alert alert-block alert-info">
+            <h3>{{ expiredListings|length }} {{ expiredListings|length == 1? (translationKey)|capitalize|trans({}, "messages") ~ ' is expired and has not been updated' : (translationKey ~ 's')|capitalize|trans({}, "messages") ~ ' are expired and have not been updated'}}</h3>
+            <ul>
+                {% for listing in expiredListings %}
+                    <li>{{ listing }}</li>
+                {% endfor %}
+            </ul>
+            <br/>
+            <a href="{{ listingAdmin.generateUrl('list') ~ '?filter%5Bstatus%5D%5Btype%5D=&filter%5Bstatus%5D%5Bvalue%5D=expired' }}" class="btn btn-large"><i class="icon-search"></i> View</a>
+        </div>
+    {% endif %}
+    {% if upForRenewalListings|length > 0 %}
+        <div class="alert alert-block alert-info">
+            <h3>{{ upForRenewalListings|length }} {{ upForRenewalListings|length == 1? (translationKey)|capitalize|trans({}, "messages") ~ ' is expired but has been recently updated' : (translationKey ~ 's')|capitalize|trans({}, "messages") ~ ' have expired but have been recently updated' }}</h3>
+            <ul>
+                {% for listing in upForRenewalListings %}
+                    <li>{{ listing }}</li>
+                {% endfor %}
+            </ul>
+            <br/>
+            <a href="{{ listingAdmin.generateUrl('list') ~ '?filter%5Bstatus%5D%5Btype%5D=&filter%5Bstatus%5D%5Bvalue%5D=upForRenewal' }}" class="btn btn-large"><i class="icon-search"></i> View and Renew</a>
+        </div>
+    {% endif %}
 {% endblock %}

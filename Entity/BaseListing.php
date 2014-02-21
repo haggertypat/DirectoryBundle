@@ -31,7 +31,21 @@ class BaseListing extends BaseEntity
      *
      * @ORM\Column(name="datetimeLastUpdated", type="datetime", nullable=true)
      */
-    private $datetimeLastUpdated;    
+    private $datetimeLastUpdated;  
+
+    /**
+     * @var date $dateRenewed
+     *
+     * @ORM\Column(name="dateRenewed", type="date", nullable=true)
+     */
+    private $dateRenewed; 
+
+    /**
+     * @var date $dateOfExpiration
+     *
+     * @ORM\Column(name="dateOfExpiration", type="date", nullable=true)
+     */
+    private $dateOfExpiration;   
     
     /**
      * @var string
@@ -243,12 +257,30 @@ class BaseListing extends BaseEntity
      * @ORM\Column(name="status", type="string", length=255)
      */
     private $status = 'new';
-    public static $statusChoices = array(
-        'new' => 'Approval Needed',
-        'active' => 'Approved',
-        'edited' => 'Re-Approval Needed',
-        'spam' => 'Spam'
-    );
+    public static function getStatusChoices($useExpiration)
+    {
+        $choices = array(
+            'new' => 'Approval Needed',
+            'active' => 'Approved',
+            'edited' => 'Re-Approval Needed',
+        );
+
+        if($useExpiration) {
+            $choices['upForRenewal'] = 'Expired but up to date';
+            $choices['expired'] = 'Expired and outdated';            
+        }
+
+        $choices['spam'] = 'Spam';
+
+        return $choices;
+    }
+    /*
+     * If translating, we don't care if there are unused statuses in the array
+     */
+    public function getFullStatusChoices()
+    {
+        return $this->getStatusChoices(true);
+    }
     
     public function __toString()
     {
@@ -820,7 +852,7 @@ class BaseListing extends BaseEntity
 
     public function getStatusTranslated()
     {
-        if($this->getStatus() && array_key_exists($this->getStatus(), self::$statusChoices)) return self::$statusChoices[$this->getStatus()];
+        if($this->getStatus() && array_key_exists($this->getStatus(), self::getFullStatusChoices())) return self::getFullStatusChoices()[$this->getStatus()];
         else return '';
     }
 
@@ -868,6 +900,64 @@ class BaseListing extends BaseEntity
     public function getDatetimeLastUpdated()
     {
         return $this->datetimeLastUpdated;
+    }
+
+    /**
+     * Set dateRenewed
+     *
+     * @param \Date $dateRenewed
+     * @return Listing
+     */
+    public function setDateRenewed($dateRenewed)
+    {
+        $this->dateRenewed = $dateRenewed;
+    
+        return $this;
+    }
+
+    /**
+     * Get dateRenewed
+     *
+     * @return \Date 
+     */
+    public function getDateRenewed()
+    {
+        return $this->dateRenewed;
+    }
+
+    /**
+     * Set dateOfExpiration
+     *
+     * @param \Date $dateOfExpiration
+     * @return Listing
+     */
+    public function setDateOfExpiration($dateOfExpiration)
+    {
+        $this->dateOfExpiration = $dateOfExpiration;
+    
+        return $this;
+    }
+
+    /**
+     * Get dateOfExpiration
+     *
+     * @return \Date 
+     */
+    public function getDateOfExpiration()
+    {
+        return $this->dateOfExpiration;
+    }
+
+    public function expiringWithinTwoWeeks()
+    {
+        $interval = $this->getDateOfExpiration()->diff(new \DateTime());
+        return $interval->format('%d') < 14;
+    }
+
+    public function expiringWithinOneWeek()
+    {
+        $interval = $this->getDateOfExpiration()->diff(new \DateTime());
+        return $interval->format('%d') < 7;
     }
 
     /**

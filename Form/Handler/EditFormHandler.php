@@ -46,6 +46,10 @@ class EditFormHandler
         if($listing->getStatus() == "active") {
             $listing->setStatus('edited');
         }
+        // user renewal: on user edit of expired listing, set to “upForRenewal” instead of “edited”
+        if($listing->getStatus() == "expired") {
+            $listing->setStatus('upForRenewal');            
+        }
 
         $listingAdmin->update($listing);
         $em = $this->container->get('doctrine')->getEntityManager();

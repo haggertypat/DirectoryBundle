@@ -15,6 +15,12 @@
 		        Spam
 		    </a>
 		{% endif %}
+		{% if object.status == "expired" or object.status == "upForRenewal" %}
+		    <a href="{{ admin.generateObjectUrl('update-status', object, {'status' : 'active'}) }}" class="btn edit_link btn-small">
+		        <i class="icon-check"></i>
+		        Renew
+		    </a>
+		{% endif %}
 		{% if object.status == "active" %}
 		    <a href="{{ admin.generateObjectUrl('update-status', object, {'status' : 'new'}) }}" class="btn edit_link btn-small">
 		        <i class="icon-remove"></i>

@@ -58,6 +58,8 @@ class AdminListingApprovalBlockService extends BaseBlockService
                 'block' => $blockContext->getBlock(),
                 'listings' => $listingRepository->findByStatus('new'),
                 'reapprovalListings' => $listingRepository->findByStatus('edited'),
+                'expiredListings' => $listingRepository->findByStatus('expired'),
+                'upForRenewalListings' => $listingRepository->findByStatus('upForRenewal'),
                 'listingAdmin' => $listingType->getAdminClass(),
                 'translationKey' => $listingType->getTranslationKey()
             ));
