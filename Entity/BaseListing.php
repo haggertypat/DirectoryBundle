@@ -951,13 +951,21 @@ class BaseListing extends BaseEntity
     public function expiringWithinTwoWeeks()
     {
         $interval = $this->getDateOfExpiration()->diff(new \DateTime());
-        return $interval->format('%d') < 14;
+        $value = (int) $interval->format('%a');
+        return $value < 14 && $value > 0;
     }
 
     public function expiringWithinOneWeek()
     {
         $interval = $this->getDateOfExpiration()->diff(new \DateTime());
-        return $interval->format('%d') < 7;
+        $value = (int) $interval->format('%a');
+        return $value < 7 && $value > 0;
+    }
+
+    public function shouldBeExpired()
+    {
+        $today = new \DateTime();
+        return $this->getDateOfExpiration() && $today >= $this->getDateOfExpiration();
     }
 
     /**

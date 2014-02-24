@@ -1,0 +1,9 @@
+<html>
+	Your Listing on {{ directoryTitle }} will expire in {{ weekValue }} week{{weekValue == 1? '' : 's' }}.<br/><br/>
+
+	{% if renewOnUpdate %}
+		To renew your Listing, <a href="{{ editLink }}">edit it</a> and make sure all your information is up to date.
+	{% else %}
+		To renew your Listing, <a href="mailto:{{ contactEmail }}">Contact Us</a>.
+	{% endif %}
+</html>

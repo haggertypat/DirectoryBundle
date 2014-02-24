@@ -32,7 +32,7 @@ class Configuration implements ConfigurationInterface
                 ->scalarNode('admin_email')->cannotBeEmpty()->end()
                 ->scalarNode('copyright')->defaultvalue(null)->end()
                 ->scalarNode('og_description')->defaultvalue(null)->end()
-                ->scalarNode('og_url')->defaultvalue(null)->end()
+                ->scalarNode('site_url')->defaultvalue(null)->end()
                 ->scalarNode('google_maps_key')->defaultvalue(null)->end()
                 ->scalarNode('google_analytics_account')->defaultvalue(null)->end()
                 ->scalarNode('always_show_advanced_search')->defaultvalue(false)->end()

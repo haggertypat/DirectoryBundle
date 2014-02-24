@@ -82,7 +82,7 @@ Add the following to your ``config.yml`` and fill out the values with your app's
         contact_email: contact@email.com
         admin_email: admin@email.com
         og_description: your description
-        og_url: http://yoururl
+        site_url: http://yoururl
         google_maps_key: yourkey
         google_analytics_account: UA-NNNNNNNNN-1
         always_show_advanced_search: false
@@ -225,6 +225,16 @@ You'll want to secure the admin section of your app.  Something like this in ``s
 
 	    encoders:
 	        Symfony\Component\Security\Core\User\User: plaintext
+
+#### Create crons for email and listing expiration
+You should create a cron to run your e-mail spool, as you've configured it.
+
+Additionally, if using listing expiration you'll need daily crons to run the following commands:
+
+
+        php app/console ccetc:directory:update-expired-listings
+        php app/console ccetc:directory:send-pending-expiration-notifications
+
 
 ### Option 2 - Install the DirectoryAppTemplate
 Follow the instructions on the [DirectoryAppTemplate](https://github.com/CCETC/DirectoryAppTemplate).
@@ -519,7 +529,7 @@ The following global variables are accessible via any template:
     directoryContactEmail
     directoryCopyright
     directoryOgDescription
-    directoryOgURL
+    directorySiteURL
     googleMapsKey
     googleAnalyticsAccount
 

@@ -39,7 +39,7 @@ class CCETCDirectoryExtension extends Extension
             'contact_email',
             'admin_email',
             'og_description',
-            'og_url',
+            'site_url',
             'google_maps_key',
             'google_analytics_account',
             'always_show_advanced_search',

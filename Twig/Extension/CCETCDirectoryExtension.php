@@ -22,7 +22,7 @@ class CCETCDirectoryExtension extends \Twig_Extension
             'directoryContactEmail' => $this->container->getParameter('ccetc_directory.contact_email'),            
             'directoryCopyright' => $this->container->getParameter('ccetc_directory.copyright'),
             'directoryOgDescription' => $this->container->getParameter('ccetc_directory.og_description'),            
-            'directoryOgURL' => $this->container->getParameter('ccetc_directory.og_url'),            
+            'directorySiteURL' => $this->container->getParameter('ccetc_directory.site_url'),            
             'googleMapsKey' => $this->container->getParameter('ccetc_directory.google_maps_key'),            
             'googleAnalyticsAccount' => $this->container->getParameter('ccetc_directory.google_analytics_account'), 
             'singleListingType' => $this->listingTypeHelper->getSingleListingType(),

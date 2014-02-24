@@ -8,10 +8,10 @@
 
         <meta property="og:title" content="{{ directoryTitle }}" />
         <meta property="og:description" content="{{ directoryOgDescription }}" />
-        <meta property="og:url" content="{{ directoryOgURL }}" />
+        <meta property="og:url" content="{{ directorySiteURL }}" />
         <meta property="og:site_name" content="{{ directoryTitle }}" />
         {% if directoryLogo is defined and directoryLogo != "" %}
-            <meta property="og:image" content="{{ directoryOgURL ~ asset(directoryLogo) }}" />
+            <meta property="og:image" content="{{ directorySiteURL ~ asset(directoryLogo) }}" />
         {% endif %}
 
         {% block stylesheets %}
