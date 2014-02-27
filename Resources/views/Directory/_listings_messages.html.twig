@@ -1,0 +1,24 @@
+    {% if listings|length == 0 %}
+        <div id="no-search-results-message" class="alert alert-block">
+            <h4>We couldn't find any {{ (listingType.translationKey ~ 's')|capitalize|trans({}, "messages") }}! Try expanding your Search</h4>
+        </div>
+    {% elseif singleListing %}
+        <div class="alert alert-block alert-success" id="single-listing-message">
+            <h4>
+                Viewing a Single {{ listingType.translationKey|capitalize|trans({}, "messages") }}
+                <a href="{{ path(listingType.listingsRouteName) }}" class="btn btn-small pull-right"><i class="icon-search"></i> View all</a>
+            </h4>
+        </div>
+    {% elseif listingAdmin.datagrid.hasActiveFilters %}
+        <div id="search-results-message" class="alert alert-block alert-success">
+            <h4>
+                Showing {{ listingAdmin.datagrid.pager.nbresults }} Search Results                       
+            </h4>
+        </div>
+    {% else %}
+        <div id="browse-all-message" class="alert alert-block alert-info">
+            <h4>
+                Browsing all {{ listingAdmin.datagrid.pager.nbresults }} {{ (listingType.translationKey ~ 's')|capitalize|trans({}, "messages") }}
+            </h4>
+        </div>
+    {% endif %}

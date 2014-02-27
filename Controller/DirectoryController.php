@@ -43,7 +43,6 @@ class DirectoryController extends Controller
         $request = $this->getRequest();
         $listingAdmin->setRequest($request);        
         $filterParameters = $listingAdmin->getFilterParameters();        
-        
         if($listingType->getUseProfiles()) $linkBlocks = true;
         else $linkBlocks = false;
        
@@ -80,14 +79,12 @@ class DirectoryController extends Controller
 
         $datagrid = $listingAdmin->getDatagrid();
         $datagridFormView = $datagrid->getForm()->createView();
-            
         if(isset($listingId)) {
             $listings = $listingRepository->findById($listingId);
             $mapListings = $listings;
             $singleListing = true;
         } else {
             $listings = $datagrid->getResults();
-            
             if($listingType->getUseMaps()) {
                 // get all the listings for the map
                 $query = $datagrid->getQuery();
