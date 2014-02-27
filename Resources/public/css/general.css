@@ -63,6 +63,8 @@ h5 .btn
 }
 
 form.fos_user_change_password legend,
+form.fos_user_resetting_reset legend,
+form.fos_user_resetting_request legend,
 form.fos_user_registration_register legend {
     display: none;
 }
