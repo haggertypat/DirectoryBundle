@@ -23,6 +23,8 @@ class SignupFormHandler
 
     public function process()
     {
+        $this->registrationSetting = $this->container->getParameter('ccetc_directory.registration_setting');
+
         if('POST' === $this->request->getMethod()) {
             $this->form->bindRequest($this->request);
 
@@ -56,9 +58,11 @@ class SignupFormHandler
             $this->form->get('password2')->addError(new FormError('Passwords do not match'));
             $valid = false;                
         }    
-        if($this->registrationSetting =="required" && (!isset($password1) || $password1 == "")) {
+        if($this->registrationSetting == "required" && (!isset($password1) || $password1 == "")) {
             $this->form->get('password1')->addError(new FormError('Please enter a password'));
             $valid = false;                                
+        } else {
+            echo $this->registrationSetting.'-'.$password1.'-';
         }
 
         return $valid;
