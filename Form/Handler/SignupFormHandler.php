@@ -23,6 +23,7 @@ class SignupFormHandler
 
     public function process()
     {
+        // NOTE: for some reason, on some calls of this, registrationSetting has not been set
         $this->registrationSetting = $this->container->getParameter('ccetc_directory.registration_setting');
 
         if('POST' === $this->request->getMethod()) {
@@ -41,6 +42,8 @@ class SignupFormHandler
 
     protected function validateUser()
     {
+        // NOTE: for some reason, on some calls of this, registrationSetting has not been set
+        $this->registrationSetting = $this->container->getParameter('ccetc_directory.registration_setting');
         if($this->registrationSetting == "none") return true;
 
         $listing = $this->form->getData();
@@ -61,8 +64,6 @@ class SignupFormHandler
         if($this->registrationSetting == "required" && (!isset($password1) || $password1 == "")) {
             $this->form->get('password1')->addError(new FormError('Please enter a password'));
             $valid = false;                                
-        } else {
-            echo $this->registrationSetting.'-'.$password1.'-';
         }
 
         return $valid;
