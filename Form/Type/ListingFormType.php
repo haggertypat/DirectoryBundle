@@ -43,7 +43,7 @@ class ListingFormType extends AbstractType
 
 
         $builder
-            ->add('name', 'text', array('label' => 'Listing Name'))
+            ->add('name', 'text', array('label' => $this->container->get('translator')->trans('Listing').' Name'))
             ->add('address', 'text')
             ->add('city', 'text')
             ->add('state', 'choice', array('choices' => array('NY' => 'New York')))
@@ -52,7 +52,7 @@ class ListingFormType extends AbstractType
             ->add('contactName', 'text', array('label' => 'Contact Name'))
             ->add('primaryEmail', 'text', array('label' => 'E-mail', 'required' => $emailRequired))
             ->add('primaryPhone', 'text', array('label' => 'Phone', 'required' => false))
-            ->add('description', 'textarea', array('label' => 'Listing Description', 'attr' => array('rows' => '5'), 'required' => false))
+            ->add('description', 'textarea', array('label' => $this->container->get('translator')->trans('Listing').' Description', 'attr' => array('rows' => '5'), 'required' => false))
             ->add('photoFile', 'file', array('required' => false, 'label' => 'Profile Photo', 'required' => false))
         ;
 

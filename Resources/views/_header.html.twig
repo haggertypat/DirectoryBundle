@@ -12,40 +12,6 @@
         <div class="navbar-inner">
             {{ knp_menu_render(directoryMenuBuilder, {'currentClass' : 'active', 'depth' : 1 } ) }}
 
-                <ul class="nav pull-right" id="frontend-admin-menu">
-                    {% if app.user.username is defined %}    
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-user"></i> {{ app.user.username }} <b class="caret"></b></a>
-                            
-                            <ul class="dropdown-menu">
-                                {% if app.user.listing.id is defined %}
-                                    {% set listingType = getListingTypeForObject(app.user.listing) %}
-                                    <li><a href="{{ path(listingType.profileRouteName, {'id' : app.user.listing.id}) }}"><i class="icon-search"></i> View your Listing</a></li>
-                                {% endif %}
-                                {% if is_granted('ROLE_ADMIN') %}
-                                    <li>
-                                        <a href="{{ path('sonata_admin_dashboard') }}"><i class="icon-lock"></i> Go to Admin</a>
-                                    </li>
-                                {% endif %}                                
-                                {% if registrationSetting != 'none' %}
-                                    <li>
-                                        <a href="{{ path('fos_user_profile_show') }}"><i class="icon-cog"></i> Settings</a>
-                                    </li>
-                                    <li>
-                                        <a href="{{ path('fos_user_security_logout') }}">Log out</a>
-                                    </li>
-                                {% else %}
-                                    <li class="disabled">
-                                        <a href="#">
-                                            <i>Close your browser to log out</i>
-                                        </a>
-                                    </li>
-                                {% endif %}
-                            </ul>
-                        </li>
-                    {% elseif registrationSetting != 'none' %}
-                        <li><a href="{{ path('fos_user_security_login') }}">Login</a></li>
-                    {% endif %}
-                </ul>
+            {% include 'CCETCDirectoryBundle:Directory:_user_menu.html.twig' %}                
         </div>
     </div>
