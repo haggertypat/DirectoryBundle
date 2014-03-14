@@ -9,7 +9,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 class ListingFormType extends AbstractType
 {
-    private $classPath;
+    protected $classPath;
     protected $container;   
     protected $registrationSetting;
 

@@ -8,7 +8,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class SignupFormType extends ListingFormType
 {
-    private $classPath;
+    protected $classPath;
     protected $container;  
     protected $registrationSetting; 
 
