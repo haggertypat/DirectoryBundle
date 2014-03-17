@@ -6,7 +6,6 @@ page:
   pattern: /page/{route}
   defaults: { _controller: CCETCDirectoryBundle:Pages:page }
 
-
 CCETDirectoryBundle_Listing:
     resource: .
     type: listing
