@@ -51,11 +51,20 @@ class EditFormHandler
             $listing->setStatus('upForRenewal');            
         }
 
+        $uow = $this->container->get('doctrine')->getEntityManager()->getUnitOfWork();
+        $original = $uow->getOriginalEntityData($listing);
+        $originalStatus = $original['status'];
+        $newStatus = $listing->getStatus();
+
         $listingAdmin->update($listing);
         $em = $this->container->get('doctrine')->getEntityManager();
         $em->flush();
 
-        $this->sendEditNotificationEmail($listing, $this->container->getParameter('ccetc_directory.admin_email'), $this->getPageLink().$listingAdmin->generateObjectUrl('edit', $listing));
+        // only send the notification the first time the status changes
+        if($oldStatus != $newStatus) {
+            $this->sendEditNotificationEmail($listing, $this->container->getParameter('ccetc_directory.admin_email'), $this->getPageLink().$listingAdmin->generateObjectUrl('edit', $listing));
+
+        }
     }
     
     protected function sendEditNotificationEmail($listing, $to, $link)
