@@ -9,7 +9,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 class ListingFormType extends AbstractType
 {
-    private $classPath;
+    protected $classPath;
     protected $container;   
     protected $registrationSetting;
 
@@ -52,7 +52,7 @@ class ListingFormType extends AbstractType
             ->add('contactName', 'text', array('label' => 'Contact Name'))
             ->add('primaryEmail', 'text', array('label' => 'E-mail', 'required' => $emailRequired))
             ->add('primaryPhone', 'text', array('label' => 'Phone', 'required' => false))
-            ->add('description', 'textarea', array('label' => $this->container->get('translator')->trans('Listing').' Description', 'attr' => array('rows' => '5'), 'required' => false))
+            ->add('description', 'textarea', array('label' => $this->container->get('translator')->trans('Listing').' Description', 'attr' => array('rows' => '5', 'class' => 'span6'), 'required' => false))
             ->add('photoFile', 'file', array('required' => false, 'label' => 'Profile Photo', 'required' => false))
         ;
 

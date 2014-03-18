@@ -37,16 +37,17 @@ class ListingLoader implements LoaderInterface
             }
 
             foreach($routeActions as $action)
-            {
-                $defaults = array(
-                    '_controller' => 'CCETCDirectoryBundle:Directory:'.$action,
-                    'listingTypeKey' => $listingType->getKey()
-                );
-                
+            {                
                 // turn the hyphen delimted actions into CamelCase for retrieving the route values
                 $parts = explode('-', $action);
                 $parts = array_map('ucfirst', $parts);
-                $methodSegment = ucfirst(implode('', $parts));
+                $controllerName = implode('', $parts);
+                $methodSegment = ucfirst($controllerName);
+                
+                $defaults = array(
+                    '_controller' => 'CCETCDirectoryBundle:Directory:'.$controllerName,
+                    'listingTypeKey' => $listingType->getKey()
+                );
 
                 $patternMethod = 'get'.$methodSegment.'RoutePattern';
                 $nameMethod = 'get'.$methodSegment.'RouteName';
