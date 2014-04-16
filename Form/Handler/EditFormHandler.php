@@ -61,7 +61,7 @@ class EditFormHandler
         $em->flush();
 
         // only send the notification the first time the status changes
-        if($oldStatus != $newStatus) {
+        if($originalStatus != $newStatus) {
             $this->sendEditNotificationEmail($listing, $this->container->getParameter('ccetc_directory.admin_email'), $this->getPageLink().$listingAdmin->generateObjectUrl('edit', $listing));
 
         }
