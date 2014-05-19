@@ -1,4 +1,4 @@
-<div class="listing-block-container {{ linkBlock? 'block-link' : '' }}">
+<div class="listing-block-container {{ linkBlock or (not listingType.useProfiles and listing.website is defined and listing.website != "") ? 'block-link' : '' }}">
     
     {% if listing.status == "edited" and not listing.isOwnedByUser(app.user) and not is_granted('ROLE_ADMIN') %}
         {{ listing.savedListingBlockContentHtml|raw }}
@@ -11,6 +11,8 @@
     <div class="btn-group pull-right">
         {% if is_granted("ROLE_ADMIN") %}
             <a class="btn edit-btn" href="{{ listingAdmin.generateObjectUrl('edit', listing) }}" ><i class="icon-pencil"></i> Edit</a> 
+        {% elseif app.user.listing.id is defined and app.user.listing.id == listing.id %}
+            <a class="btn edit-btn" href="{{ path(listingType.editRouteName, {'id' : listing.id}) }}" ><i class="icon-pencil"></i> Edit</a> 
         {% endif %}
         {% if linkBlock %}<a class="btn view-btn" href="{{ path(listingType.profileRouteName, {'id' : listing.id }) }}" ><i class="icon-search"></i> View</a>{% endif %}
     </div>
