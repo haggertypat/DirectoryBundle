@@ -34,6 +34,10 @@
             {% include 'CCETCDirectoryBundle:Directory:_listings_pre.html.twig' %}    
             {% include 'CCETCDirectoryBundle:Directory:_listings_messages.html.twig' %}            
 
+            {% if singleListing %}
+                {% include 'CCETCDirectoryBundle:Directory:_profile_messages.html.twig' with {'listing' : listings[0]} %}
+            {% endif %}
+
             <div id="listings-list-container" style="{{ tab == 'list' ? '' : 'display: none;' }}">
                 {% for listing in listings %}
                     {% include listingBlockTemplate with {'listing' : listing, 'linkBlock' : linkBlocks } %}

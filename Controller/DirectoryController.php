@@ -167,7 +167,6 @@ class DirectoryController extends Controller
             'listing' => $listing,
             'listingType' => $listingType,
             'profileContentTemplate' => $profileContentTemplate,
-            'userOwnsListing' => $userOwnsListing,
             'renewListingOnUpdate' => $this->container->getParameter('ccetc_directory.renew_listing_on_update')
         ));                                    
         
