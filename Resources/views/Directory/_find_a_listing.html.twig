@@ -11,13 +11,13 @@
     </span>
     <h4>miles of</h4>
     <input name="filter[location][value]" placeholder="your zip or address" />
-    {% if includeProducts %}
+    {% if attributes is defined %}
         <h4>that sells</h4>
         <span>
-            <select name="filter[products][value]" class="products">
-              <option value="">any Product</option>
-              {% for product in products %}
-                <option {{ filters.product is defined and filters.product == product.id ? 'selected' : ''}} value="{{ product.id }}">{{ product.name }}</option>
+            <select name="filter[{{ attributeFieldName }}][value]">
+              <option value="">anything</option>
+              {% for attribute in attributes %}
+                <option value="{{ attribute.id }}">{{ attribute.name }}</option>
               {% endfor %}
             </select>           
         </span>

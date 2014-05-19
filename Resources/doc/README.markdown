@@ -468,5 +468,7 @@ The following global variables are accessible via any template:
 You can include the find a listing block in your pages.  Just make sure to wrap it in a div with the class ``find-a-listing``:
 
     <div class="find-a-listing alert alert-block alert-info">
-		{{ render(controller('CCETCDirectoryBundle:Directory:findAListing', {'includeProducts': false } )) }}
+        {{ render(controller('CCETCDirectoryBundle:Directory:findAListing', {'attributeClass': 'Category', 'attributeFieldName' : 'categories' } )) }}
 	</div>
+
+The attribute parameters are optional.  If included, a dropdown for that attribute will appear in the block.

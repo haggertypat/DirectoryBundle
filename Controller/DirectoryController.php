@@ -172,21 +172,22 @@ class DirectoryController extends Controller
         ));                                    
         
     }
-    public function findAListingAction($includeProducts = true, $listingTypeKey = null)
+
+    public function findAListingAction($attributeClass = null, $attributeFieldName = null, $listingTypeKey = null)
     {
         $listingTypeHelper = $this->container->get('ccetc.directory.helper.listingtypehelper');
         if(!isset($listingTypeKey)) $listingType = $listingTypeHelper->getSingleListingType();
         else $listingType = $listingTypeHelper->findOneByKey($listingTypeKey);
 
         $templateParameters = array(
-            'includeProducts' => $includeProducts,
-            'listingType' => $listingType
+            'listingType' => $listingType,
+            'attributeFieldName' => $attributeFieldName
         );
         
-        if($includeProducts) {
+        if(isset($attributeClass)) {
             $bundleName = $this->container->getParameter('ccetc_directory.bundle_name');
-            $productRepository = $this->getDoctrine()->getRepository($bundleName.':Product');
-            $templateParameters['products'] = $productRepository->findAll();
+            $attributeRepository = $this->getDoctrine()->getRepository($bundleName.':'.$attributeClass);
+            $templateParameters['attributes'] = $attributeRepository->findAll();
         }
         
         return $this->render('CCETCDirectoryBundle:Directory:_find_a_listing.html.twig', $templateParameters);        

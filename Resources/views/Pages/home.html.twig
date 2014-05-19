@@ -10,7 +10,7 @@
     <div class="row">
         <div class="span12">
             <div class="find-a-listing alert alert-block alert-info" style="margin: 0 auto 20px; width: 560px;">
-                {{ render(controller('CCETCDirectoryBundle:Directory:findAListing', {'includeProducts': false } )) }}
+                {{ render(controller('CCETCDirectoryBundle:Directory:findAListing', {'attributeClass': 'Product', 'attributeFieldName' : 'products' } )) }}
             </div>
         </div>
     </div>
