@@ -235,6 +235,38 @@ Additionally, if using listing expiration you'll need daily crons to run the fol
         php app/console ccetc:directory:update-expired-listings
         php app/console ccetc:directory:send-pending-expiration-notifications
 
+#### Enable Spam Prevention
+
+Add to ``AppKernel.php``:
+
+        new Isometriks\Bundle\SpamBundle\IsometriksSpamBundle(),         
+
+Add to ``config.yml``:
+
+        isometriks_spam:
+            timed:
+                min: 7
+                max: 10000
+                global: false
+                message: You're submitting the form too quickly.
+            honeypot:
+                field: email_address
+                use_class: false
+                hide_class: hidden
+                global: false
+                message: Please contact us
+
+Make sure these options are added to your Signup Form:
+
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    {
+        $resolver->setDefaults(array(
+            ...
+            'timed_spam' => true,
+            'honeypot' => true,
+        ));
+    }
+
 
 ### Option 2 - Install the DirectoryAppTemplate
 Follow the instructions on the [DirectoryAppTemplate](https://github.com/CCETC/DirectoryAppTemplate).
