@@ -64,6 +64,8 @@ class ListingFormType extends AbstractType
     {
         $resolver->setDefaults(array(
             'data_class' => $this->classPath,
+            'timed_spam' => true,
+            'honeypot' => true,
         ));
     }
 
