@@ -1,7 +1,8 @@
 # BC breaks and Upgrade notes
 # May 2014 Updates
 - we added required parameters "attributeClass" and "attributeFieldName" to the controller
->> update your templates, see ``home.html.twig``
+ 
+> update your templates, see ``home.html.twig``
 
 ## Pre May 2014 Updates
 These are changes we've made since before May of 2014.  In no particular order.
