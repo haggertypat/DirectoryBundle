@@ -141,7 +141,9 @@ You should also include the "Pages" admin class if using the CMS features:
 * google_analytics_account - optional
 * always_show_advanced_search - optional, default false
 * registration_setting - optional - default none (required|optional|none)
-
+* use_expiration - optional - default true
+* listing_lifetime - days before listing expires - optional - default 365
+* renew_listing_on_update - whether or not listing is renewed when edited - optional - default true
 
 #### Create your Entities
 You'll need to create your own entities and extend the base entities and example ``dist`` files provided.  At the very least you will need a ``Listing`` entity that extends ``Base Listing``.
