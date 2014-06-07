@@ -69,7 +69,7 @@ class ListingAdmin extends Admin
                     'field_type' => 'choice',
                     'field_options' => array(
                         'required' => false,
-                        'choices' =>  BaseListing::getStatusChoices($this->configurationPool->getContainer()->getParameter('ccetc_directory.use_expiration'))
+                        'choices' =>  BaseListing::getStatusChoices($this->configurationPool->getContainer())
 
                     )
                 ))
@@ -90,8 +90,7 @@ class ListingAdmin extends Admin
         }        
         $formMapper
             ->with('Status')
-                ->add('status', 'choice', array('label' => 'Status', 'choices' => BaseListing::getStatusChoices($this->configurationPool->getContainer()->getParameter('ccetc_directory.use_expiration'))))
-                ->add('dateOfExpiration')                
+                ->add('status', 'choice', array('label' => 'Status', 'choices' => BaseListing::getStatusChoices($this->configurationPool->getContainer())))
             ->end()
             ->with('General')
                 ->add('name')
@@ -133,6 +132,11 @@ class ListingAdmin extends Admin
                 'addressLabel2' => 'Example: Office, Mailing, etc.',
             ))
         ;
+
+        $useExpiration = $this->configurationPool->getContainer()->getParameter('ccetc_directory.use_expiration');
+        if($useExpiration) {
+            $formMapper->with('Status')->add('dateOfExpiration');
+        }
     }
 
 
@@ -186,8 +190,6 @@ class ListingAdmin extends Admin
                 ->add('statusTranslated', null, array('label' => 'Status'))
                 ->add('datetimeCreated')
                 ->add('datetimeLastUpdated')
-                ->add('dateOfExpiration')
-                ->add('dateRenewed')
             ->end()  
             ->with('General')
                 ->add('name', null, array('template' => 'CCETCDirectoryBundle:Admin:_listing_show_name.html.twig'))
@@ -227,6 +229,11 @@ class ListingAdmin extends Admin
             ->end()    
         ;
         
+        $useExpiration = $this->configurationPool->getContainer()->getParameter('ccetc_directory.use_expiration');
+        if($useExpiration) {
+            $showMapper->with('Status')->add('dateOfExpiration');
+            $showMapper->with('Status')->add('dateRenewed');
+        }
     }
     
     public function prePersist($object)
