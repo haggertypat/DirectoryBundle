@@ -51,3 +51,7 @@ These are changes we've made since before May of 2014.  In no particular order.
 - [ ] we created a ListingFormType that's used by the SignupForm
 
 > update your custom form types accordingly
+
+- [ ] menu and user menu were moved to header.html.twig
+
+> you've probably customized this tempalte, so you need to copy/paste the new code
