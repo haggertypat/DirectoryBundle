@@ -55,3 +55,14 @@ These are changes we've made since before May of 2014.  In no particular order.
 - [ ] menu and user menu were moved to header.html.twig
 
 > you've probably customized this tempalte, so you need to copy/paste the new code
+
+- [ ] we added custom Sonata edit/show templates
+
+> add to config.yml
+
+	sonata_admin:
+		...
+	    templates:
+	    	...
+			show: CCETCDirectoryBundle:Admin:show.html.twig
+			edit: CCETCDirectoryBundle:Admin:edit.html.twig
