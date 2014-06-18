@@ -12,7 +12,7 @@
     {% elseif listingAdmin.datagrid.hasActiveFilters %}
         <div id="search-results-message" class="alert alert-block alert-success">
             <h4>
-                Showing {{ listingAdmin.datagrid.pager.nbresults }} Search Results                       
+                Showing {{ listingAdmin.datagrid.pager.nbresults }} {{ 'Search'|trans({}, "messages") }} Results                       
             </h4>
         </div>
     {% else %}
