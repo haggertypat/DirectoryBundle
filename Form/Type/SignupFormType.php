@@ -42,6 +42,8 @@ class SignupFormType extends ListingFormType
     {
         $resolver->setDefaults(array(
             'data_class' => $this->classPath,
+            'timed_spam' => true,
+            'honeypot' => true,
         ));
     }
 

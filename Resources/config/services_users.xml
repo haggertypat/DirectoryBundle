@@ -1,0 +1,18 @@
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <services>
+        <service id="ccetc.directoryuser.registration.form.type" class="CCETC\DirectoryUserBundle\Form\Type\RegistrationFormType">
+            <tag name="form.type" alias="ccetc_directory_user_registration" />
+            <argument>%fos_user.model.user.class%</argument>
+        </service>
+        <service id="fos_user.registration.form.handler.default" class="CCETC\DirectoryUserBundle\Form\Handler\RegistrationFormHandler" scope="request" public="false">
+            <argument type="service" id="fos_user.registration.form" />
+            <argument type="service" id="request" />
+            <argument type="service" id="fos_user.user_manager" />
+            <argument type="service" id="fos_user.mailer" />
+            <argument type="service" id="fos_user.util.token_generator" />
+            <argument type="service" id="service_container" />            
+        </service>
+    </services>
+</container>

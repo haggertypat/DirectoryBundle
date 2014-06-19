@@ -140,9 +140,14 @@ class DirectoryController extends Controller
         $listingRepository = $listingType->getRepository();
         $listing = $listingRepository->findOneById($id);
         $user = $this->container->get('security.context')->getToken()->getUser();
+        $registrationSetting = $this->container->getParameter('ccetc_directory.registration_setting');
         
         // comparing listing objects gets stuck is some recursive loop, just go by ids
-        $userOwnsListing = is_object($user) && $user->getListing() && $user->getListing()->getId() == $listing->getId();
+        if($registrationSetting == "none") {
+            $userOwnsListing = false;
+        } else {
+            $userOwnsListing = is_object($user) && $user->getListing() && $user->getListing()->getId() == $listing->getId();
+        }
 
         // NOTE: throw a regular Exception... AccessDenied will just forward to login page or http login dialog
         // see https://trello.com/c/BM3QhXR4

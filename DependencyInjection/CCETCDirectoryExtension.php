@@ -27,7 +27,7 @@ class CCETCDirectoryExtension extends Extension
         
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services.xml');        
-        
+
         $keys = array(
             'bundle_name',
             'bundle_path',
@@ -63,6 +63,12 @@ class CCETCDirectoryExtension extends Extension
             }
             $container->setParameter('ccetc_directory.'.$key, $config[$key]);
         }
-        
+
+        $registrationSetting = $container->getParameter('ccetc_directory.registration_setting');
+        if($registrationSetting != "none") {
+            $loader->load('services_users.xml');
+        }        
+
+
     }
 }

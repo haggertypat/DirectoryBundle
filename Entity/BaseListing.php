@@ -257,13 +257,24 @@ class BaseListing extends BaseEntity
      * @ORM\Column(name="status", type="string", length=255)
      */
     private $status = 'new';
-    public static function getStatusChoices($useExpiration)
+    public static function getStatusChoices($container = null)
     {
+        if(isset($container)) {
+            $useExpiration = $container->getParameter('ccetc_directory.use_expiration');
+            $useEditing = $container->getParameter('ccetc_directory.registration_setting') != "none";            
+        } else {
+            $useExpiration = true;
+            $useEditing = true;
+        }
+
         $choices = array(
             'new' => 'Approval Needed',
             'active' => 'Approved',
-            'edited' => 'Re-Approval Needed',
         );
+
+        if($useEditing) {
+            $choices['edited'] = 'Re-Approval Needed';            
+        }
 
         if($useExpiration) {
             $choices['upForRenewal'] = 'Expired but up to date';
@@ -279,7 +290,7 @@ class BaseListing extends BaseEntity
      */
     public function getFullStatusChoices()
     {
-        return $this->getStatusChoices(true);
+        return $this->getStatusChoices();
     }
     
     public function __toString()

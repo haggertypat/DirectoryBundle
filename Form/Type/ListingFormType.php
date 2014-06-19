@@ -62,8 +62,10 @@ class ListingFormType extends AbstractType
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setDefaults(array(
+        return $resolver->setDefaults(array(
             'data_class' => $this->classPath,
+            'timed_spam' => true,
+            'honeypot' => true,
         ));
     }
 
