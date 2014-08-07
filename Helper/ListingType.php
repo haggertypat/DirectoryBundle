@@ -12,7 +12,11 @@ class ListingType
     protected $adminService;
     protected $useMaps;
     protected $useProfiles;
-    
+    protected $listingsRoutePattern;
+    protected $listingsH1Heading;
+    protected $listingsMetaDescription;
+    protected $listingsMetaTitle;
+
     public function __construct($container, $configValues)
     {
         $this->container = $container;
@@ -21,6 +25,16 @@ class ListingType
     	$this->translationKey = $configValues['translation_key'];
         $this->useMaps = $configValues['use_maps'];
         $this->useProfiles = $configValues['use_profiles'];
+        if(isset($configValues['listings_meta_description'])) $this->listingsMetaDescription = $configValues['listings_meta_description'];
+
+        if(isset($configValues['listings_meta_title'])) $this->listingsMetaTitle = $configValues['listings_meta_title'];
+        else $this->listingsMetaTitle = $this->container->get('translator')->trans(ucfirst($this->translationKey) . 's');
+
+        if(isset($configValues['listings_route_pattern']) && $configValues['listings_route_pattern'] != "") $this->listingsRoutePattern = $configValues['listings_route_pattern'];
+        else $this->listingsRoutePattern = '/'.$this->getTranslationKey() . 's';
+
+        if(isset($configValues['listings_h1_heading']) && $configValues['listings_h1_heading'] != "") $this->listingsH1Heading = $configValues['listings_h1_heading'];
+        else $this->listingsH1Heading = $this->container->get('translator')->trans(ucfirst($this->translationKey) . 's');
     }
 
     public function getEntityClassPath()
@@ -90,7 +104,7 @@ class ListingType
     }
     public function getListingsRoutePattern()
     {
-    	return '/'.$this->getTranslationKey() . 's';
+    	return $this->listingsRoutePattern;
     }
     public function getSignupRouteName()
     {
@@ -123,6 +137,18 @@ class ListingType
     public function getEditRoutePattern()
     {
         return $this->getListingsRoutePattern() . '/{id}/edit';
+    }
+    public function getListingsH1Heading()
+    {
+        return $this->listingsH1Heading;
+    }
+    public function getListingsMetaDescription()
+    {
+        return $this->listingsMetaDescription;
+    }
+    public function getListingsMetaTitle()
+    {
+        return $this->listingsMetaTitle;
     }
 
 }

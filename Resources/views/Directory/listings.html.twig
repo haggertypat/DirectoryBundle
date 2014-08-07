@@ -18,7 +18,17 @@
             <a class="btn" href="javascript:if(window.print)window.print()"><i class="icon-print"></i> Print</a> 
         </div>
     </div>
-    <h1>{{ (listingType.translationKey ~ 's')|capitalize|trans({}, "messages") }}</h1>
+    <h1>{{ listingType.listingsH1Heading }}</h1>
+{% endblock %}
+
+{% block title %}{{ listingType.listingsMetaTitle }} | {{ parent() }}{% endblock %}
+
+{% block meta_description %}
+    {% if listingType.listingsMetaDescription is defined and listingType.listingsMetaDescription != "" %}
+        {{ listingType.listingsMetaDescription }}
+    {% else %}
+        {{ parent() }}
+    {% endif %}
 {% endblock %}
 
 {% block content %}

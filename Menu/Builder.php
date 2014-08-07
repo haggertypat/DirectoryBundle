@@ -57,13 +57,13 @@ class Builder extends ContainerAware
         {
             if($page->isParent()) {
                 if($page->getContent()) { // parents with content get included in both menus
-                    $this->mainMenu->addChild($page->getTitle(), array(
+                    $this->mainMenu->addChild($page->getMenuLabel(), array(
                         'route' => 'page',
                         'routeParameters' => array(
                             'route' => $page->getRoute()
                         )
                     ));   
-                    $this->mainMenu[$page->getTitle()]->addChild($page->getTitle(), array(
+                    $this->mainMenu[$page->getMenuLabel()]->addChild($page->getMenuLabel(), array(
                         'route' => 'page',
                         'routeParameters' => array(
                             'route' => $page->getRoute()
@@ -73,17 +73,17 @@ class Builder extends ContainerAware
                     $children = $page->getChildren();
                     $firstChild = $children[0];
 
-                    $this->mainMenu->addChild($page->getTitle(), array(
+                    $this->mainMenu->addChild($page->getMenuLabel(), array(
                         'route' => 'page',
                         'routeParameters' => array(
                             'route' => $firstChild->getRoute()
                         )
                     )); 
                 }
-                $this->mainMenu[$page->getTitle()]->setChildrenAttribute('class', 'nav nav-pills nav-stacked');
+                $this->mainMenu[$page->getMenuLabel()]->setChildrenAttribute('class', 'nav nav-pills nav-stacked');
                 foreach($page->getChildren() as $child)
                 {
-                    $this->mainMenu[$page->getTitle()]->addChild($child->getTitle(), array(
+                    $this->mainMenu[$page->getMenuLabel()]->addChild($child->getMenuLabel(), array(
                         'route' => 'page',
                         'routeParameters' => array(
                             'route' => $child->getRoute()
@@ -92,7 +92,7 @@ class Builder extends ContainerAware
                 }
 
             } else {
-                $this->mainMenu->addChild($page->getTitle(), array(
+                $this->mainMenu->addChild($page->getMenuLabel(), array(
                     'route' => 'page',
                     'routeParameters' => array(
                         'route' => $page->getRoute()

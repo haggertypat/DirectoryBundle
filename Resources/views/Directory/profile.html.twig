@@ -1,5 +1,11 @@
 {% extends layoutTemplate %}
 
+{% block meta_description %}
+    {% include 'CCETCDirectoryBundle:Directory:_profile_meta_description.html.twig' %}
+{% endblock %}
+
+{% block title %}{{ listing }} | {{ parent() }}{% endblock %}
+
 {% block page_header %}
     <div class="page-btns">
         <a href="{{ app.session.get('lastListingsUri')? app.session.get('lastListingsUri') : path(listingType.listingsRouteName) }}" class="btn pull-left"><i class="icon-arrow-left"></i> Back to {{ (listingType.translationKey ~ "s")|capitalize|trans({}, "messages") }}</a>
