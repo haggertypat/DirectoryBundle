@@ -51,7 +51,7 @@ class Configuration implements ConfigurationInterface
                             'listings_h1_heading' => null,
                             'listings_route_pattern' => null,
                             'listings_meta_description' => null,                            
-                            'listings_meta_title' => null,                            
+                            'listings_meta_title' => null,
                         )
                     ))
                     ->prototype('array')

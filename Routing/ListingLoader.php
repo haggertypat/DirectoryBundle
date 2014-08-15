@@ -63,7 +63,6 @@ class ListingLoader implements LoaderInterface
 
                 $route = new Route($listingType->$patternMethod(), $defaults, $requirements);
                 $routes->add($listingType->$nameMethod(), $route);
-
             }
         }
 

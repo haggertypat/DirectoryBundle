@@ -21,15 +21,9 @@
     <h1>{{ listingType.listingsH1Heading }}</h1>
 {% endblock %}
 
-{% block title %}{{ listingType.listingsMetaTitle }} | {{ parent() }}{% endblock %}
+{% block title %}{% include 'CCETCDirectoryBundle:Directory:_listings_title.html.twig' with {'parentValue': parent() } %}{% endblock %}
 
-{% block meta_description %}
-    {% if listingType.listingsMetaDescription is defined and listingType.listingsMetaDescription != "" %}
-        {{ listingType.listingsMetaDescription }}
-    {% else %}
-        {{ parent() }}
-    {% endif %}
-{% endblock %}
+{% block meta_description %}{% include 'CCETCDirectoryBundle:Directory:_listings_meta_description.html.twig' with {'parentValue': parent() } %}{% endblock %}
 
 {% block content %}
     {% if useMaps %}

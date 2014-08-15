@@ -150,5 +150,4 @@ class ListingType
     {
         return $this->listingsMetaTitle;
     }
-
 }

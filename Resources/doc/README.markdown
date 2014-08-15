@@ -448,6 +448,8 @@ There are a few features in place to let admins/devs implement SEO:
   - listings_meta_description
   - listings_meta_title
 
+I've also managed to provide different titles/urls/descriptions based on attribute filters with a few hacks in one app.  Look at the ReUseDirectory code or ask me.
+
 ### Multiple Listing Types
 We after the initial development added the option to define multiple listing types.  This configuration is optional and the bundle should still work out of the box without any new configuration changes, but this has not been fully tested.
 
