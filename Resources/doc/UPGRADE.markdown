@@ -1,8 +1,8 @@
 # BC breaks and Upgrade notes
 # May 2014 Updates
-- [ ] we added required parameters "attributeClass" and "attributeFieldName" to the find a listing controller
+- [ ] in the findAListing controller we replaced "useProducts" with optional parameters "attributeClass" and "attributeFieldName" which should limit how often you need to customize the find_a_listing template
  
-> update your templates, see ``home.html.twig``
+> update your templates, see ``home.html.twig` and ``find_a_listing.html.twig``
 
 ## Pre May 2014 Updates
 These are changes we've made since before May of 2014.  In no particular order.
@@ -40,7 +40,7 @@ These are changes we've made since before May of 2014.  In no particular order.
 
 > add this to your custom form types, look at parent classes for format
 
-- [ ] moved use_profiles option to the listing_types option
+- [ ] moved use_profiles and use_maps option to the listing_types option
 
 > update config.yml based on docs
 
