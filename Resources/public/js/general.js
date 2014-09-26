@@ -17,7 +17,6 @@ $(document).ready(function() {
         else {
             var href = $(this).find('a').first().attr('href');
         }
-       
         window.open(href, "_self");
     });
     

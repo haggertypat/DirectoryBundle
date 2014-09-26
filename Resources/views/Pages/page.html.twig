@@ -1,7 +1,17 @@
 {% extends layoutTemplate %}
 
 {% block page_header %}
-	<h1>{{ page.parent.title is defined? page.parent.title : page.title }}</h1>
+	<h1>{{ page.parent is defined and page.parent.heading is defined? page.parent.heading : page.heading }}</h1>
+{% endblock %}
+
+{% block title %}{{ page.metaTitle }} | {{ parent() }}{% endblock %}
+
+{% block meta_description %}
+	{% if page.metaDescription is defined and page.metaDescription != "" %}
+		{{ page.metaDescription }}
+	{% else %}
+		{{ parent() }}
+	{% endif %}
 {% endblock %}
 
 {% block content %}
@@ -13,10 +23,10 @@
 
     {% if page.isChild or page.isParent %}
     	<div class="span3">
-    		{% if page.parent.title is defined %}
-    			{% set parentMenuItem = page.parent.title %}
+    		{% if page.parent.heading is defined %}
+    			{% set parentMenuItem = page.parent.heading %}
 			{% else %}
-				{% set parentMenuItem = page.title %}
+				{% set parentMenuItem = page.heading %}
 			{% endif %}
 
 			{% set menuItem = knp_menu_get(directoryMenuBuilder, [parentMenuItem]) %}
@@ -27,7 +37,7 @@
 	{% endif %}
 
 	<div class="span{{ page.isChild or page.isParent  ? '9' : '12' }}">
-		{% if page.isChild %}<h3>{{ page.title }}</h3>{% endif %}
+		{% if page.isChild %}<h3>{{ page.heading }}</h3>{% endif %}
 		{{ page.content|raw }}
 	</div>
 

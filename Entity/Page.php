@@ -42,6 +42,34 @@ class Page
     private $menuWeight = 0;
 
     /**
+     * @var text $metaDescription
+     *
+     * @ORM\Column(name="metaDescription", type="text", nullable=true)
+     */
+    private $metaDescription;
+
+    /**
+     * @var text $heading
+     *
+     * @ORM\Column(name="heading", type="string", length=255, nullable=true)
+     */
+    private $heading;
+
+    /**
+     * @var text $metaTitle
+     *
+     * @ORM\Column(name="metaTitle", type="string", length=255, nullable=true)
+     */
+    private $metaTitle;
+
+    /**
+     * @var text $menuLabel
+     *
+     * @ORM\Column(name="menuLabel", type="string", length=255, nullable=true)
+     */
+    private $menuLabel;
+
+    /**
      * @var text $content
      *
      * @ORM\Column(name="content", type="text", nullable=true)
@@ -118,18 +146,6 @@ class Page
     public function setTitle($title)
     {
         $this->title = $title;
-
-        if(!isset($this->route)) {
-             //Lower case everything
-            $route = strtolower($title);
-            //Make alphanumeric (removes all other characters)
-            $route = preg_replace("/[^a-z0-9_\s-]/", "", $route);
-            //Clean up multiple dashes or whitespaces
-            $route = preg_replace("/[\s-]+/", " ", $route);
-            //Convert whitespaces and underscore to dash
-            $route = preg_replace("/[\s_]/", "-", $route);
-            $this->route = $route;
-        }
     }
 
     /**
@@ -160,6 +176,86 @@ class Page
     public function getContent()
     {
         return $this->content;
+    }
+
+     /**
+     * Set metaDescription
+     *
+     * @param text $metaDescription
+     */
+    public function setMetaDescription($metaDescription)
+    {
+        $this->metaDescription = $metaDescription;
+    }
+
+    /**
+     * Get metaDescription
+     *
+     * @return text 
+     */
+    public function getMetaDescription()
+    {
+        return $this->metaDescription;
+    }
+
+     /**
+     * Set menuLabel
+     *
+     * @param text $menuLabel
+     */
+    public function setMenuLabel($menuLabel)
+    {
+        $this->menuLabel = $menuLabel;
+    }
+
+    /**
+     * Get menuLabel
+     *
+     * @return text 
+     */
+    public function getMenuLabel()
+    {
+        return $this->menuLabel;
+    }
+
+     /**
+     * Set heading
+     *
+     * @param text $heading
+     */
+    public function setHeading($heading)
+    {
+        $this->heading = $heading;
+    }
+
+    /**
+     * Get heading
+     *
+     * @return text 
+     */
+    public function getHeading()
+    {
+        return $this->heading;
+    }
+
+    /**
+     * Set metaTitle
+     *
+     * @param text $metaTitle
+     */
+    public function setMetaTitle($metaTitle)
+    {
+        $this->metaTitle = $metaTitle;
+    }
+
+    /**
+     * Get metaTitle
+     *
+     * @return text 
+     */
+    public function getMetaTitle()
+    {
+        return $this->metaTitle;
     }
 
      /**

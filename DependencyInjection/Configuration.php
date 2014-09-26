@@ -48,6 +48,10 @@ class Configuration implements ConfigurationInterface
                             'translation_key' => 'listing',
                             'use_maps' => true,
                             'use_profiles' => true,
+                            'listings_h1_heading' => null,
+                            'listings_route_pattern' => null,
+                            'listings_meta_description' => null,                            
+                            'listings_meta_title' => null,
                         )
                     ))
                     ->prototype('array')
@@ -58,6 +62,10 @@ class Configuration implements ConfigurationInterface
                             ->scalarNode('translation_key')->cannotBeEmpty()->end()
                             ->scalarNode('use_maps')->defaultvalue(true)->end()
                             ->scalarNode('use_profiles')->defaultvalue(true)->end()
+                            ->scalarNode('listings_h1_heading')->defaultvalue(null)->end()
+                            ->scalarNode('listings_route_pattern')->defaultvalue(null)->end()
+                            ->scalarNode('listings_meta_description')->defaultvalue(null)->end()
+                            ->scalarNode('listings_meta_title')->defaultvalue(null)->end()
                         ->end()
                     ->end()
                 ->end()

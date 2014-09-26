@@ -6,8 +6,8 @@
 
         <title>{% block title %}{{ directoryTitle }}{% endblock %}</title>
 
-        <meta property="og:title" content="{{ directoryTitle }}" />
-        <meta property="og:description" content="{{ directoryOgDescription }}" />
+        <meta property="og:title" content="{{ block('title') }}" />
+        <meta property="og:description" content="{% block meta_description %}{{ directoryOgDescription }}{% endblock %}" />
         <meta property="og:url" content="{{ directorySiteURL }}" />
         <meta property="og:site_name" content="{{ directoryTitle }}" />
         {% if directoryLogo is defined and directoryLogo != "" %}

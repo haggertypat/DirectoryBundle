@@ -1,3 +1,4 @@
+
     <h1 id="profile-heading">{{ listing.name }}</h1>
 
     <div class="row">
@@ -7,7 +8,7 @@
             </div>
             {% if listing.webPath is defined and listing.webPath != "" %}
                 <p>
-                    <img class="listing-photo" src="{{ asset(listing.webPath) }}" />
+                    <img class="listing-photo" alt="{{ listing }} photo or logo" src="{{ asset(listing.webPath) }}" />
                 </p>
             {% endif %}
             <p class="well">

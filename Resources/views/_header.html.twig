@@ -1,7 +1,7 @@
     <div class="header">
         {% if directoryLogo is defined and directoryLogo != "" %}
             <a href="{{ path('home') }}">
-                <img class="logo" src="{{ asset(directoryLogo) }}" />
+                <img alt="{{ directoryTitle }} Logo" class="logo" src="{{ asset(directoryLogo) }}" />
             </a>
         {% endif %}
         <h2>{{ directoryTitle }}</h2>

@@ -12,15 +12,15 @@
     <div class="filters-container {{ listingAdmin.datagrid.hasActiveFilters? 'alert-success alert alert-block' : 'well' }}">
         <form action="{{ url(listingType.listingsRouteName) }}" method="GET">
             <h3 id="search-heading">
-                Search
+                {{ 'Search'|trans({}, "messages") }}
                 <span style="margin-top: 5px;" class="btn-group pull-right">
                     {% if hasAdvancedFilters %}            
                         <button type="submit" class="btn-small btn {{ listingAdmin.datagrid.hasActiveFilters? '' : 'btn-primary' }}">
                             <i class="{{ listingAdmin.datagrid.hasActiveFilters? 'icon-refresh' : 'icon-search icon-white' }}"></i>
-                            {{ listingAdmin.datagrid.hasActiveFilters? 'Search Again' : 'Go' }}
+                            {{ listingAdmin.datagrid.hasActiveFilters? 'Search Again'|trans({}, "messages") : 'Go' }}
                         </button>            
                     {% endif %}
-                    {% if listingAdmin.datagrid.hasActiveFilters %}<a class="btn btn-danger btn-small" href="{{ url(listingType.listingsRouteName, {filters: 'reset'}) }}"><i class="icon-remove icon-white"></i> Clear Search</a>{% endif %}            
+                    {% if listingAdmin.datagrid.hasActiveFilters %}<a class="btn btn-danger btn-small" href="{{ url(listingType.listingsRouteName, {filters: 'reset'}) }}"><i class="icon-remove icon-white"></i> {{ 'Clear Search'|trans({}, "messages") }}</a>{% endif %}            
 
                 </span>
             </h3>
@@ -60,7 +60,7 @@
 
             <button type="submit" id="filter-form-submit" class="btn {{ listingAdmin.datagrid.hasActiveFilters? '' : 'btn-primary' }}">
                 <i class="{{ listingAdmin.datagrid.hasActiveFilters? 'icon-refresh' : 'icon-search icon-white' }}"></i>
-                {{ listingAdmin.datagrid.hasActiveFilters? 'Search Again' : 'Go' }}
+                {{ listingAdmin.datagrid.hasActiveFilters? 'Search Again'|trans({}, "messages") : 'Go' }}
             </button>
         </form>
     </div>

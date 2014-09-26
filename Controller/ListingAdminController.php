@@ -19,7 +19,8 @@ class ListingAdminController extends Controller
 
         $this->admin->update($object);
 
-        $this->getRequest()->getSession()->setFlash('sonata_flash_success', 'Listing has been marked as "'.BaseListing::getStatusChoices($this->container)[$status].'"');
+        $this->getRequest()->getSession()
+            ->setFlash('sonata_flash_success', 'Listing has been marked as "'.BaseListing::getStatusChoices($this->container)[$status].'"');
         $url = $this->getRequest()->headers->get("referer");
         return new RedirectResponse($url);
     }

@@ -141,7 +141,9 @@ You should also include the "Pages" admin class if using the CMS features:
 * google_analytics_account - optional
 * always_show_advanced_search - optional, default false
 * registration_setting - optional - default none (required|optional|none)
-
+* use_expiration - optional - default true
+* listing_lifetime - days before listing expires - optional - default 365
+* renew_listing_on_update - whether or not listing is renewed when edited - optional - default true
 
 #### Create your Entities
 You'll need to create your own entities and extend the base entities and example ``dist`` files provided.  At the very least you will need a ``Listing`` entity that extends ``Base Listing``.
@@ -434,6 +436,19 @@ You can use a default controller for your pages using this code in your routes:
     defaults: { _controller: CCETCDirectoryBundle:Pages:static, template: MyBundle:Pages:myPage.html.twig }
 
 The default checks for outdated browsers, including a boolean with the result as it renders your template.
+
+### SEO
+There are a few features in place to let admins/devs implement SEO:
+
+- admins can edit "page" titles, descriptions, urls, h1 headings from CMS
+- titles and descriptions from non CMS pages must be customized by devs.  Simply use the ``title`` and ``meta_description`` twig blocks
+- the url, title, h1, and meta description for the listings page can be customized using config options under ``listing_type``:
+  - listings_h1_heading
+  - listings_route_pattern
+  - listings_meta_description
+  - listings_meta_title
+
+I've also managed to provide different titles/urls/descriptions based on attribute filters with a few hacks in one app.  Look at the ReUseDirectory code or ask me.
 
 ### Multiple Listing Types
 We after the initial development added the option to define multiple listing types.  This configuration is optional and the bundle should still work out of the box without any new configuration changes, but this has not been fully tested.
