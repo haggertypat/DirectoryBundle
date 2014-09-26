@@ -26,7 +26,7 @@ $(document).ready(function() {
     $('[rel="popover"]').popover();
     $('[rel="tooltip"]').tooltip();
     
-    $('#signup-submit').live("click touchstart", function(e){
+    $('#signup-submit').live("click", function(e){
         $(this).button('loading');
     });
 
