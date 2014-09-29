@@ -486,6 +486,9 @@ There some twig variables and functions available:
 - getListingTypeForObject(listing) - returns the listing type for an object that's a listing
 - getListingTypeByKey(stringKey) - returns the listing type that matches a translation_key
 
+#### Other Notes
+- all of your listing types should extend a custom BaseListing class with a user relation field (on the user side it should still be called "listing"
+
 
 ## Other Features
 ### Admin Show/Edit Hooks
