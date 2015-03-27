@@ -260,9 +260,9 @@ class DirectoryController extends Controller
         // see https://trello.com/c/BM3QhXR4
         if(!is_object($user) && !$this->container->get('security.context')->isGranted('ROLE_ADMIN')) {
             $session->setFlash('alert-warning', 'You must login to edit this Listing');
-            throw new \Exception('You must login to edit this Listing');
+            throw new AccessDeniedException('You must login to edit this Listing');
         } else if ((!$user->getListing() || $user->getListing() != $listing)  && !$this->container->get('security.context')->isGranted('ROLE_ADMIN')) {
-            throw new \Exception('You do not have permission to edit this Listing');
+            throw new AccessDeniedException('You do not have permission to edit this Listing');
         }
 
         if(count($listingTypeHelper->getAll()) > 1) {

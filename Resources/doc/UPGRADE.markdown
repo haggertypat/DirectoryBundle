@@ -1,4 +1,10 @@
 # BC breaks and Upgrade notes
+# August 2014 - SEO features
+Added SEO features.  A few things to update:
+
+- update your database
+- run doctrine updates on your CMS pages
+
 # May 2014 Updates
 - [ ] in the findAListing controller we replaced "useProducts" with optional parameters "attributeClass" and "attributeFieldName" which should limit how often you need to customize the find_a_listing template
  
