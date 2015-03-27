@@ -959,6 +959,34 @@ class BaseListing extends BaseEntity
         return $this->dateOfExpiration;
     }
 
+    public function expiringInExactlyOneWeek()
+    {
+        if(!$this->getDateOfExpiration()) return false;
+
+        $interval = $this->getDateOfExpiration()->diff(new \DateTime());
+        $value = (int) $interval->format('%a');
+
+        return $value == 7;            
+    }
+    public function expiringInExactlyTwoWeeks()
+    {
+        if(!$this->getDateOfExpiration()) return false;
+
+        $interval = $this->getDateOfExpiration()->diff(new \DateTime());
+        $value = (int) $interval->format('%a');
+
+        return $value == 14;            
+    }
+    public function expiringInExactlyOneDay()
+    {
+        if(!$this->getDateOfExpiration()) return false;
+
+        $interval = $this->getDateOfExpiration()->diff(new \DateTime());
+        $value = (int) $interval->format('%a');
+
+        return $value == 1;            
+    }
+
     public function expiringWithinTwoWeeks()
     {
         if(!$this->getDateOfExpiration()) return false;

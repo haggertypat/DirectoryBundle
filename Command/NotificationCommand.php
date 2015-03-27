@@ -28,17 +28,22 @@ class NotificationCommand extends ContainerAwareCommand
 
             foreach($listings as $listing)
             {
-                $weekValue = null; // need to reset to null, or it's still set next time through the loop
+                $timeValue = null; // need to reset to null, or it's still set next time through the loop
+                $timeLabel = null;
 
-                // NOTE: have to check one week before two, since two week set includes one week set
-                if($listing->expiringWithinOneWeek()) {
-                    $weekValue = 1;
-                } else if($listing->expiringWithinTwoWeeks()) {
-                    $weekValue = 2;
+                if($listing->expiringInExactlyOneWeek()) {
+                    $timeValue = 1;
+                    $timeLabel = "week";
+                } else if($listing->expiringInExactlyTwoWeeks()) {
+                    $timeValue = 2;
+                    $timeLabel = "week";
+                } else if($listing->expiringInExactlyOneDay()) {
+                    $timeValue = 1;
+                    $timeLabel = "day";                    
                 }
 
-                if(isset($weekValue)) {
-                    $this->sendNotification($listing, $weekValue);
+                if(isset($timeValue)) {
+                    $this->sendNotification($listing, $timeValue, $timeLabel);
                     $notificationsSentCount++;
                 }
             }
@@ -47,7 +52,7 @@ class NotificationCommand extends ContainerAwareCommand
         }
     }
 
-    protected function sendNotification($listing, $weekValue)
+    protected function sendNotification($listing, $timeValue, $timeLabel)
     {
         $directoryTitle = $this->getContainer()->getParameter('ccetc_directory.title');
         $listingTypeHelper = $this->getContainer()->get('ccetc.directory.helper.listingtypehelper');
@@ -66,7 +71,8 @@ class NotificationCommand extends ContainerAwareCommand
             'listing' => $listing,
             'directoryTitle' => $directoryTitle,
             'renewOnUpdate' => $renewOnUpdate,
-            'weekValue' => $weekValue,
+            'timeValue' => $timeValue,
+            'timeLabel' => $timeLabel,
             'contactEmail' => $contactEmail,
             'editLink' => $this->getPageLink().$this->getContainer()->get('router')->generate($listingType->getEditRouteName(), array('id' => $listing->getId()))
         ));
