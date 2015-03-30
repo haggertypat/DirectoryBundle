@@ -23,7 +23,7 @@
         "symfony/twig-bridge": ">=2.1,<2.3-dev",
         "twig/twig": ">=1.10,<2.0-dev",
         "knplabs/knp-menu": "2.0.0-alpha1",
-        "knplabs/knp-menu-bundle": "2.0.0alpha1",
+        "knplabs/knp-menu-bundle": "2.0.0-alpha1",
         "sonata-project/admin-bundle": "2.2.*@dev",
         "sonata-project/doctrine-orm-admin-bundle": "2.2.*@dev",
         "sonata-project/core-bundle": "~2.2@dev",
