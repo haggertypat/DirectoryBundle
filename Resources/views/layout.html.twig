@@ -65,25 +65,26 @@
                 {% for notice_level in ['success','error','info', 'warning'] %}
                     {% set notice_var = 'alert-' ~ notice_level %}
                     {% set sonata_var = 'sonata_flash_' ~ notice_level %}
-                    {% if app.session.hasFlash(notice_var) %}
+                    {% for message in app.session.flashBag.get(notice_var) %}                
                         <div class="alert alert-{{ notice_level }}">
-                            {{ app.session.flash(notice_var)|raw }}
+                            {{ message|raw }}
                         </div>
-                    {% elseif app.session.hasFlash(sonata_var) %}
+                    {% endfor %}
+                    {% for message in app.session.flashBag.get(sonata_var) %}                
                         <div class="alert alert-{{ notice_level }}">
-                            {{ app.session.flash(sonata_var)|raw }}
+                            {{ message|raw }}
                         </div>
-                    {% endif %}
+                    {% endfor %}
                 {% endfor %}
-                {% if app.session.hasFlash('fos_user_success') %}
+                {% for message in app.session.flashBag.get('fos_user_success') %}                
                     <div class="alert alert-success">
-                        {{ app.session.flash('fos_user_success')|trans({}, 'FOSUserBundle') }}
+                        {{ message|trans({}, 'FOSUserBundle') }}
                     </div>
-                {% endif %}
-                {% if app.session.hasFlash('template-flash') %}
-                    {% include app.session.getFlash('template-flash') %}
-                {% endif %}
-                    
+                {% endfor %}
+                {% for message in app.session.flashBag.get('template-flash') %}                
+                    {% include message %}
+                {% endfor %}
+
                 {% if outdatedBrowser is defined and outdatedBrowser == true %}
                     <div class="alert alert-error">
                         You are using an outdated version of internet explorer.

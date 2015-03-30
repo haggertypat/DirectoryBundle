@@ -20,7 +20,7 @@ class ListingAdminController extends Controller
         $this->admin->update($object);
 
         $this->getRequest()->getSession()
-            ->setFlash('sonata_flash_success', 'Listing has been marked as "'.BaseListing::getStatusChoices($this->container)[$status].'"');
+            ->getFlashBag()->add('sonata_flash_success', 'Listing has been marked as "'.BaseListing::getStatusChoices($this->container)[$status].'"');
         $url = $this->getRequest()->headers->get("referer");
         return new RedirectResponse($url);
     }
@@ -32,7 +32,7 @@ class ListingAdminController extends Controller
             $this->admin->update($object[0]);
         }
 
-        $this->getRequest()->getSession()->setFlash('sonata_flash_success', 'The selected Listings have been marked as "Approved"');
+        $this->getRequest()->getSession()->getFlashBag()->add('sonata_flash_success', 'The selected Listings have been marked as "Approved"');
 
         return new RedirectResponse($this->admin->generateUrl('list', $this->admin->getFilterParameters()));
     }
@@ -44,7 +44,7 @@ class ListingAdminController extends Controller
             $this->admin->update($object[0]);
         }
 
-        $this->getRequest()->getSession()->setFlash('sonata_flash_success', 'The selected Listings have been "Needs Approval"');
+        $this->getRequest()->getSession()->getFlashBag()->add('sonata_flash_success', 'The selected Listings have been marked as "Needs Approval"');
 
         return new RedirectResponse($this->admin->generateUrl('list', $this->admin->getFilterParameters()));
     }
@@ -56,7 +56,7 @@ class ListingAdminController extends Controller
             $this->admin->update($object[0]);
         }
 
-        $this->getRequest()->getSession()->setFlash('sonata_flash_success', 'The selected Listings have been marked as spam');
+        $this->getRequest()->getSession()->getFlashBag()->add('sonata_flash_success', 'The selected Listings have been marked as spam');
 
         return new RedirectResponse($this->admin->generateUrl('list', $this->admin->getFilterParameters()));
     }
@@ -68,7 +68,7 @@ class ListingAdminController extends Controller
             $this->admin->update($object[0]);
         }
 
-        $this->getRequest()->getSession()->setFlash('sonata_flash_success', 'The selected Listings have been marked as "Needs Approval"');
+        $this->getRequest()->getSession()->getFlashBag()->add('sonata_flash_success', 'The selected Listings have been marked as "Needs Approval"');
 
         return new RedirectResponse($this->admin->generateUrl('list', $this->admin->getFilterParameters()));
     }

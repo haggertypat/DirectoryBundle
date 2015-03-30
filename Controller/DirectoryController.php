@@ -228,7 +228,7 @@ class DirectoryController extends Controller
         }
 
         if ($formHandler->process()) {
-            $session->setFlash('template-flash', $thanksTemplate);
+            $session->getFlashBag()->add('template-flash', $thanksTemplate);
             return $this->redirect($this->generateUrl('home'));
         }
 
@@ -259,7 +259,7 @@ class DirectoryController extends Controller
         // NOTE: throw a regular Exception... AccessDenied will just forward to login page or http login dialog
         // see https://trello.com/c/BM3QhXR4
         if(!is_object($user) && !$this->container->get('security.context')->isGranted('ROLE_ADMIN')) {
-            $session->setFlash('alert-warning', 'You must login to edit this Listing');
+            $session->getFlashBag()->add('alert-warning', 'You must login to edit this Listing');
             throw new AccessDeniedException('You must login to edit this Listing');
         } else if ((!$user->getListing() || $user->getListing() != $listing)  && !$this->container->get('security.context')->isGranted('ROLE_ADMIN')) {
             throw new AccessDeniedException('You do not have permission to edit this Listing');
@@ -307,7 +307,7 @@ class DirectoryController extends Controller
         $form->setData($listing);
 
         if ($formHandler->process()) {
-            $session->setFlash('alert-success', 'Your changes have been submitted for Approval.');
+            $session->getFlashBag()->add('alert-success', 'Your changes have been submitted for Approval.');
             return $this->redirect($this->generateUrl($listingType->getProfileRouteName(), array('id' => $id)));
         }
 
