@@ -176,7 +176,7 @@ class ListingAdmin extends Admin
             ->add('status', null, array('template' => 'CCETCDirectoryBundle:Admin:_list_status_actions.html.twig'))
             ->add('_action', 'actions', array(
                 'actions' => array(
-                    'view' => array(),
+                    'show' => array(),
                     'edit' => array(),
                 )
             ))        
